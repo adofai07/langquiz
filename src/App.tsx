@@ -6,6 +6,7 @@ import { buildFontVariationSettings, clampAxisWeight } from './config/alloAxes';
 import { getCorpusOption, getLanguageOption } from './config/catalog';
 import { usePersistedSettings } from './hooks/usePersistedSettings';
 import {
+  loadCorpusGlossary,
   loadCorpusManifest,
   loadSpecificQuestion,
   matchesVerbRange,
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
   const [settings, setSettings] = usePersistedSettings();
   const [systemDark, setSystemDark] = useState<boolean>(getSystemDark);
   const [manifest, setManifest] = useState<CorpusManifest | null>(null);
+  const [glossary, setGlossary] = useState<Record<string, string>>({});
   const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -152,6 +154,19 @@ export const App: React.FC = () => {
       setLoading(false);
     }
   }, [corpus.manifestUrl, fetchNextQuestion]);
+
+  // Lazily load the active corpus's lemma glossary once per corpus
+  useEffect(() => {
+    let cancelled = false;
+    void loadCorpusGlossary(corpus.manifestUrl).then((dict) => {
+      if (!cancelled) {
+        setGlossary(dict);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [corpus.manifestUrl]);
 
   // StrictMode-safe initial load (supports ?ref=gn-3-13 deep link) & reload when corpus changes
   const appliedInitialRefForUrl = useRef<string | null>(null);
@@ -336,6 +351,8 @@ export const App: React.FC = () => {
             alphabet={language.alphabet}
             diacritics={language.diacritics}
             diacriticMode={settings.diacriticMode}
+            glossMode={settings.glossMode}
+            glossary={glossary}
             wordForms={settings.wordForms}
             onComplete={handleComplete}
             onNext={fetchNextQuestion}

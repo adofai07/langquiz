@@ -5,14 +5,14 @@
   "subtitle": "Bible kralická · Direct English",
   "translationSource": "BKR → EN",
   "totalVerses": 31172,
-  "quizVerses": 30987,
-  "totalVerbs": 97583,
+  "quizVerses": 30949,
+  "totalVerbs": 103038,
   "formCounts": {
-    "v": 97583,
-    "p": 2220,
-    "n": 100947,
-    "a": 32562,
-    "r": 62584
+    "v": 103038,
+    "p": 11780,
+    "n": 91222,
+    "a": 28087,
+    "r": 70989
   },
   "books": [
     {
@@ -21,7 +21,7 @@
       "nativeName": "1. Mojžíšova",
       "enName": "Genesis",
       "chunkFile": "chunks/01-gn.json",
-      "verseCount": 1526
+      "verseCount": 1524
     },
     {
       "index": 1,
@@ -29,7 +29,7 @@
       "nativeName": "2. Mojžíšova",
       "enName": "Exodus",
       "chunkFile": "chunks/02-ex.json",
-      "verseCount": 1209
+      "verseCount": 1210
     },
     {
       "index": 2,
@@ -37,7 +37,7 @@
       "nativeName": "3. Mojžíšova",
       "enName": "Leviticus",
       "chunkFile": "chunks/03-lv.json",
-      "verseCount": 857
+      "verseCount": 856
     },
     {
       "index": 3,
@@ -45,7 +45,7 @@
       "nativeName": "4. Mojžíšova",
       "enName": "Numbers",
       "chunkFile": "chunks/04-nm.json",
-      "verseCount": 1263
+      "verseCount": 1261
     },
     {
       "index": 4,
@@ -53,7 +53,7 @@
       "nativeName": "5. Mojžíšova",
       "enName": "Deuteronomy",
       "chunkFile": "chunks/05-dt.json",
-      "verseCount": 957
+      "verseCount": 958
     },
     {
       "index": 5,
@@ -61,7 +61,7 @@
       "nativeName": "Jozue",
       "enName": "Joshua",
       "chunkFile": "chunks/06-js.json",
-      "verseCount": 630
+      "verseCount": 616
     },
     {
       "index": 6,
@@ -85,7 +85,7 @@
       "nativeName": "1. Samuelova",
       "enName": "1 Samuel",
       "chunkFile": "chunks/09-1sm.json",
-      "verseCount": 810
+      "verseCount": 811
     },
     {
       "index": 9,
@@ -93,7 +93,7 @@
       "nativeName": "2. Samuelova",
       "enName": "2 Samuel",
       "chunkFile": "chunks/10-2sm.json",
-      "verseCount": 686
+      "verseCount": 684
     },
     {
       "index": 10,
@@ -109,7 +109,7 @@
       "nativeName": "2. Královská",
       "enName": "2 Kings",
       "chunkFile": "chunks/12-2rs.json",
-      "verseCount": 719
+      "verseCount": 718
     },
     {
       "index": 12,
@@ -117,7 +117,7 @@
       "nativeName": "1. Letopisů",
       "enName": "1 Chronicles",
       "chunkFile": "chunks/13-1cr.json",
-      "verseCount": 900
+      "verseCount": 873
     },
     {
       "index": 13,
@@ -141,7 +141,7 @@
       "nativeName": "Nehemjáš",
       "enName": "Nehemiah",
       "chunkFile": "chunks/16-ne.json",
-      "verseCount": 381
+      "verseCount": 379
     },
     {
       "index": 16,
@@ -157,7 +157,7 @@
       "nativeName": "Jób",
       "enName": "Job",
       "chunkFile": "chunks/18-job.json",
-      "verseCount": 1068
+      "verseCount": 1071
     },
     {
       "index": 18,
@@ -165,7 +165,7 @@
       "nativeName": "Žalmy",
       "enName": "Psalms",
       "chunkFile": "chunks/19-sl.json",
-      "verseCount": 2522
+      "verseCount": 2523
     },
     {
       "index": 19,
@@ -173,7 +173,7 @@
       "nativeName": "Přísloví",
       "enName": "Proverbs",
       "chunkFile": "chunks/20-pv.json",
-      "verseCount": 914
+      "verseCount": 915
     },
     {
       "index": 20,
@@ -181,7 +181,7 @@
       "nativeName": "Kazatel",
       "enName": "Ecclesiastes",
       "chunkFile": "chunks/21-ec.json",
-      "verseCount": 223
+      "verseCount": 219
     },
     {
       "index": 21,
@@ -197,7 +197,7 @@
       "nativeName": "Izajáš",
       "enName": "Isaiah",
       "chunkFile": "chunks/23-is.json",
-      "verseCount": 1290
+      "verseCount": 1292
     },
     {
       "index": 23,
@@ -221,7 +221,7 @@
       "nativeName": "Ezechiel",
       "enName": "Ezekiel",
       "chunkFile": "chunks/26-ez.json",
-      "verseCount": 1271
+      "verseCount": 1273
     },
     {
       "index": 26,
@@ -237,7 +237,7 @@
       "nativeName": "Ozeáš",
       "enName": "Hosea",
       "chunkFile": "chunks/28-os.json",
-      "verseCount": 197
+      "verseCount": 196
     },
     {
       "index": 28,
@@ -325,7 +325,7 @@
       "nativeName": "Malachiáš",
       "enName": "Malachi",
       "chunkFile": "chunks/39-ml.json",
-      "verseCount": 54
+      "verseCount": 55
     },
     {
       "index": 39,
@@ -333,7 +333,7 @@
       "nativeName": "Matouš",
       "enName": "Matthew",
       "chunkFile": "chunks/40-mt.json",
-      "verseCount": 1071
+      "verseCount": 1070
     },
     {
       "index": 40,
@@ -365,7 +365,7 @@
       "nativeName": "Skutky apoštolské",
       "enName": "Acts",
       "chunkFile": "chunks/44-atos.json",
-      "verseCount": 1003
+      "verseCount": 1006
     },
     {
       "index": 44,
@@ -373,7 +373,7 @@
       "nativeName": "Římanům",
       "enName": "Romans",
       "chunkFile": "chunks/45-rm.json",
-      "verseCount": 430
+      "verseCount": 432
     },
     {
       "index": 45,
@@ -453,7 +453,7 @@
       "nativeName": "2. Timoteovi",
       "enName": "2 Timothy",
       "chunkFile": "chunks/55-2tm.json",
-      "verseCount": 82
+      "verseCount": 83
     },
     {
       "index": 55,
@@ -493,7 +493,7 @@
       "nativeName": "1. Petrův",
       "enName": "1 Peter",
       "chunkFile": "chunks/60-1pe.json",
-      "verseCount": 104
+      "verseCount": 105
     },
     {
       "index": 60,
@@ -541,7 +541,7 @@
       "nativeName": "Zjevení Janovo",
       "enName": "Revelation",
       "chunkFile": "chunks/66-ap.json",
-      "verseCount": 405
+      "verseCount": 404
     }
   ]
 }

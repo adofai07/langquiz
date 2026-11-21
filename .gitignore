@@ -6,3 +6,5 @@ raw_data/
 __pycache__/
 *.py[cod]
 *.tsbuildinfo
+en_*.json
+book_names.json

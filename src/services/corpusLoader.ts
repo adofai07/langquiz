@@ -26,8 +26,49 @@ export interface MergedCorpusItem {
 
 const manifestCache = new Map<string, CorpusManifest>();
 const mergedChunkCache = new Map<string, MergedCorpusItem[]>();
+const glossaryCache = new Map<string, Record<string, string>>();
 
 const SENTENCE_END_RE = /[.!?][»”"'\)\]]*\s*$/;
+
+/**
+ * Remove unmatched stray quotation marks left on standalone English translations
+ * when a multi-verse biblical quote starts or ends on another verse.
+ */
+export function cleanStrayQuotes(text: string): string {
+  let out = text.trim();
+  if (!out) return out;
+
+  // Balance curly double quotes (“ ... ”)
+  let openCurly = (out.match(/“/g) ?? []).length;
+  let closeCurly = (out.match(/”/g) ?? []).length;
+  while (closeCurly > openCurly && out.endsWith('”')) {
+    out = out.slice(0, -1).trimEnd();
+    closeCurly -= 1;
+  }
+  while (openCurly > closeCurly && out.startsWith('“')) {
+    out = out.slice(1).trimStart();
+    openCurly -= 1;
+  }
+  if (openCurly === 1 && closeCurly === 0) {
+    out = out.replace('“', '');
+  } else if (closeCurly === 1 && openCurly === 0) {
+    out = out.replace('”', '');
+  }
+
+  // Balance straight ASCII double quotes (")
+  const asciiCount = (out.match(/"/g) ?? []).length;
+  if (asciiCount % 2 === 1) {
+    if (out.endsWith('"')) {
+      out = out.slice(0, -1).trimEnd();
+    } else if (out.startsWith('"')) {
+      out = out.slice(1).trimStart();
+    } else if (asciiCount === 1) {
+      out = out.replace('"', '');
+    }
+  }
+
+  return out;
+}
 
 function startsWithLowercase(text: string): boolean {
   const trimmed = text.trimStart();
@@ -94,6 +135,27 @@ export async function loadCorpusManifest(manifestUrl: string): Promise<CorpusMan
   return data;
 }
 
+export async function loadCorpusGlossary(manifestUrl: string): Promise<Record<string, string>> {
+  const url = `${baseDir(manifestUrl)}glossary.json`;
+  const existing = glossaryCache.get(url);
+  if (existing) return existing;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      return {};
+    }
+    const data = (await res.json()) as Record<string, string>;
+    if (data && typeof data === 'object') {
+      glossaryCache.set(url, data);
+      return data;
+    }
+    return {};
+  } catch {
+    return {};
+  }
+}
+
 export async function loadBookMergedItems(
   manifestUrl: string,
   book: CorpusBookMeta
@@ -157,7 +219,7 @@ export function toQuizQuestion(
     verseCount: item.verseCount,
     reference: `${bookNativeName} (${book.enName}) ${verseLabel}`,
     original: item.o,
-    translation: item.t,
+    translation: cleanStrayQuotes(item.t),
     translationSource: manifest.translationSource,
     blanks,
   };

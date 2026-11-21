@@ -1,51 +1,46 @@
 """
 Build the Czech Bible (Bible kralická / BKR) inflected word-form quiz corpus.
 
-Extracts all 5 inflecting Czech word categories via Charles University's UDPipe
-Czech PDT tagger/lemmatizer (`spacy-udpipe`):
-  - 'v': finite verbs & Czech past l-participles (VB, Vp, Vi, Vc)
-  - 'p': passive & adverbial verbal participles (Vs, Ve, Vm)
-  - 'n': inflected nouns (NOUN/PROPN where surface != lemma)
-  - 'a': inflected adjectives (ADJ where surface != lemma)
-  - 'r': inflected pronouns & determiners (PRON/DET where surface != lemma)
+Uses Charles University's MorphoDiTa + MorfFlex CZ 2.0 / PDT-C 1.0 tagger and
+morphological dictionary (`ufal.morphodita`), which natively handles Early Modern
+Czech imperatives (`Vi`), archaic `-ti` infinitives (`Vf`, cleanly excluded),
+archaic `-ť` verbs (`Vt`, `Vq`), passive participles (`Vs`), and transgressives
+(`Ve`, `Vm`):
 
-Reuses cached archaic verb rescue lemmas (`raw_data/cs_verb_lemmas_rescue.json`)
-and cached direct English translations (`raw_data/en_llm_translations_cs.json`).
+  - 'v': finite verbs, past l-participles, imperatives, conditionals, archaic -ť verbs
+         (VB, Vp, Vi, Vc, Vt, Vq)
+  - 'p': passive participles, transgressives, and inflected verbal participles
+         (Vs, Ve, Vm, AG, AM)
+  - 'n': inflected nouns (NN where surface != lemma)
+  - 'a': inflected adjectives (AA, AU, AC where surface != lemma)
+  - 'r': inflected pronouns & determiners (P*, AO where surface != lemma)
+
+Reuses cached direct English translations (`raw_data/en_llm_translations_cs.json`).
 """
 
 from __future__ import annotations
 
-import concurrent.futures
 import json
-import os
 import re
 import time
-import urllib.request
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-import spacy_udpipe
+from ufal.morphodita import Forms, Tagger, TaggedLemmas, TokenRanges
 
 ROOT = Path(__file__).resolve().parent.parent
 CS_PATH = ROOT / "cs_bkr.json"
 EN_LLM_CACHE = ROOT / "raw_data" / "en_llm_translations_cs.json"
 BSB_PATH = ROOT / "raw_data" / "en_bsb.json"
-RESCUE_CACHE_PATH = ROOT / "raw_data" / "cs_verb_lemmas_rescue.json"
+TAGGER_PATH = (
+    ROOT
+    / "raw_data"
+    / "morphodita-cs"
+    / "czech-morfflex2.0-pdtc1.0-220710"
+    / "czech-morfflex2.0-pdtc1.0-220710.tagger"
+)
 OUT_DIR = ROOT / "public" / "data" / "cs-bible-bkr"
 CHUNKS_DIR = OUT_DIR / "chunks"
-
-ENDPOINT = os.environ.get("LLM_ENDPOINT", "http://localhost:8000/v1/chat/completions")
-MODEL = os.environ.get("LLM_MODEL", "")
-
-
-def resolve_model() -> str:
-    if MODEL:
-        return MODEL
-    models_url = ENDPOINT.rsplit("/chat/completions", 1)[0] + "/models"
-    with urllib.request.urlopen(models_url, timeout=10) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
-    return str(data["data"][0]["id"])
-
 
 BOOKS_META: List[Tuple[str, str, str]] = [
     ("gn", "1. Mojžíšova", "Genesis"),
@@ -117,22 +112,75 @@ BOOKS_META: List[Tuple[str, str, str]] = [
 ]
 
 CS_WORD_RE = re.compile(r"^[A-Za-zÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž]+$")
-VERB_PDT_PREFIXES = ("VB", "Vp", "Vi", "Vc")
-PART_PDT_PREFIXES = ("Vs", "Ve", "Vm")
 
-RESCUE_PROMPT = (
-    "You are an expert Czech historical and modern linguist (Bible kralická). "
-    "For each entry in the input JSON object mapping a Czech conjugated verb form to an example verse, "
-    "return its standard lowercase Czech dictionary infinitive (ending in -t, -ti, -ci, or -ct, e.g., "
-    "'posvěť' -> 'posvětit', 'řekl' -> 'říci', 'buď' -> 'být', 'jděte' -> 'jít', 'nebojte' -> 'bát'). "
-    "If the word is an infinitive itself (e.g. 'míti', 'učiniti') or NOT a conjugated Czech verb form, return empty string \"\". "
-    "Return ONLY a valid JSON object mapping the exact input keys to lowercase Czech infinitives."
-)
+VERB_PREFIXES = ("VB", "Vp", "Vi", "Vc", "Vt", "Vq")
+PART_PREFIXES = ("Vs", "Ve", "Vm")
+VERBAL_ADJ_PREFIXES = ("AG", "AM")
+ADJ_PREFIXES = ("AA", "AU", "AC")
+
+# Biblical imperatives occasionally mistagged by modern-news MorphoDiTa as rare nouns/particles
+# or spelled archaically outside modern MorfFlex (e.g. "proklň" = modern "proklej").
+IMPERATIVE_OVERRIDES: Dict[str, str] = {
+    "budiž": "být",
+    "dej": "dát",
+    "pohleď": "pohledět",
+    "oznam": "oznámit",
+    "volej": "volat",
+    "slož": "složit",
+    "jez": "jíst",
+    "proklň": "proklít",
+}
+
+# Archaic Czech verb spellings outside modern MorfFlex NO_GUESSER
+ARCHAIC_VERB_OVERRIDES: Dict[str, str] = {
+    "proklň": "proklít",
+    "svítězím": "zvítězit",
+    "svítězí": "zvítězit",
+    "svítězil": "zvítězit",
+}
+
+CS_PAN_RE = re.compile(r"\b(?:Pán|Pána|Pánu|Pane|Pánem|Panovník|pán|pána|pánu|pane|pánem)\b")
+EN_LORD_RE = re.compile(r"\bLord\b")
+MORFFLEX_DERIV_RE = re.compile(r"_\^\(\*(\d+)([^)]*)\)")
 
 
-def clean_pdt_lemma(raw: str, keep_case: bool = False) -> str:
-    base = re.split(r"[-_`^]", raw, maxsplit=1)[0].strip()
-    return base if keep_case else base.lower()
+def derive_verbal_infinitive(short_lemma: str, raw_lemma: str, morpho, probe: TaggedLemmas) -> str | None:
+    """Decode MorfFlex ^(*N...) derivation on AG/AM active participles (e.g. poskvrňující_^(*5ovat) -> poskvrňovat)."""
+    m = MORFFLEX_DERIV_RE.search(raw_lemma)
+    if not m:
+        return None
+    cut = int(m.group(1))
+    add = re.split(r"[-_`^]", m.group(2), maxsplit=1)[0]
+    if cut > len(short_lemma):
+        return None
+    base = ((short_lemma[:-cut] if cut > 0 else short_lemma) + add).lower()
+    if not is_valid_cs_infinitive(base):
+        return None
+    if morpho.analyze(base, morpho.NO_GUESSER, probe) >= 0 and any(x.tag.startswith("Vf") for x in probe):
+        return base
+    return None
+
+# Non-verb archaic -ť forms occasionally caught by MorphoDiTa's Vt tag
+VT_NONVERB_OVERRIDES: Dict[str, Tuple[str, str] | None] = {
+    "mneť": ("já", "r"),
+    "většíť": None,
+}
+
+# Negated noun/adj homographs occasionally tagged as negated 1sg/3sg verbs
+NEG_VERB_HOMOGRAPH_OVERRIDES: Dict[str, Tuple[str, str]] = {
+    "nevinu": ("nevina", "n"),
+    "nedělí": ("neděle", "n"),
+    "nemocní": ("nemocný", "a"),
+}
+
+# Archaic non-inflecting words occasionally misclassified by modern MorfFlex
+SKIP_EXACT_LOWER = {"podlé", "dvadceti", "třidceti", "čtyřidceti", "čtyřidcíti", "třidcíti"}
+
+# Capitalized mid-sentence biblical proper names that collide with lowercase Czech verbs
+PROPER_NAME_VERB_COLLISIONS = {
+    "Bála", "Báli", "Bály", "Elí", "Léví", "Hul", "Séla", "Obil", "Uzen",
+    "Nemra", "Kabul", "Rachal", "Ulam", "Jefte",
+}
 
 
 def is_valid_cs_infinitive(lemma: str) -> bool:
@@ -144,205 +192,206 @@ def is_valid_cs_infinitive(lemma: str) -> bool:
     )
 
 
-def rescue_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
-    payload = {
-        "model": model_name,
-        "messages": [
-            {"role": "system", "content": RESCUE_PROMPT},
-            {"role": "user", "content": json.dumps(batch, ensure_ascii=False)},
-        ],
-        "temperature": 0.0,
-        "max_tokens": min(4096, max(1024, len(batch) * 90)),
-        "reasoning_effort": "low",
-        "response_format": {"type": "json_object"},
-    }
-    req = urllib.request.Request(
-        ENDPOINT,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=90) as resp:
-        body = json.loads(resp.read().decode("utf-8"))
-    content = body["choices"][0]["message"].get("content")
-    if not content:
-        return {}
-    parsed = json.loads(content)
-    if not isinstance(parsed, dict):
-        return {}
-    out: Dict[str, str] = {}
-    for k in batch:
-        val = parsed.get(k)
-        if isinstance(val, str):
-            v = val.strip().lower()
-            if v == "":
-                out[k] = ""
-            elif is_valid_cs_infinitive(v):
-                out[k] = v
-    return out
+def restore_negated_nonverb_lemma(surf_low: str, lem: str, tag: str) -> str:
+    """
+    In PDT-C 1.0, MorfFlex strips `ne-` from negated nouns/adjectives (e.g.
+    `nepravost` -> `pravost`, `nesličná` -> `sličný`). Restore `ne-` so uninflected
+    forms like `nepravost` are not falsely blanked and inflected forms like
+    `nepravosti` show their true dictionary base `nepravost`.
+    """
+    if len(tag) > 10 and tag[10] == "N" and surf_low.startswith("ne") and not lem.lower().startswith("ne"):
+        if lem and lem[0].isupper():
+            return "Ne" + lem[0].lower() + lem[1:]
+        return "ne" + lem
+    return lem
 
 
-_WORKER_NLP = None
+def is_known_in_morfflex(morpho, word: str, probe: TaggedLemmas) -> bool:
+    return morpho.analyze(word, morpho.NO_GUESSER, probe) >= 0
 
 
-def _init_cs_worker() -> None:
-    global _WORKER_NLP
-    _WORKER_NLP = spacy_udpipe.load("cs")
+def classify_token(
+    surf: str,
+    raw_lemma: str,
+    short_lemma: str,
+    tag: str,
+    is_mid_sentence: bool,
+    morpho,
+    probe: TaggedLemmas,
+) -> Tuple[str, str] | None:
+    if not CS_WORD_RE.match(surf):
+        return None
+    s_low = surf.lower()
+    if s_low in SKIP_EXACT_LOWER:
+        return None
+    t2 = tag[:2]
 
+    # 1. Exact biblical homograph & archaic spelling overrides
+    if s_low in ARCHAIC_VERB_OVERRIDES:
+        return (ARCHAIC_VERB_OVERRIDES[s_low], "v")
 
-def _tag_cs_chunk(
-    items: List[Tuple[int, int, int, str, str]],
-) -> Tuple[List[List[Tuple[int, int, str, str, str]]], Dict[str, str]]:
-    nlp = _WORKER_NLP
-    out_spans: List[List[Tuple[int, int, str, str, str]]] = []
-    local_rescue: Dict[str, str] = {}
+    if t2 in ("NN", "TT", "Db", "II") and short_lemma.lower() == s_low and s_low in IMPERATIVE_OVERRIDES:
+        return (IMPERATIVE_OVERRIDES[s_low], "v")
 
-    for _, _, _, cs_text, _ in items:
-        doc = nlp(cs_text)
-        spans: List[Tuple[int, int, str, str, str]] = []
-        tlen = len(cs_text)
-        cursor = 0
-        for tok in doc:
-            tok_text = tok.text
-            pos_idx = cs_text.find(tok_text, cursor)
-            if pos_idx == -1:
-                continue
-            start = pos_idx
-            end = pos_idx + len(tok_text)
-            cursor = end
+    if t2 in ("Vt", "Vq") and s_low in VT_NONVERB_OVERRIDES:
+        return VT_NONVERB_OVERRIDES[s_low]
 
-            if start > 0 and cs_text[start - 1].isalpha():
-                continue
-            if end < tlen and cs_text[end].isalpha():
-                continue
-            surf = cs_text[start:end]
-            if not CS_WORD_RE.match(surf):
-                continue
+    if t2 == "VB" and len(tag) > 10 and tag[10] == "N" and s_low in NEG_VERB_HOMOGRAPH_OVERRIDES:
+        return NEG_VERB_HOMOGRAPH_OVERRIDES[s_low]
 
-            s_low = surf.lower()
-            tag = tok.tag_ or ""
-            is_foreign = "Foreign=Yes" in str(tok.morph)
+    # 2. Infinitives (including archaic -ti infinitives like záviděti, býti) -> skip
+    if t2 == "Vf":
+        return None
 
-            if tok.pos_ in ("VERB", "AUX"):
-                if tag.startswith("Vf") and not is_foreign:
-                    continue
-                if tag.startswith(PART_PDT_PREFIXES):
-                    lem = clean_pdt_lemma(tok.lemma_)
-                    if not is_foreign and is_valid_cs_infinitive(lem) and lem != s_low:
-                        spans.append((start, end, s_low, "p", lem))
-                    continue
-                if not tag.startswith(VERB_PDT_PREFIXES) and not is_foreign:
-                    continue
-                lem = clean_pdt_lemma(tok.lemma_)
-                if not is_foreign and is_valid_cs_infinitive(lem) and lem != s_low:
-                    spans.append((start, end, s_low, "v", lem))
-                else:
-                    spans.append((start, end, s_low, "v", ""))
-                    if s_low not in local_rescue:
-                        local_rescue[s_low] = cs_text[:180]
-            elif tok.pos_ in ("PRON", "DET"):
-                lem = clean_pdt_lemma(tok.lemma_)
-                if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
-                    spans.append((start, end, s_low, "r", lem))
-            elif tok.pos_ in ("NOUN", "PROPN"):
-                lem_case = clean_pdt_lemma(tok.lemma_, keep_case=(tok.pos_ == "PROPN"))
-                if len(lem_case) >= 2 and CS_WORD_RE.match(lem_case) and lem_case.lower() != s_low:
-                    spans.append((start, end, s_low, "n", lem_case))
-            elif tok.pos_ == "ADJ":
-                lem = clean_pdt_lemma(tok.lemma_)
-                if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
-                    kind = "p" if ("VerbForm=Part" in str(tok.morph) and is_valid_cs_infinitive(lem)) else "a"
-                    spans.append((start, end, s_low, kind, lem))
+    # 3. Finite verbs, past l-participles, imperatives, conditionals, archaic -ť verbs
+    if t2 in VERB_PREFIXES:
+        if is_mid_sentence and surf in PROPER_NAME_VERB_COLLISIONS:
+            return None
+        lem = short_lemma.lower()
+        if is_valid_cs_infinitive(lem) and lem != s_low and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "v")
+        return None
 
-        out_spans.append(spans)
-    return out_spans, local_rescue
+    # 4. Passive participles & transgressives (Vs, Ve, Vm)
+    if t2 in PART_PREFIXES:
+        if is_mid_sentence and surf in PROPER_NAME_VERB_COLLISIONS:
+            return None
+        lem = short_lemma.lower()
+        if is_valid_cs_infinitive(lem) and lem != s_low and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "p")
+        return None
+
+    # 5. Active verbal participles (AG, AM, e.g. poskvrňující -> poskvrňovat, sedícího -> sedět)
+    if t2 in VERBAL_ADJ_PREFIXES:
+        verb_base = derive_verbal_infinitive(short_lemma, raw_lemma, morpho, probe)
+        if verb_base and verb_base != s_low:
+            return (verb_base, "p")
+        lem = restore_negated_nonverb_lemma(s_low, short_lemma.lower(), tag)
+        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
+            return (lem, "a")
+        return None
+
+    # 6. Inflected nouns (NN)
+    if t2 == "NN":
+        is_proper = any(m in raw_lemma for m in ("_;Y", "_;S", "_;G", "_;E", "_;K", "_;m", "_;R"))
+        lem_base = short_lemma if is_proper else short_lemma.lower()
+        if lem_base == "hospodin" and surf[0].isupper():
+            lem_base = "Hospodin"
+        elif lem_base == "bůh" and surf[0].isupper():
+            lem_base = "Bůh"
+        lem = restore_negated_nonverb_lemma(s_low, lem_base, tag)
+        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem.lower() != s_low:
+            return (lem, "n")
+        return None
+
+    # 7. Inflected adjectives (AA, AU, AC)
+    if t2 in ADJ_PREFIXES:
+        is_proper = any(m in raw_lemma for m in ("_;Y", "_;S", "_;G", "_;E"))
+        lem_base = short_lemma if is_proper else short_lemma.lower()
+        if lem_base == "hospodinův" and surf[0].isupper():
+            lem_base = "Hospodinův"
+        lem = restore_negated_nonverb_lemma(s_low, lem_base, tag)
+        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem.lower() != s_low:
+            return (lem, "a")
+        return None
+
+    # 8. Inflected pronouns & determiners (P*, AO)
+    if tag.startswith("P") or t2 == "AO":
+        lem = short_lemma.lower()
+        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
+            return (lem, "r")
+        return None
+
+    return None
 
 
 def main() -> None:
     t0 = time.time()
-    print("Loading Czech Bible kralická dataset + cached translations...", flush=True)
+    print("Loading Czech MorphoDiTa (MorfFlex 2.0 + PDT-C 1.0) tagger...", flush=True)
+    tagger = Tagger.load(str(TAGGER_PATH))
+    if not tagger:
+        raise RuntimeError(f"Failed to load MorphoDiTa tagger from {TAGGER_PATH}")
+    morpho = tagger.getMorpho()
+    tokenizer = tagger.newTokenizer()
+
     cs_books = json.loads(CS_PATH.read_text(encoding="utf-8-sig"))
     en_llm = json.loads(EN_LLM_CACHE.read_text(encoding="utf-8")) if EN_LLM_CACHE.exists() else {}
     bsb_books = json.loads(BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if BSB_PATH.exists() else None
-    rescue_map: Dict[str, str] = (
-        json.loads(RESCUE_CACHE_PATH.read_text(encoding="utf-8")) if RESCUE_CACHE_PATH.exists() else {}
-    )
 
-    flat_items: List[Tuple[int, int, int, str, str]] = []
-    for bi in range(66):
-        book_id = BOOKS_META[bi][0]
+    CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
+    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
+    total_verses = 0
+    quiz_verses = 0
+    manifest_books = []
+
+    forms_vec = Forms()
+    lemmas_vec = TaggedLemmas()
+    tokens_vec = TokenRanges()
+    probe_vec = TaggedLemmas()
+
+    for bi, (book_id, native_name, en_name) in enumerate(BOOKS_META):
         bsb_map = {}
         if bsb_books:
             bsb_map = {
                 c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
                 for c in bsb_books[bi]["chapters"]
             }
+
+        book_entries: List[dict] = []
         for ci, verses in enumerate(cs_books[bi]["chapters"], 1):
-            for vi, cs_text in enumerate(verses, 1):
+            for vi, raw_cs in enumerate(verses, 1):
+                total_verses += 1
+                cs_text = raw_cs.strip()
+                tlen = len(cs_text)
                 key = f"{book_id}:{ci}:{vi}"
                 en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
-                flat_items.append((bi, ci, vi, cs_text.strip(), en_text))
+                # Normalize 'Lord' -> 'LORD' when Czech text uses YHWH name 'Hospodin' without 'Pán'
+                if "Hospodin" in cs_text and not CS_PAN_RE.search(cs_text):
+                    en_text = EN_LORD_RE.sub("LORD", en_text)
 
-    workers = min(8, os.cpu_count() or 4)
-    print(f"Tagging {len(flat_items)} Czech verses (v, p, n, a, r) across {workers} workers...", flush=True)
-    chunk_size = 1000
-    slices = [flat_items[i : i + chunk_size] for i in range(0, len(flat_items), chunk_size)]
+                spans: List[List] = []
+                tokenizer.setText(cs_text)
+                while tokenizer.nextSentence(forms_vec, tokens_vec):
+                    tagger.tag(forms_vec, lemmas_vec)
+                    for i in range(len(lemmas_vec)):
+                        start = tokens_vec[i].start
+                        end = start + tokens_vec[i].length
+                        if start < 0 or end > tlen:
+                            continue
+                        if start > 0 and cs_text[start - 1].isalpha():
+                            continue
+                        if end < tlen and cs_text[end].isalpha():
+                            continue
+                        surf = cs_text[start:end]
+                        raw_lem = lemmas_vec[i].lemma
+                        short_lem = morpho.rawLemma(raw_lem)
+                        tag = lemmas_vec[i].tag
+                        prev_txt = cs_text[:start].rstrip()
+                        is_mid_sentence = bool(prev_txt and prev_txt[-1] not in ".!?:;„\"(«")
+                        classified = classify_token(
+                            surf, raw_lem, short_lem, tag, is_mid_sentence, morpho, probe_vec
+                        )
+                        if classified is not None:
+                            lem, kind = classified
+                            spans.append([start, end, lem, kind])
 
-    raw_spans: List[List[Tuple[int, int, str, str, str]]] = []
-    needs_rescue: Dict[str, str] = {}
+                if not spans:
+                    continue
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=workers, initializer=_init_cs_worker) as pool:
-        for spans_part, rescue_part in pool.map(_tag_cs_chunk, slices):
-            raw_spans.extend(spans_part)
-            for k, ctx in rescue_part.items():
-                if k not in rescue_map and k not in needs_rescue:
-                    needs_rescue[k] = ctx
-            print(f"  Tagged {len(raw_spans)}/{len(flat_items)} verses ({time.time() - t0:.1f}s)", flush=True)
+                book_entries.append({
+                    "c": ci,
+                    "v": vi,
+                    "o": cs_text,
+                    "t": en_text,
+                    "m": spans,
+                })
+                quiz_verses += 1
+                for _, _, _, k in spans:
+                    counts[k] += 1
 
-    if needs_rescue:
-        model_name = resolve_model()
-        items = list(needs_rescue.items())
-        batches = [dict(items[i : i + 35]) for i in range(0, len(items), 35)]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=24) as pool:
-            futs = [pool.submit(rescue_batch, b, model_name) for b in batches]
-            for fut in concurrent.futures.as_completed(futs):
-                rescue_map.update(fut.result())
-        RESCUE_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        RESCUE_CACHE_PATH.write_text(json.dumps(rescue_map, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
-    book_entries: List[List[dict]] = [[] for _ in range(66)]
-    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
-    quiz_verses = 0
-
-    for (bi, ci, vi, cs_text, en_text), spans in zip(flat_items, raw_spans):
-        forms = []
-        for start, end, s_low, kind, lem in spans:
-            resolved = lem or (rescue_map.get(s_low, "") if kind == "v" else "")
-            if not resolved or resolved.lower() == s_low:
-                continue
-            if kind in ("v", "p") and not is_valid_cs_infinitive(resolved):
-                continue
-            forms.append([start, end, resolved, kind])
-        if not forms:
-            continue
-        book_entries[bi].append({
-            "c": ci,
-            "v": vi,
-            "o": cs_text,
-            "t": en_text,
-            "m": forms,
-        })
-        quiz_verses += 1
-        for _, _, _, k in forms:
-            counts[k] += 1
-
-    manifest_books = []
-    for bi, (book_id, native_name, en_name) in enumerate(BOOKS_META):
-        entries = book_entries[bi]
         chunk_rel = f"chunks/{bi + 1:02d}-{book_id}.json"
         (OUT_DIR / chunk_rel).write_text(
-            json.dumps(entries, ensure_ascii=False, separators=(",", ":")),
+            json.dumps(book_entries, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
         manifest_books.append({
@@ -351,7 +400,7 @@ def main() -> None:
             "nativeName": native_name,
             "enName": en_name,
             "chunkFile": chunk_rel,
-            "verseCount": len(entries),
+            "verseCount": len(book_entries),
         })
 
     manifest = {
@@ -360,7 +409,7 @@ def main() -> None:
         "title": "Bible",
         "subtitle": "Bible kralická · Direct English",
         "translationSource": "BKR → EN",
-        "totalVerses": len(flat_items),
+        "totalVerses": total_verses,
         "quizVerses": quiz_verses,
         "totalVerbs": counts["v"],
         "formCounts": counts,
@@ -368,7 +417,10 @@ def main() -> None:
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
+    print(
+        f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses}/{total_verses} | Counts: {counts}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

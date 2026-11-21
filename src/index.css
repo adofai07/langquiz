@@ -569,6 +569,28 @@ select {
   color: var(--ok);
 }
 
+.verb-chip-gloss {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  border-left: 1px solid var(--rule);
+  padding-left: 0.45rem;
+  font-weight: var(--allo-wght-base);
+  font-variation-settings: var(--allo-fvs-base);
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.verb-chip:hover .verb-chip-gloss,
+.verb-chip--active .verb-chip-gloss {
+  color: var(--ink-2);
+}
+
+.verb-chip--exact .verb-chip-gloss,
+.verb-chip--diacritic .verb-chip-gloss,
+.verb-chip--wrong .verb-chip-gloss {
+  color: currentColor;
+  opacity: 0.78;
+}
+
 .verb-chip-kind {
   font-size: 0.62rem;
   letter-spacing: 0.06em;

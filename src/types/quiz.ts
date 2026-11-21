@@ -108,6 +108,7 @@ export interface AlloFontAxes {
 
 export type DiacriticMode = 'strict' | 'lenient';
 export type ThemeMode = 'system' | 'light' | 'dark';
+export type GlossMode = 'always' | 'after-check' | 'off';
 
 export const VERB_RANGE_MIN = 1;
 /** Upper slider stop; max === VERB_RANGE_MAX represents 10+ (unbounded upper limit). */
@@ -130,6 +131,7 @@ export interface AppSettings {
   corpusId: string;
   fontAxes: AlloFontAxes;
   diacriticMode: DiacriticMode;
+  glossMode: GlossMode;
   wordForms: EnabledWordForms;
   verbRange: VerbRange;
   verseRange: VerseRange;

@@ -10,6 +10,7 @@ import {
   type BlankEvaluation,
   type DiacriticMode,
   type EnabledWordForms,
+  type GlossMode,
   type LanguageCode,
   type QuizQuestion,
 } from '../types/quiz';
@@ -21,6 +22,8 @@ interface QuizCardProps {
   alphabet: string;
   diacritics: string[];
   diacriticMode: DiacriticMode;
+  glossMode?: GlossMode;
+  glossary?: Record<string, string>;
   wordForms: EnabledWordForms;
   onComplete: (allCorrect: boolean) => void;
   onNext: () => void;
@@ -39,6 +42,8 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   alphabet,
   diacritics,
   diacriticMode,
+  glossMode = 'always',
+  glossary,
   wordForms,
   onComplete,
   onNext,
@@ -310,6 +315,9 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const verbsOnly = enabledCount === 1 && wordForms.v;
   const formsRowLabel = verbsOnly ? 'Verb' : 'Forms';
   const showKindTags = enabledCount > 1;
+  const showGloss =
+    Boolean(glossary) &&
+    (glossMode === 'always' || (glossMode === 'after-check' && phase !== 'answering'));
 
   return (
     <article className="quiz-grid" aria-label="Verb form quiz question">
@@ -369,6 +377,9 @@ export const QuizCard: React.FC<QuizCardProps> = ({
                   ? ' verb-chip--active'
                   : '';
               const kindMeta = KIND_TAG_MAP[blank.kind];
+              const meaning = showGloss
+                ? (glossary?.[blank.lemma] ?? glossary?.[blank.lemma.toLowerCase()])
+                : undefined;
 
               return (
                 <li key={`${blank.start}-${idx}`}>
@@ -387,6 +398,11 @@ export const QuizCard: React.FC<QuizCardProps> = ({
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     <span lang={languageCode}>{blank.lemma}</span>
+                    {meaning && (
+                      <span className="verb-chip-gloss" lang="en">
+                        {meaning}
+                      </span>
+                    )}
                     {showKindTags && kindMeta && (
                       <span className="verb-chip-kind tabular" aria-label={kindMeta.label}>
                         {kindMeta.shortTag}

@@ -6,7 +6,12 @@ import {
   matchOriginalCase,
   stripPolishDiacritics,
 } from '../services/answerCheck';
-import { matchesVerbRange, matchesVerseRange, mergeSplitVerses } from '../services/corpusLoader';
+import {
+  cleanStrayQuotes,
+  matchesVerbRange,
+  matchesVerseRange,
+  mergeSplitVerses,
+} from '../services/corpusLoader';
 import { buildFontVariationSettings, DEFAULT_FONT_AXES } from '../config/alloAxes';
 import {
   CZECH_ALPHABET,
@@ -333,6 +338,94 @@ describe('QuizCard', () => {
     expect(onComplete).toHaveBeenCalledWith(true);
     expect(screen.getByText('Correct — 2 / 2')).toBeInTheDocument();
   });
+
+  it('displays verb meanings inside row 03 chips according to glossMode', () => {
+    const csWithRepeats: QuizQuestion = {
+      id: 'cs-bible-bkr:job:31:19',
+      bookIndex: 17,
+      bookId: 'job',
+      bookNativeName: 'Jób',
+      bookEnName: 'Job',
+      chapter: 31,
+      verse: 19,
+      verseEnd: 19,
+      verseCount: 1,
+      reference: 'Jób (Job) 31:19',
+      original: 'Díval-li jsem se na koho, že by hynul.',
+      translation: 'If I looked at anyone who was perishing.',
+      translationSource: 'BKR → EN',
+      blanks: [
+        { index: 0, start: 0, end: 5, answer: 'Díval', lemma: 'dívat', kind: 'v' },
+        { index: 1, start: 9, end: 13, answer: 'jsem', lemma: 'být', kind: 'v' },
+        { index: 2, start: 29, end: 31, answer: 'by', lemma: 'být', kind: 'v' },
+        { index: 3, start: 32, end: 37, answer: 'hynul', lemma: 'hynout', kind: 'v' },
+      ],
+    };
+    const glossary = {
+      dívat: 'to look, watch',
+      být: 'to be',
+      hynout: 'to perish',
+    };
+
+    const { rerender } = render(
+      <QuizCard
+        question={csWithRepeats}
+        languageCode="cs"
+        alphabet={CZECH_ALPHABET}
+        diacritics={['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž']}
+        diacriticMode="strict"
+        glossMode="always"
+        glossary={glossary}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText('to look, watch')).toBeInTheDocument();
+    expect(screen.getByText('to perish')).toBeInTheDocument();
+    expect(screen.getAllByText('to be')).toHaveLength(2);
+
+    // Clicking the chip focuses its corresponding blank
+    fireEvent.click(screen.getByText('to perish'));
+    expect(document.activeElement).toBe(screen.getAllByRole('textbox')[3]);
+
+    // In 'after-check' mode, meanings stay hidden until checked/revealed
+    rerender(
+      <QuizCard
+        question={csWithRepeats}
+        languageCode="cs"
+        alphabet={CZECH_ALPHABET}
+        diacritics={['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž']}
+        diacriticMode="strict"
+        glossMode="after-check"
+        glossary={glossary}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    expect(screen.queryByText('to perish')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Reveal/i }));
+    expect(screen.getByText('to perish')).toBeInTheDocument();
+
+    // In 'off' mode, meanings never appear
+    rerender(
+      <QuizCard
+        question={csWithRepeats}
+        languageCode="cs"
+        alphabet={CZECH_ALPHABET}
+        diacritics={['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž']}
+        diacriticMode="strict"
+        glossMode="off"
+        glossary={glossary}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    expect(screen.queryByText('to perish')).not.toBeInTheDocument();
+  });
 });
 
 describe('SettingsDrawer', () => {
@@ -376,6 +469,11 @@ describe('SettingsDrawer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Lenient' }));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ diacriticMode: 'lenient' })
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'After check' }));
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ glossMode: 'after-check' })
     );
 
     const nounsCheckbox = screen.getByRole('checkbox', { name: /^Nouns/i });
@@ -475,5 +573,18 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     fireEvent.pointerMove(group, { clientX: 70, pointerId: 2 });
     fireEvent.pointerUp(group, { clientX: 70, pointerId: 2 });
     expect(onChange).toHaveBeenLastCalledWith(5, 8);
+  });
+
+  it('strips stray unmatched quotation marks while preserving balanced quotes', () => {
+    expect(
+      cleanStrayQuotes('But to eat with unwashed hands does not defile a person."')
+    ).toBe('But to eat with unwashed hands does not defile a person.');
+    expect(
+      cleanStrayQuotes('These are what defile a man, but eating does not defile him.”')
+    ).toBe('These are what defile a man, but eating does not defile him.');
+    expect(cleanStrayQuotes('“Come out of the ark.')).toBe('Come out of the ark.');
+    expect(cleanStrayQuotes('He said: "Peace be with you."')).toBe(
+      'He said: "Peace be with you."'
+    );
   });
 });

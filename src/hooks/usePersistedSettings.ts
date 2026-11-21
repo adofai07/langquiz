@@ -8,6 +8,7 @@ import {
   type AppSettings,
   type CountRange,
   type EnabledWordForms,
+  type GlossMode,
   type VerbRange,
   type VerseRange,
 } from '../types/quiz';
@@ -37,11 +38,17 @@ export const DEFAULT_SETTINGS: AppSettings = {
   corpusId: 'pl-bible-ubg',
   fontAxes: { ...DEFAULT_FONT_AXES },
   diacriticMode: 'strict',
+  glossMode: 'always',
   wordForms: { ...DEFAULT_WORD_FORMS },
   verbRange: { ...DEFAULT_VERB_RANGE },
   verseRange: { ...DEFAULT_VERSE_RANGE },
   theme: 'system',
 };
+
+function sanitizeGlossMode(raw: unknown): GlossMode {
+  if (raw === 'always' || raw === 'after-check' || raw === 'off') return raw;
+  return DEFAULT_SETTINGS.glossMode;
+}
 
 function sanitizeWordForms(raw: unknown): EnabledWordForms {
   if (!raw || typeof raw !== 'object') return { ...DEFAULT_WORD_FORMS };
@@ -97,6 +104,7 @@ function readStoredSettings(): AppSettings {
       language: parsed.language ?? DEFAULT_SETTINGS.language,
       corpusId: parsed.corpusId ?? DEFAULT_SETTINGS.corpusId,
       diacriticMode: parsed.diacriticMode ?? DEFAULT_SETTINGS.diacriticMode,
+      glossMode: sanitizeGlossMode(parsed.glossMode),
       wordForms: sanitizeWordForms(parsed.wordForms),
       verbRange: sanitizeVerbRange(parsed.verbRange, parsed.blankLimit),
       verseRange: sanitizeRange(

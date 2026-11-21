@@ -20,6 +20,7 @@ import {
   type AppSettings,
   type CorpusManifest,
   type DiacriticMode,
+  type GlossMode,
   type LanguageCode,
   type ThemeMode,
   type WordFormKind,
@@ -402,6 +403,29 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                   onClick={() => onChange({ ...settings, diacriticMode: mode })}
                 >
                   {mode === 'strict' ? 'Strict' : 'Lenient'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="segment-group">
+            <span className="segment-title">Meanings</span>
+            <div className="segmented" role="group" aria-label="Form meanings display">
+              {(
+                [
+                  ['always', 'Always'],
+                  ['after-check', 'After check'],
+                  ['off', 'Off'],
+                ] as [GlossMode, string][]
+              ).map(([mode, label]) => (
+                <button
+                  key={mode}
+                  type="button"
+                  className="segmented-btn"
+                  aria-pressed={settings.glossMode === mode}
+                  onClick={() => onChange({ ...settings, glossMode: mode })}
+                >
+                  {label}
                 </button>
               ))}
             </div>

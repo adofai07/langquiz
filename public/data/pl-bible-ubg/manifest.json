@@ -5,12 +5,12 @@
   "subtitle": "Uwspółcześniona Biblia Gdańska · Direct English",
   "translationSource": "UBG → EN",
   "totalVerses": 31102,
-  "quizVerses": 30919,
-  "totalVerbs": 94586,
+  "quizVerses": 30920,
+  "totalVerbs": 97942,
   "formCounts": {
-    "v": 94586,
+    "v": 97942,
     "p": 9110,
-    "n": 117253,
+    "n": 116139,
     "a": 19325,
     "r": 71950
   },
@@ -481,7 +481,7 @@
       "plName": "1 List do Tesaloniczan",
       "enName": "1 Thessalonians",
       "chunkFile": "chunks/52-1ts.json",
-      "verseCount": 88
+      "verseCount": 89
     },
     {
       "index": 52,

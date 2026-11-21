@@ -131,6 +131,30 @@ class PolishMorphAnalyzer:
     def __init__(self) -> None:
         self.morf = morfeusz2.Morfeusz()
         self._cache: Dict[str, Dict[str, List[str]]] = {}
+        self._pure_verb_cache: Dict[str, bool] = {}
+
+    def is_unambiguous_finite_verb(self, surface: str) -> bool:
+        s_low = surface.lower()
+        cached = self._pure_verb_cache.get(s_low)
+        if cached is not None:
+            return cached
+        buckets = self.analyze_word(surface)
+        if not buckets["v"] or any(buckets[k] for k in ("p", "n", "a", "r")):
+            self._pure_verb_cache[s_low] = False
+            return False
+        analyses = self.morf.analyse(surface)
+        if not analyses:
+            self._pure_verb_cache[s_low] = False
+            return False
+        max_node = max(end for _, end, _ in analyses)
+        pure = all(
+            (end == max_node and tag.split(":", 1)[0] in FINITE_VERB_TAGS)
+            or (end < max_node and tag.split(":", 1)[0] in FINITE_VERB_TAGS)
+            or (start > 0 and tag.split(":", 1)[0] in TRAILING_CLITIC_TAGS)
+            for start, end, (_orth, _lem, tag, *_rest) in analyses
+        )
+        self._pure_verb_cache[s_low] = pure
+        return pure
 
     def analyze_word(self, surface: str) -> Dict[str, List[str]]:
         """
@@ -198,6 +222,9 @@ class PolishMorphAnalyzer:
                         seen["r"].add(lem_low)
                         buckets["r"].append(lem_low)
                 elif len(lem_low) >= 2 and WORD_RE.match(lem_low) and lem_low != s_low:
+                    # Skip spurious proper-noun homographs (e.g. lowercase 'lud' -> toponym 'Luda')
+                    if lem_case[0].isupper() and surface[0].islower():
+                        continue
                     # Keep capitalized lemma only for proper nouns (where Morfeusz2 itself capitalizes)
                     out_lem = lem_case if lem_case[0].isupper() else lem_low
                     if out_lem.lower() not in seen["n"]:
@@ -241,7 +268,7 @@ def extract_forms(
     n = len(doc)
 
     for i, tok in enumerate(doc):
-        if tok.is_punct or tok.is_space or tok.pos_ in ("ADP", "CCONJ", "SCONJ", "PART", "ADV", "INTJ", "NUM", "SYM", "X"):
+        if tok.is_punct or tok.is_space:
             continue
         surf = tok.text
         if not WORD_RE.match(surf):
@@ -251,6 +278,16 @@ def extract_forms(
         end = start + len(surf)
         buckets = analyzer.analyze_word(surf)
         next_lower = doc[i + 1].text.lower() if i + 1 < n else None
+
+        # 0. Unambiguous Morfeusz2 finite verbs (rescues verbs like 'kala' that spaCy mistags as NOUN/ADV)
+        if analyzer.is_unambiguous_finite_verb(surf):
+            lem = pick_best(buckets["v"], tok.lemma_, next_lower)
+            lem = disambiguate(surf, lem, pl_text, en_text, start, end)
+            matches.append([start, end, lem, "v"])
+            continue
+
+        if tok.pos_ in ("ADP", "CCONJ", "SCONJ", "PART", "ADV", "INTJ", "NUM", "SYM", "X"):
+            continue
 
         # 1. Finite verbs ('v')
         if tok.pos_ in ("VERB", "AUX") and tok.tag_ not in EXCLUDED_VERB_SPACY_TAGS:
@@ -313,6 +350,11 @@ def main() -> None:
 
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
+    heb_acrostic_re = re.compile(r"\s+[\u0590-\u05ff]\s+[A-Za-z]+$")
+    en_acrostic_re = re.compile(
+        r"\s+(?:[\u0590-\u05ff]\s+)?(?:Alef|Bet|Beth|Gimel|Dalet|Daleth|He|Waw|Vav|Zain|Zayin|Het|Chet|Tet|Teth|Jod|Yod|Kaf|Kaph|Lamed|Mem|Nun|Samech|Samekh|Ajin|Ayin|Pe|Cade|Tsade|Kof|Qof|Resz|Resh|Szin|Shin|Taw|Tav)\.?\s*$"
+    )
+
     flat_items: List[Tuple[int, int, int, str, str]] = []
     for bi in range(66):
         book_id = BOOKS_META[bi][0]
@@ -325,8 +367,11 @@ def main() -> None:
         for ci, verses in enumerate(pl_books[bi]["chapters"], 1):
             for vi, pl_text in enumerate(verses, 1):
                 key = f"{book_id}:{ci}:{vi}"
+                cleaned_pl = heb_acrostic_re.sub("", pl_text.strip())
                 en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
-                flat_items.append((bi, ci, vi, pl_text.strip(), en_text))
+                if cleaned_pl != pl_text.strip():
+                    en_text = en_acrostic_re.sub("", en_text)
+                flat_items.append((bi, ci, vi, cleaned_pl, en_text))
 
     print(f"Processing {len(flat_items)} Polish verses (v, p, n, a, r)...", flush=True)
     book_entries: List[List[dict]] = [[] for _ in range(66)]
