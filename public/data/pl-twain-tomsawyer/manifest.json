@@ -1,0 +1,323 @@
+{
+  "id": "pl-twain-tomsawyer",
+  "language": "pl",
+  "title": "Przygody Tomka Sawyera",
+  "subtitle": "Mark Twain · Direct English",
+  "translationSource": "TWAIN → EN",
+  "unit": "sentence",
+  "totalVerses": 5375,
+  "quizVerses": 5347,
+  "totalVerbs": 9646,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 9646,
+    "p": 984,
+    "n": 10017,
+    "a": 3139,
+    "r": 4476
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Przygody Tomka Sawyera · Chapter 1",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 5
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział I",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 178
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział II",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 127
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział III",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 129
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział IV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 203
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział V",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 79
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział VI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 310
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział VII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 161
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział VIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 115
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział IX",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 191
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział X",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 186
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 111
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 114
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 174
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XIV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 128
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 121
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XVI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 175
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XVII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 86
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XVIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 68
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XIX",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 233
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XX",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 64
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 148
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 116
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 57
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXIV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 170
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 22
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXVI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 197
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXVII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 245
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXVIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 73
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXIX",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 96
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXX",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 227
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 248
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 241
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXIII",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 57
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXIV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 282
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXV",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 72
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "Przygody Tomka Sawyera · Rozdział XXXVI",
+      "enName": "The Adventures of Tom Sawyer",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 138
+    }
+  ]
+}

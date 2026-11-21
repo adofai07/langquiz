@@ -1,0 +1,139 @@
+{
+  "id": "pl-defoe-robinson",
+  "language": "pl",
+  "title": "Robinson Crusoe",
+  "subtitle": "Daniel Defoe · Direct English",
+  "translationSource": "CRUSOE → EN",
+  "unit": "sentence",
+  "totalVerses": 2457,
+  "quizVerses": 2452,
+  "totalVerbs": 5631,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 5631,
+    "p": 949,
+    "n": 7428,
+    "a": 2255,
+    "r": 3077
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Robinson Crusoe · Rozdział pierwszy",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 168
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Robinson Crusoe · Rozdział drugi",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 167
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Robinson Crusoe · Rozdział trzeci",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 168
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Robinson Crusoe · Rozdział czwarty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 200
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Robinson Crusoe · Rozdział piąty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 175
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Robinson Crusoe · Rozdział szósty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 165
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Robinson Crusoe · Rozdział siódmy",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 140
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Robinson Crusoe · Rozdział ósmy",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 185
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Robinson Crusoe · Rozdział dziewiąty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 235
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Robinson Crusoe · Rozdział dziesiąty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 173
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Robinson Crusoe · Rozdział jedenasty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 209
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Robinson Crusoe · Rozdział dwunasty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 168
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Robinson Crusoe · Rozdział trzynasty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 146
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Robinson Crusoe · Rozdział czternasty",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 153
+    }
+  ]
+}

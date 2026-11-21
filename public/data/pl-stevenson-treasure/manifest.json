@@ -1,0 +1,283 @@
+{
+  "id": "pl-stevenson-treasure",
+  "language": "pl",
+  "title": "Wyspa skarbów",
+  "subtitle": "Robert Louis Stevenson · Direct English",
+  "translationSource": "TREASURE → EN",
+  "unit": "sentence",
+  "totalVerses": 4063,
+  "quizVerses": 4046,
+  "totalVerbs": 8928,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 8928,
+    "p": 1385,
+    "n": 10175,
+    "a": 3101,
+    "r": 4720
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Wyspa skarbów · Chapter 1",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 7
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Wyspa skarbów · R. L. S",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 237
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Wyspa skarbów · III. Czarna plama",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 123
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Wyspa skarbów · IV. Skrzynia marynarska",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 103
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Wyspa skarbów · V. Dokończenie opowieści o ślepym żebraku",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 123
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Wyspa skarbów · VI. Papiery kapitana",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 130
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Wyspa skarbów · VII. Jadę do Bristolu",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 220
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Wyspa skarbów · IX. Proch i broń",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 132
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Wyspa skarbów · X. Podróż",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 110
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Wyspa skarbów · XI. Co podsłuchałem w beczce od jabłek",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 157
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Wyspa skarbów · XII. Narada wojenna",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 113
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Wyspa skarbów · XIII. Jak się rozpoczęły moje przygody na…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 82
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Wyspa skarbów · XIV. Pierwszy cios",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 89
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Wyspa skarbów · XV. Mieszkaniec wyspy",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 151
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Wyspa skarbów · XVI. Ciąg dalszy opowiedziany przez doktor…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 83
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Wyspa skarbów · XVII. Ciąg dalszy opowiadania doktora: ost…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 84
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Wyspa skarbów · XVIII. Ciąg dalszy opowiadania doktora: ko…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 93
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Wyspa skarbów · XIX. Dalszy ciąg opowiadania Jima Hawkinsa…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 115
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Wyspa skarbów · XX. Poselstwo Silvera",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 142
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Wyspa skarbów · XXI. Natarcie",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 128
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Wyspa skarbów · XXII. Jak rozpoczęły się moje morskie przy…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 94
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Wyspa skarbów · XXIII. Odpływ morza",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 75
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Wyspa skarbów · XXIV. Wędrówka łódeczki",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 92
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Wyspa skarbów · XXV. Zrywam korsarską banderę",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 95
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Wyspa skarbów · XXVI. Izrael Hands",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 251
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Wyspa skarbów · XXVIII. W obozie nieprzyjacielskim",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 200
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Wyspa skarbów · XXIX. Znów czarna plama",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 173
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Wyspa skarbów · XXX. Słowo honoru",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 164
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Wyspa skarbów · XXXI. Poszukiwanie skarbu — drogowskaz Fli…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 135
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Wyspa skarbów · XXXII. Poszukiwanie skarbu — głos między d…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 132
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Wyspa skarbów · XXXIII. Porażka herszta",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 133
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Wyspa skarbów · XXXIV. Rozdział trzydziesty czwarty i osta…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 80
+    }
+  ]
+}

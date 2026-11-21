@@ -1,0 +1,155 @@
+{
+  "id": "pl-doyle-scarlet",
+  "language": "pl",
+  "title": "Studium w szkarłacie",
+  "subtitle": "Arthur Conan Doyle · Direct English",
+  "translationSource": "HOLMES → EN",
+  "unit": "sentence",
+  "totalVerses": 2635,
+  "quizVerses": 2625,
+  "totalVerbs": 5418,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 5418,
+    "p": 979,
+    "n": 6017,
+    "a": 2237,
+    "r": 2880
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Studium w szkarłacie · Rozdział I. Sherlock Holmes",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 178
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Studium w szkarłacie · Rozdział II. Sztuka dedukcji",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 216
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Studium w szkarłacie · Rozdział III. Tajemnica Lauriston Gardens",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 199
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Studium w szkarłacie · RACHE",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 61
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Studium w szkarłacie · Rozdział IV. Co powiedział John Rance",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 182
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Studium w szkarłacie · Rozdział V. Ogłoszenie sprowadza gościa",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 172
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Studium w szkarłacie · Rozdział VI. Gregson pokazuje, co potrafi",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 225
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Studium w szkarłacie · Rozdział VII. Światło wśród ciemności",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 192
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Studium w szkarłacie · Rozdział I. Na słonej pustyni",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 229
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Studium w szkarłacie · Rozdział II. Kwiat Utahu",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 132
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Studium w szkarłacie · Rozdział III. Prorok u Johna Ferriera",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 106
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Studium w szkarłacie · Rozdział IV. Ucieczka",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 194
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Studium w szkarłacie · Rozdział V. Aniołowie-Mściciele",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 66
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Studium w szkarłacie · Zmarł Dnia 4 Sierpnia 1860 Roku",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 105
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Studium w szkarłacie · Rozdział VI. Ciąg dalszy wspomnień doktora…",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 253
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Studium w szkarłacie · Rozdział VII. Zakończenie",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 115
+    }
+  ]
+}

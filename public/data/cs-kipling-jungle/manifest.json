@@ -1,0 +1,85 @@
+{
+  "id": "cs-kipling-jungle",
+  "language": "cs",
+  "title": "Kniha džunglí",
+  "subtitle": "Rudyard Kipling · Direct English",
+  "translationSource": "KIPLING → EN",
+  "unit": "sentence",
+  "totalVerses": 2448,
+  "quizVerses": 2436,
+  "totalVerbs": 7331,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 7331,
+    "p": 439,
+    "t": 253,
+    "n": 6050,
+    "a": 2441,
+    "r": 3211
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Kniha džunglí · Maugli a Jeho Bratři",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 380
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Kniha džunglí · Kájův Lov",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 477
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Kniha džunglí · Tygr! Tygr!",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 324
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Kniha džunglí · Bílý Lachtan",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 311
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Kniha džunglí · »riki – Tiki - Tavi«",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 318
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Kniha džunglí · Tumé, Miláček Slonův",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 298
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Kniha džunglí · Sluhové Jejího Veličenstva",
+      "enName": "The Jungle Book",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 328
+    }
+  ]
+}

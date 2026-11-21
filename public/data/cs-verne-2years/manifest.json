@@ -1,0 +1,285 @@
+{
+  "id": "cs-verne-2years",
+  "language": "cs",
+  "title": "Dva roky prázdnin",
+  "subtitle": "Jules Verne · Direct English",
+  "translationSource": "VERNE → EN",
+  "unit": "sentence",
+  "totalVerses": 6492,
+  "quizVerses": 6478,
+  "totalVerbs": 15751,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 15751,
+    "p": 1480,
+    "t": 132,
+    "n": 14101,
+    "a": 5461,
+    "r": 6946
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Dva roky prázdnin · Předmluva",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 7
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Dva roky prázdnin · I. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 235
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Dva roky prázdnin · II. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 255
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Dva roky prázdnin · III. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 181
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Dva roky prázdnin · IV. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 165
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Dva roky prázdnin · V. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 244
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Dva roky prázdnin · VI. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 212
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Dva roky prázdnin · VII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 212
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Dva roky prázdnin · VIII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 106
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Dva roky prázdnin · F. B. 1807",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 37
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Dva roky prázdnin · IX. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 172
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Dva roky prázdnin · X. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 230
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Dva roky prázdnin · XI. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 223
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Dva roky prázdnin · XII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 264
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Dva roky prázdnin · XIII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 261
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Dva roky prázdnin · XIV. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 207
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Dva roky prázdnin · XV. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 222
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Dva roky prázdnin · XVI. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 273
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Dva roky prázdnin · XVII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 296
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Dva roky prázdnin · XVIII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 221
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Dva roky prázdnin · XIX. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 251
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Dva roky prázdnin · XX. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 157
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Dva roky prázdnin · XXI. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 185
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Dva roky prázdnin · XXII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 292
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Dva roky prázdnin · XXIII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 198
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Dva roky prázdnin · XXIV. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 244
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Dva roky prázdnin · XXV. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 190
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Dva roky prázdnin · XXVI. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 281
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Dva roky prázdnin · XXVII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 207
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Dva roky prázdnin · XXVIII. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 216
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Dva roky prázdnin · XXIX. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 181
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Dva roky prázdnin · XXX. Kapitola",
+      "enName": "Two Years' Vacation",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 53
+    }
+  ]
+}

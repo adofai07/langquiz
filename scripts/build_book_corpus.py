@@ -54,9 +54,9 @@ ABBREV_RE = re.compile(
 )
 
 ROMAN_HEADING_RE = re.compile(
-    r"^(?:(?:ROZDZIAŁ|Rozdział|CZĘŚĆ|Część|KAPITEL|Kapitel|TEIL|Teil|KAPITOLA|Kapitola|CHAPTER|Chapter)\s+[IVXLCDM0-9]+.*|"
-    r"(?:Erstes|Zweites|Drittes|Viertes|Fünftes|Sechstes|Siebentes|Siebtes|Achtes|Neuntes|Zehntes|Elftes|Zwölftes|Dreizehntes|Vierzehntes|Fünfzehntes|Sechzehntes)\s+Kapitel\.?|"
-    r"[IVXLCDM]{1,6}\.(?:\s+.{2,55})?)$"
+    r"^(?:(?:ROZDZIAŁ|Rozdział|CZĘŚĆ|Część|KAPITEL|Kapitel|CAPITEL|Capitel|TEIL|Teil|THEIL|Theil|KAPITOLA|Kapitola|CHAPTER|Chapter)\s+(?:[IVXLCDM0-9]+|pierwszy|drugi|trzeci|czwarty|piąty|szósty|siódmy|ósmy|dziewiąty|dziesiąty|jedenasty|dwunasty|trzynasty|czternasty|piętnasty|szesnasty).*|"
+    r"(?:[A-ZÄÖÜ][a-zäöüß]+(?:tes|stes))\s+(?:und\s+letztes\s+)?(?:Kapitel|Capitel)\.?|"
+    r"[IVXLCDM]{1,6}\.(?:\s+.{2,65})?)$"
 )
 
 
@@ -132,34 +132,53 @@ def read_text_auto(path: Path) -> str:
 
 
 def strip_boilerplate_txt(text: str) -> str:
-    # Project Gutenberg markers (both *** and plain "End of the Project Gutenberg EBook")
+    # Project Gutenberg markers (*** START/END *** and plain "End of [the/this] Project Gutenberg['s] ...")
     m_start = re.search(r"\*\*\*\s*START OF (?:THIS|THE) PROJECT GUTENBERG EBOOK[^\n]*\*\*\*", text, re.I)
     if m_start:
         text = text[m_start.end() :]
     m_end = re.search(
-        r"(?:\*\*\*\s*END OF (?:THIS|THE) PROJECT GUTENBERG EBOOK[^\n]*\*\*\*|\nEnd of (?:the|this) Project Gutenberg EBook[^\n]*)",
+        r"(?:\*\*\*\s*END OF (?:THIS|THE) PROJECT GUTENBERG EBOOK[^\n]*\*\*\*|\nEnd of (?:the |this )?Project Gutenberg(?:'s|’s)?[^\n]*)",
         text,
         re.I,
     )
     if m_end:
         text = text[: m_end.start()]
+    # Wolne Lektury header (Author / Title / tłum. / ISBN 978-...)
+    m_wl_isbn = re.search(r"^ISBN\s+97[89]-[0-9-]+[^\n]*\n", text[:900], re.M)
+    if m_wl_isbn:
+        text = text[m_wl_isbn.end() :]
     # Wolne Lektury footer
     wl_end = re.search(r"\n-----+\s*\nTa lektura, podobnie jak", text)
     if wl_end:
         text = text[: wl_end.start()]
-    # German historical publisher ads at back of Gutenberg scans (e.g. Robert Lutz / Sherlock Holmes-Serie)
-    ad_end = re.search(r"\n\s*(?:[•+]?Verlag von \+?Robert Lutz|Sherlock Holmes-Serie|In derselben Sammlung|Weitere Bände)", text[len(text) // 2 :])
+    # Trailing Gutenberg ASCII errata / transcriber box (+-----+ ... +-----+) in the back quarter
+    tail_start = (len(text) * 3) // 4
+    m_box = re.search(r"\n\s*\+---{10,}\+\s*\n[\s\S]*?\+---{10,}\+\s*$", text[tail_start:])
+    if m_box:
+        text = text[: tail_start + m_box.start()]
+    # German historical publisher ads at back of Gutenberg scans (e.g. Robert Lutz, Otto Spamer)
+    ad_end = re.search(
+        r"\n\s*(?:[•+]?Verlag von \+?\*?(?:Robert Lutz|Otto Spamer)|Sherlock Holmes-Serie|In derselben Sammlung|Weitere Bände|Der junge Handwerker und Künstler|Ende\.?\s*\n+(?=[\s\S]{0,1500}?(?:Verlag von|Geheftet|Gebunden)))",
+        text[len(text) // 2 :],
+    )
     if ad_end:
         text = text[: len(text) // 2 + ad_end.start()]
-    # Clean Gutenberg emphasis markers (_word_, =word=, +word+, ~word~)
-    text = re.sub(r"_([^_\n]{1,60})_", r"\1", text)
-    text = re.sub(r"=([^=\n]{1,60})=", r"\1", text)
-    # Strip German PG transcriber notes & table of contents before Chapter 1
-    m_tr = re.search(r"Anmerkungen zur Transkription", text)
-    if m_tr and m_tr.start() < 2500:
-        m_ch1 = re.search(r"\n\s*Erstes\s+Kapitel\.?\s*\n", text[m_tr.end() :])
-        if not m_ch1:
-            m_ch1 = re.search(r"\n\s*(?:1\.\s*Kapitel\b|I\.\s*\n)", text[m_tr.end() :])
+    # Strip Project Gutenberg illustration captions like [Illustration: ...]
+    text = re.sub(r"\[Illustration[^\]]*\]", "", text, flags=re.I)
+    # Clean Gutenberg / Wolne Lektury emphasis markers (_word_, =word=, *word*)
+    text = re.sub(r"_([^_\n]{1,80})_", r"\1", text)
+    text = re.sub(r"=([^=\n]{1,80})=", r"\1", text)
+    text = re.sub(r"\*([^*\s\n][^*\n]{0,70}[^*\s\n])\*", r"\1", text)
+    # Normalize Gutenberg German ASCII low opening double quote (,,word") -> „word“
+    if ",," in text:
+        text = re.sub(r",,([^\s])", r"„\1", text)
+    # Strip German/English PG transcriber notes & table of contents before Chapter 1
+    m_tr = re.search(
+        r"(?:Anmerkungen zur Transkription|Transcriber['’]s Note|Das Original ist in Fraktur gesetzt|Produced by [^\n]+)",
+        text[:3000],
+    )
+    if m_tr:
+        m_ch1 = re.search(r"\n\s*(?:Erstes\s+(?:Kapitel|Capitel)\.?|1\.\s*Kapitel\b|Kapitel\s+1\b|I\.\s*\n|Vorwort\.?\s*\n)\s*\n", text[m_tr.end() : m_tr.end() + 6000])
         if m_ch1:
             text = text[m_tr.end() + m_ch1.start() :]
     return text.strip()
@@ -207,6 +226,9 @@ def parse_epub_chapters(path: Path) -> List[Tuple[str, List[str]]]:
             "isbn ", "e-knihovna.cz", "mlp.cz", "digibooks.cz",
             "znění tohoto textu vychází", "elektronické publikování díla", "českého národního korpusu",
             "licencí creative commons", "vydala městská knihovna",
+            "elektronické vydání", "v mkp ", "text díla nelze šířit", "autorský zákon",
+            "redakčně zpracován", "z fondu moravské", "přeložil ", "ilustrace ",
+            "mariánské nám.", "verze 1.", "pozn. red.", "typografická úprava textu",
         )
 
         def nice_case_heading(h: str) -> str:
@@ -235,12 +257,19 @@ def parse_epub_chapters(path: Path) -> List[Tuple[str, List[str]]]:
             parser.feed(raw_html)
             parser._flush()
 
-            # Check if entire file is frontmatter/colophon
+            # Check if entire file is frontmatter/colophon/TOC
             joined_head = " ".join(t for _, _, t in parser.blocks[:6]).lower()
             if len(parser.blocks) <= 10 and any(w in joined_head for w in skip_title_words):
                 continue
+            # Skip TOC-only XHTML files (many short lines, almost no sentence-length prose)
+            if len(parser.blocks) >= 8 and sum(1 for _, _, t in parser.blocks if len(t) >= 80) <= 1:
+                continue
 
             for tag, is_head_cls, text in parser.blocks:
+                text = re.sub(r"\[\d{1,3}\]", "", text).strip()
+                text = re.sub(r"\s{2,}", " ", text)
+                if not text:
+                    continue
                 low_t = text.lower()
                 if any(w in low_t for w in skip_para_substrings):
                     continue
@@ -250,7 +279,7 @@ def parse_epub_chapters(path: Path) -> List[Tuple[str, List[str]]]:
                     and sum(c.isalpha() for c in text) >= 1
                     and not any(q in text for q in ("„", "“", '"', "—"))
                 )
-                is_heading = (tag in ("h1", "h2", "h3") or is_head_cls or is_allcaps_head) and len(text) <= 90
+                is_heading = (tag in ("h1", "h2", "h3") or is_head_cls or is_allcaps_head) and len(text) <= 105
                 if is_heading:
                     if cur_paras:
                         chapters.append((nice_case_heading(cur_title) or f"Part {len(chapters) + 1}", cur_paras))
@@ -266,10 +295,26 @@ def parse_epub_chapters(path: Path) -> List[Tuple[str, List[str]]]:
         if cur_paras:
             chapters.append((nice_case_heading(cur_title) or f"Part {len(chapters) + 1}", cur_paras))
 
-    # Drop trailing author biography / bibliography appendix (e.g. MLP Čapek EPUB backmatter)
+    # Drop leading tiny title stubs or modern editorial prefaces about the author
+    while len(chapters) > 1 and (
+        (len(chapters[0][1]) <= 2 and sum(len(p) for p in chapters[0][1]) < 180)
+        or (
+            chapters[0][0].lower().startswith(("předmluva", "úvod"))
+            and len(chapters[0][1]) <= 6
+            and any(w in " ".join(chapters[0][1]).lower() for w in ("spisovateli ", "české literatuře", "narodil se", "zemřel"))
+        )
+    ):
+        chapters.pop(0)
+
+    # Drop trailing footnotes, glossaries, author biographies, bibliographies, colophons
+    trailing_skip = (
+        "životopis", "bibliografie", "karel čapek", "o autorovi", "doslov", "edice",
+        "poznámky pod čarou", "místopisný slovníček", "život a doba", "první vydání", "r.u.r",
+        "ediční poznámka",
+    )
     while chapters and (
-        any(w in chapters[-1][0].lower() for w in ("životopis", "bibliografie", "karel čapek", "o autorovi", "doslov", "edice"))
-        or sum(1 for p in chapters[-1][1] if re.match(r"^(?:1[89]\d\d\s*-|-\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ])", p)) >= 4
+        any(w in chapters[-1][0].lower() for w in trailing_skip)
+        or sum(1 for p in chapters[-1][1] if re.match(r"^(?:1[89]\d\d\s*-|-\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]|–\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ])", p)) >= 4
     ):
         chapters.pop()
 
@@ -291,6 +336,16 @@ def parse_txt_chapters(path: Path) -> List[Tuple[str, List[str]]]:
         "inhaltsverzeichnis", "inhalt", "król maciuś pierwszy powieść",
     )
 
+    # Pre-scan: if the book already uses explicit numbered/Roman headings (>=5), disable the fuzzy single-line fallback
+    explicit_heading_count = 0
+    for rp in raw_paras:
+        ls = [l.strip() for l in rp.splitlines() if l.strip()]
+        if 1 <= len(ls) <= 2:
+            j = re.sub(r"\s+", " ", " ".join(ls)).strip()
+            if len(j) <= 110 and ROMAN_HEADING_RE.match(j):
+                explicit_heading_count += 1
+    allow_fuzzy_headings = explicit_heading_count < 5
+
     for rp in raw_paras:
         lines = [l.strip() for l in rp.splitlines() if l.strip()]
         if not lines:
@@ -307,20 +362,22 @@ def parse_txt_chapters(path: Path) -> List[Tuple[str, List[str]]]:
                 continue
 
         # Detect chapter headings (short standalone lines matching Roman/numbered heading or ALL CAPS heading)
+        is_roman_head = bool(ROMAN_HEADING_RE.match(joined))
         is_heading = (
             len(lines) <= 2
-            and len(joined) <= 65
+            and len(joined) <= (110 if is_roman_head else 65)
             and not any(w in low_j for w in meta_skip_words)
             and not any(q in joined for q in ("„", "“", "”", '"', "«", "»"))
-            and not joined.endswith((",", ";", "?", "!"))
+            and (is_roman_head or not joined.endswith((",", ";", "?", "!")))
             and (
-                bool(ROMAN_HEADING_RE.match(joined))
+                is_roman_head
                 or (len(joined) >= 4 and joined.isupper() and sum(c.isalpha() for c in joined) >= 3)
             )
         )
-        # Also detect single-line chapter titles in Gutenberg books (like Hesse's "Der Sohn des Brahmanen", "Bei den Samanas")
+        # Fallback for books with plain-title chapters (e.g. Hesse's "Der Sohn des Brahmanen", "Bei den Samanas")
         if (
-            not is_heading
+            allow_fuzzy_headings
+            and not is_heading
             and len(lines) == 1
             and 4 <= len(joined) <= 45
             and len(joined.split()) <= 6
@@ -409,7 +466,7 @@ def split_paragraph_to_sentences(para: str) -> List[str]:
             continue
         # Ensure terminal punctuation so mergeSplitVerses treats each sentence cleanly (including Czech closing quote “)
         if s[-1] not in '.!?…»”"“\')':
-            s = s + "."
+            s = s.rstrip(",;:") + "."
         cleaned.append(s)
     return cleaned
 
@@ -775,13 +832,24 @@ def main() -> None:
     model_name = resolve_model()
     if missing_trans:
         print(f"  Translating {len(missing_trans)} sentences ({len(trans_cache)} cached)...", flush=True)
-        items = list(missing_trans.items())
-        batches = [dict(items[i : i + 20]) for i in range(0, len(items), 20)]
+        unique_sents = list(missing_trans.keys())
+        # Use short numeric keys ("0".."19") so the model never wastes output tokens echoing full source sentences
+        batches = [
+            {str(j): s for j, s in enumerate(unique_sents[i : i + 20])}
+            for i in range(0, len(unique_sents), 20)
+        ]
         done = 0
         with concurrent.futures.ThreadPoolExecutor(max_workers=28) as pool:
-            futs = [pool.submit(translate_batch_with_retry, b, lang_name, model_name) for b in batches]
-            for fut in concurrent.futures.as_completed(futs):
-                trans_cache.update(fut.result())
+            fut_to_batch = {
+                pool.submit(translate_batch_with_retry, b, lang_name, model_name): b
+                for b in batches
+            }
+            for fut in concurrent.futures.as_completed(fut_to_batch):
+                orig_batch = fut_to_batch[fut]
+                for idx_k, en_val in fut.result().items():
+                    src_s = orig_batch.get(idx_k)
+                    if src_s and en_val:
+                        trans_cache[src_s] = en_val
                 done += 1
                 if done % 25 == 0 or done == len(batches):
                     trans_cache_path.parent.mkdir(parents=True, exist_ok=True)

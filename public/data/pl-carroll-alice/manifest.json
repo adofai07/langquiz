@@ -1,0 +1,147 @@
+{
+  "id": "pl-carroll-alice",
+  "language": "pl",
+  "title": "Alicja w Krainie Czarów",
+  "subtitle": "Lewis Carroll · Direct English",
+  "translationSource": "ALICE → EN",
+  "unit": "sentence",
+  "totalVerses": 1980,
+  "quizVerses": 1969,
+  "totalVerbs": 3702,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 3702,
+    "p": 300,
+    "n": 2882,
+    "a": 854,
+    "r": 1318
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Alicja w Krainie Czarów · Chapter 1",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 15
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 1 W głąb króliczej nory",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 118
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 2 Jezioro łez",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 145
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 3 Wyścig szczurów i długa opowieść",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 138
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 4 Króliczy sługa",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 187
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 5 Mądrości pana Gąsienicy",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 164
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 6 Świnia z pieprzem",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 85
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Alicja w Krainie Czarów · Refren",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 3
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Alicja w Krainie Czarów · Refren",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 93
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 7 Szalony podwieczorek",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 205
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 8 Krokiet u Królowej",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 173
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 9 Opowieść Nibyżółwia",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 189
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 10 Kadryl z homarami",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 176
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 11 Kto ukradł ciastka?",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 136
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Alicja w Krainie Czarów · Rozdział 12 Zeznanie Alicji",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 142
+    }
+  ]
+}

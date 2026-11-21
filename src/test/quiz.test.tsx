@@ -15,6 +15,7 @@ import {
 } from '../services/corpusLoader';
 import { buildFontVariationSettings, DEFAULT_FONT_AXES } from '../config/alloAxes';
 import {
+  CORPORA,
   CZECH_ALPHABET,
   filterAlphabetInput,
   GERMAN_ALPHABET,
@@ -639,5 +640,15 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     expect(
       cleanStrayQuotes('"Listen," he said, "I am coming to you for advice.')
     ).toBe('"Listen," he said, "I am coming to you for advice."');
+  });
+
+  it('registers all 28 corpora with unique IDs and valid manifest URLs', () => {
+    expect(CORPORA).toHaveLength(28);
+    const ids = new Set(CORPORA.map((c) => c.id));
+    expect(ids.size).toBe(CORPORA.length);
+    for (const c of CORPORA) {
+      expect(c.manifestUrl).toBe(`/data/${c.id}/manifest.json`);
+      expect(['pl', 'de', 'cs']).toContain(c.language);
+    }
   });
 });

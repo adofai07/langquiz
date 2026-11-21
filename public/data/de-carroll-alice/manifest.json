@@ -1,0 +1,125 @@
+{
+  "id": "de-carroll-alice",
+  "language": "de",
+  "title": "Alice im Wunderland",
+  "subtitle": "Lewis Carroll · Direct English",
+  "translationSource": "ALICE → EN",
+  "unit": "sentence",
+  "totalVerses": 1078,
+  "quizVerses": 1071,
+  "totalVerbs": 3411,
+  "categories": [
+    "v",
+    "p",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 3411,
+    "p": 303,
+    "d": 1282,
+    "n": 692,
+    "a": 660,
+    "r": 937
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Alice im Wunderland · Erstes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 70
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Alice im Wunderland · Zweites Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 68
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Alice im Wunderland · Drittes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 70
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Alice im Wunderland · Viertes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 90
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Alice im Wunderland · Fünftes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 97
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Alice im Wunderland · Sechstes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 99
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Alice im Wunderland · Siebentes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 115
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Alice im Wunderland · Achtes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 87
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Alice im Wunderland · Neuntes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 112
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Alice im Wunderland · Zehntes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 103
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Alice im Wunderland · Elftes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 89
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Alice im Wunderland · Zwölftes Kapitel",
+      "enName": "Alice's Adventures in Wonderland",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 71
+    }
+  ]
+}

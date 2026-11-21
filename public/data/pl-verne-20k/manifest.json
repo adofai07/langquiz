@@ -1,0 +1,379 @@
+{
+  "id": "pl-verne-20k",
+  "language": "pl",
+  "title": "20 000 mil podmorskiej żeglugi",
+  "subtitle": "Jules Verne · Direct English",
+  "translationSource": "VERNE → EN",
+  "unit": "sentence",
+  "totalVerses": 7822,
+  "quizVerses": 7807,
+  "totalVerbs": 13949,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 13949,
+    "p": 3461,
+    "n": 22289,
+    "a": 7774,
+    "r": 8271
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Chapter 1",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 73
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Za i przeciw",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 194
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Ned Land",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 111
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Na los szczęścia",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 108
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Całą siłą pary",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 193
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Wieloryb gatunku nieznanego",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 153
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Mobilis in mobili",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 158
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Gniewy Neda Landa",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 132
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Pan wód",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 191
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Nautilus",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 104
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Wszystko za pomocą elektryczności",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 136
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Trochę liczb",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 114
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Czarna rzeka",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 217
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Zaproszenie listowne",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 159
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Przechadzka po równinie",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 109
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Las podmorski",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 116
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Cztery tysiące mil pod Oceanem Spokojnym",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 132
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Vanikoro",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 99
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Cieśnina Torresa",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 153
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Parę dni na lądzie",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 201
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Piorun kapitana Nemo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 216
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Aegri somnia",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 158
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Państwo koralowe",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 159
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Ocean Indyjski",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 153
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Nowa propozycja kapitana Nemo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 213
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Perła wartości dziesięciu milionów franków",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 209
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Morze Czerwone",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 202
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Arabian Tunnel",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 195
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Archipelag grecki",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 366
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Zatoka Vigo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 230
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Ląd zaginiony",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 146
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Atlantyda",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 35
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Podmorskie kopalnie węgla",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 190
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Morze Sargasowe",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 141
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Potwale i wieloryby",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 243
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Ławica lodowa",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 235
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Biegun południowy",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 442
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Brak powietrza",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 248
+    },
+    {
+      "index": 38,
+      "id": "ch39",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Z Przylądka Horn do Amazonki",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/39-ch39.json",
+      "verseCount": 166
+    },
+    {
+      "index": 39,
+      "id": "ch40",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Mątwy",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/40-ch40.json",
+      "verseCount": 229
+    },
+    {
+      "index": 40,
+      "id": "ch41",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Golf-stream",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/41-ch41.json",
+      "verseCount": 403
+    },
+    {
+      "index": 41,
+      "id": "ch42",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Hekatomba",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/42-ch42.json",
+      "verseCount": 205
+    },
+    {
+      "index": 42,
+      "id": "ch43",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Ostatnie słowa kapitana Nemo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/43-ch43.json",
+      "verseCount": 145
+    },
+    {
+      "index": 43,
+      "id": "ch44",
+      "nativeName": "20 000 mil podmorskiej żeglugi · Zakończenie",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/44-ch44.json",
+      "verseCount": 25
+    }
+  ]
+}

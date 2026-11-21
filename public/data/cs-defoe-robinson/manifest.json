@@ -1,0 +1,205 @@
+{
+  "id": "cs-defoe-robinson",
+  "language": "cs",
+  "title": "Robinson Crusoe",
+  "subtitle": "Daniel Defoe · Direct English",
+  "translationSource": "CRUSOE → EN",
+  "unit": "sentence",
+  "totalVerses": 4818,
+  "quizVerses": 4817,
+  "totalVerbs": 12614,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 12614,
+    "p": 1027,
+    "t": 517,
+    "n": 12807,
+    "a": 6310,
+    "r": 6245
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Robinson Crusoe · I",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 140
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Robinson Crusoe · II",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 302
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Robinson Crusoe · III",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 183
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Robinson Crusoe · IV",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 358
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Robinson Crusoe · V",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 252
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Robinson Crusoe · VI",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 370
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Robinson Crusoe · VII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 242
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Robinson Crusoe · VIII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 253
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Robinson Crusoe · IX",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 293
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Robinson Crusoe · X",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 235
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Robinson Crusoe · XI",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 296
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Robinson Crusoe · XII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 187
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Robinson Crusoe · XIII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 196
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Robinson Crusoe · XIV",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 104
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Robinson Crusoe · XV",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 244
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Robinson Crusoe · XVI",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 166
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Robinson Crusoe · XVII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 146
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Robinson Crusoe · XVIII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 158
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Robinson Crusoe · XIX",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 196
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Robinson Crusoe · XX",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 187
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Robinson Crusoe · XXI",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 243
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Robinson Crusoe · XXII",
+      "enName": "Robinson Crusoe",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 66
+    }
+  ]
+}

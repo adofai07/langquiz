@@ -1,0 +1,365 @@
+{
+  "id": "cs-capek-newts",
+  "language": "cs",
+  "title": "Válka s mloky",
+  "subtitle": "Karel Čapek · Direct English",
+  "translationSource": "ČAPEK → EN",
+  "unit": "sentence",
+  "totalVerses": 4373,
+  "quizVerses": 4355,
+  "totalVerbs": 9344,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 9344,
+    "p": 584,
+    "t": 95,
+    "n": 9250,
+    "a": 4208,
+    "r": 4737
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Válka s mloky · Kapitola 1. Podivínství kapitána Van Tocha",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 276
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Válka s mloky · Kapitola 2. Pan Golombek a pan Valenta",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 213
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Válka s mloky · Kapitola 3. G. H. Bondy a jeho krajan",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 4
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Válka s mloky · BONDY",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 288
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Válka s mloky · Kapitola 4. Obchodní podnik kapitána Van T…",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 176
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Válka s mloky · Kapitola 5. Kapitán J. Van Toch a jeho cvi…",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 182
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Válka s mloky · Kapitola 6. Jachta na laguně",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 360
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Válka s mloky · Kapitola 7. Pokračování jachty na laguně",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 236
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Válka s mloky · Kapitola 8. Andrias Schuechzeri",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 51
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Válka s mloky · Kapitola 9. Andrew Scheuchzer",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 199
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Válka s mloky · Kapitola 10. Posvícení v Novém Strašecí",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 114
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Válka s mloky · Kapitola 11. O Lidogešterkách",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 24
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Válka s mloky · O Lidogeštěrkách",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 51
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Válka s mloky · Kapitola 12. Salamander-Syndicate",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 277
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Válka s mloky · Kapitola 1. Pan Povondra čte noviny",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 76
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Válka s mloky · Kapitola 2. Po stupních civilizace (Dějiny…",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 11
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Válka s mloky · Mločí Trh",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 17
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Válka s mloky · Anglie se Uzavírá Mlokům?",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 12
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Válka s mloky · Stávkové Hnutí V Austrálii",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 7
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Válka s mloky · 7 Mloci Zachraňují 36 Tonoucích",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 13
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Válka s mloky · Saht na Kchri Te Salaamander Bwtat",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 6
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Válka s mloky · S-trade",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 78
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Válka s mloky · Bukanýři XX. Století E. E. k",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 74
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Válka s mloky · IER Ier CONGRÉS D’URODÈLES",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 29
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Válka s mloky · Bericht Über die Somatische Veranlagung de…",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 128
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Válka s mloky · Náš Přítel na Ostrovech Galápagos",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 103
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Válka s mloky · Kdo Nepracuje, Ať Nejí!",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 76
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Válka s mloky · Soudruzi Mloci!",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 40
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Válka s mloky · Nice 6. Května",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 96
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Válka s mloky · Kapitola 3. Pan Povondra čte opět noviny",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 88
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Válka s mloky · Kapitola 1. Masakr na Ostrovech kokosových",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 69
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Válka s mloky · Kapitola 2. Srážka v Normandii",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 22
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "Válka s mloky · Vzpoura Mloků!",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 21
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "Válka s mloky · Kapitola 3. Incident v La Manche",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 35
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "Válka s mloky · Kapitola 4. Der Nordmloch",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 48
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "Válka s mloky · Kapitola 5. Wolf Meynert píše své dílo",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 62
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "Válka s mloky · Kapitola 6. X varuje",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 96
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "Válka s mloky · Kapitola 7. Zemětřesení v Louisianě",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 68
+    },
+    {
+      "index": 38,
+      "id": "ch39",
+      "nativeName": "Válka s mloky · Kapitola 8. Chief Salamander klade požadavky",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/39-ch39.json",
+      "verseCount": 113
+    },
+    {
+      "index": 39,
+      "id": "ch40",
+      "nativeName": "Válka s mloky · Kapitola 9. Konference ve Vaduzu",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/40-ch40.json",
+      "verseCount": 149
+    },
+    {
+      "index": 40,
+      "id": "ch41",
+      "nativeName": "Válka s mloky · Kapitola 10. Pan Povondra to bere na sebe",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/41-ch41.json",
+      "verseCount": 207
+    },
+    {
+      "index": 41,
+      "id": "ch42",
+      "nativeName": "Válka s mloky · Kapitola 11. Autor mluví sám se sebou",
+      "enName": "War with the Newts",
+      "chunkFile": "chunks/42-ch42.json",
+      "verseCount": 160
+    }
+  ]
+}

@@ -1,0 +1,555 @@
+{
+  "id": "pl-dumas-musketeers",
+  "language": "pl",
+  "title": "Trzej muszkieterowie",
+  "subtitle": "Alexandre Dumas · Direct English",
+  "translationSource": "DUMAS → EN",
+  "unit": "sentence",
+  "totalVerses": 13248,
+  "quizVerses": 13191,
+  "totalVerbs": 27239,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 27239,
+    "p": 4178,
+    "n": 26023,
+    "a": 7696,
+    "r": 14606
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Trzej muszkieterowie · Rozdział I. Czym stary d'Artagnan wyposaża…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 256
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Trzej muszkieterowie · Rozdział II. Przedpokój pana de Tréville",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 135
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Trzej muszkieterowie · Rozdział III. Posłuchanie",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 208
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Trzej muszkieterowie · Rozdział IV. Ramię Atosa, szarfa Portosa i…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 148
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Trzej muszkieterowie · Rozdział V. Muszkieterowie króla i gwardzi…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 203
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Trzej muszkieterowie · Rozdział VI. Jego Królewska Mość — Ludwik…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 358
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Trzej muszkieterowie · Rozdział VII. Muszkieterowie u siebie",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 123
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Trzej muszkieterowie · Rozdział VIII. Intryga dworska",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 164
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Trzej muszkieterowie · Rozdział IX. D'Artagnan działa",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 183
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Trzej muszkieterowie · Rozdział X. Pułapka z siedemnastego wieku",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 208
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Trzej muszkieterowie · Rozdział XI. Intryga zawiązuje się",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 363
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Trzej muszkieterowie · Rozdział XII. Jerzy Villiers, książę Bucki…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 160
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIII. Pan Bonacieux",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 181
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIV. Nieznajomy z Meung",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 228
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Trzej muszkieterowie · Rozdział XV. Urzędnicy i wojskowi",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 137
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Trzej muszkieterowie · Rozdział XVI. Pan Séguier uczuwa gwałtowni…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 215
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Trzej muszkieterowie · Rozdział XVII. Małżeństwo Bonacieux",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 297
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Trzej muszkieterowie · Rozdział XVIII. Kochanek i mąż",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 167
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIX. Plan wyprawy",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 202
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Trzej muszkieterowie · Rozdział XX. Podróż",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 263
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXI. Hrabina de Winter",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 185
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXII. Balet Merlaison",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 118
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXIII. Schadzka",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 229
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXIV. Pawilon",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 187
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXV. Portos",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 352
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXVI. Rozprawy Aramisa",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 332
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXVII. Żona Atosa",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 437
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Trzej muszkieterowie · Rozdział I",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 342
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Trzej muszkieterowie · Rozdział II. Poszukiwanie środków na wyprawę",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 159
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Trzej muszkieterowie · Rozdział III. Milady",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 151
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Trzej muszkieterowie · Rozdział IV. Anglicy i Francuzi",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 148
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Trzej muszkieterowie · Rozdział V. Obiad u prokuratora",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 162
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "Trzej muszkieterowie · Rozdział VI. Subretka i pani",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 233
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "Trzej muszkieterowie · Rozdział VII. Umundurowanie Aramisa i Port…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 193
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "Trzej muszkieterowie · Rozdział VIII. W nocy wszystkie koty są sz…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 167
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "Trzej muszkieterowie · Rozdział IX. Marzenia o zemście",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 179
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "Trzej muszkieterowie · Rozdział X. Tajemnica milady",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 133
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "Trzej muszkieterowie · Rozdział XI. Umundurowanie Atosa",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 219
+    },
+    {
+      "index": 38,
+      "id": "ch39",
+      "nativeName": "Trzej muszkieterowie · Rozdział XII. Zjawisko",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/39-ch39.json",
+      "verseCount": 168
+    },
+    {
+      "index": 39,
+      "id": "ch40",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIII. Odmowa",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/40-ch40.json",
+      "verseCount": 146
+    },
+    {
+      "index": 40,
+      "id": "ch41",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIV. Oblężenie La Rochelle",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/41-ch41.json",
+      "verseCount": 207
+    },
+    {
+      "index": 41,
+      "id": "ch42",
+      "nativeName": "Trzej muszkieterowie · Rozdział XV. Wino andegaweńskie",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/42-ch42.json",
+      "verseCount": 305
+    },
+    {
+      "index": 42,
+      "id": "ch43",
+      "nativeName": "Trzej muszkieterowie · Rozdział XVII. Pożytek z luftów pieca",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/43-ch43.json",
+      "verseCount": 136
+    },
+    {
+      "index": 43,
+      "id": "ch44",
+      "nativeName": "Trzej muszkieterowie · Rozdział XVIII. Scena małżeńska",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/44-ch44.json",
+      "verseCount": 94
+    },
+    {
+      "index": 44,
+      "id": "ch45",
+      "nativeName": "Trzej muszkieterowie · Rozdział XIX. Bastion świętego Gerwazego",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/45-ch45.json",
+      "verseCount": 140
+    },
+    {
+      "index": 45,
+      "id": "ch46",
+      "nativeName": "Trzej muszkieterowie · Rozdział XX. Narada muszkieterów",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/46-ch46.json",
+      "verseCount": 405
+    },
+    {
+      "index": 46,
+      "id": "ch47",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXI. Interesy familijne",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/47-ch47.json",
+      "verseCount": 297
+    },
+    {
+      "index": 47,
+      "id": "ch48",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXII. Zrządzenie losu",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/48-ch48.json",
+      "verseCount": 132
+    },
+    {
+      "index": 48,
+      "id": "ch49",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXIII. Rozmowa brata z siostrą",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/49-ch49.json",
+      "verseCount": 148
+    },
+    {
+      "index": 49,
+      "id": "ch50",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXIV. Baczność, panowie!",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/50-ch50.json",
+      "verseCount": 184
+    },
+    {
+      "index": 50,
+      "id": "ch51",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXV. Pierwszy dzień niewoli",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/51-ch51.json",
+      "verseCount": 129
+    },
+    {
+      "index": 51,
+      "id": "ch52",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXVI. Drugi dzień niewoli",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/52-ch52.json",
+      "verseCount": 119
+    },
+    {
+      "index": 52,
+      "id": "ch53",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXVII. Trzeci dzień niewoli",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/53-ch53.json",
+      "verseCount": 188
+    },
+    {
+      "index": 53,
+      "id": "ch54",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXVIII. Czwarty dzień niewoli",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/54-ch54.json",
+      "verseCount": 170
+    },
+    {
+      "index": 54,
+      "id": "ch55",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXIX. Piąty dzień niewoli",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/55-ch55.json",
+      "verseCount": 268
+    },
+    {
+      "index": 55,
+      "id": "ch56",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXX. Scena z tragedii klasycznej",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/56-ch56.json",
+      "verseCount": 142
+    },
+    {
+      "index": 56,
+      "id": "ch57",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXI. Ucieczka",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/57-ch57.json",
+      "verseCount": 189
+    },
+    {
+      "index": 57,
+      "id": "ch58",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXII. Co się działo w Portsmouth…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/58-ch58.json",
+      "verseCount": 208
+    },
+    {
+      "index": 58,
+      "id": "ch59",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXIII. We Francji",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/59-ch59.json",
+      "verseCount": 87
+    },
+    {
+      "index": 59,
+      "id": "ch60",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXIV. Klasztor karmelitek w Béth…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/60-ch60.json",
+      "verseCount": 267
+    },
+    {
+      "index": 60,
+      "id": "ch61",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXV. Dwie odmiany szatanów",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/61-ch61.json",
+      "verseCount": 113
+    },
+    {
+      "index": 61,
+      "id": "ch62",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXVI. Kropla przepełniająca czarę",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/62-ch62.json",
+      "verseCount": 307
+    },
+    {
+      "index": 62,
+      "id": "ch63",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXVII. Człowiek w czerwonym płas…",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/63-ch63.json",
+      "verseCount": 89
+    },
+    {
+      "index": 63,
+      "id": "ch64",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXVIII. Wyrok",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/64-ch64.json",
+      "verseCount": 143
+    },
+    {
+      "index": 64,
+      "id": "ch65",
+      "nativeName": "Trzej muszkieterowie · Rozdział XXXIX. Śmierć milady",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/65-ch65.json",
+      "verseCount": 85
+    },
+    {
+      "index": 65,
+      "id": "ch66",
+      "nativeName": "Trzej muszkieterowie · Rozdział XL. Zakończenie",
+      "enName": "The Three Musketeers",
+      "chunkFile": "chunks/66-ch66.json",
+      "verseCount": 200
+    }
+  ]
+}

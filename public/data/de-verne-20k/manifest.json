@@ -1,0 +1,405 @@
+{
+  "id": "de-verne-20k",
+  "language": "de",
+  "title": "Zwanzigtausend Meilen unter'm Meer",
+  "subtitle": "Jules Verne · Direct English",
+  "translationSource": "VERNE → EN",
+  "unit": "sentence",
+  "totalVerses": 7582,
+  "quizVerses": 7563,
+  "totalVerbs": 12267,
+  "categories": [
+    "v",
+    "p",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 12267,
+    "p": 1724,
+    "d": 8185,
+    "n": 6425,
+    "a": 5357,
+    "r": 6327
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 1. Eine schweifende Klippe",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 66
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 2. Für und Wider",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 91
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 3. Wie es meinem Herrn beliebt — F…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 102
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 4. Ned-Land",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 117
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 5. Auf gut Glück!",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 120
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 6. Mit vollem Dampf",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 189
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 7. Ein Wallfisch unbekannter Art",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 162
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 8. Mobilis in Mobile",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 155
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 9. Ned-Land's Zorn",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 143
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 10. Der Mann des Meeres",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 200
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 11. Der Nautilus",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 95
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 12. Alles durch Elektricität — Fuß…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 131
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 13. Einige Zahlen",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 109
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 14. Der schwärze Strom — Fußnoten",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 208
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 15. Eine briefliche Einladung",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 156
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 16. Spaziergang im Freien",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 105
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 17. Ein unterseeischer Wald",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 103
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 18. Viertausend Meilen unter'm Sti…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 119
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 19. Vanikoro",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 153
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 20. Die Torres-Straße",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 147
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 21. Einige Tage auf dem Lande",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 235
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 22. Des Kapitän Nemo Blitzstrahl",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 200
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 23. Fieberträume",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 170
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 24. Das Korallenreich",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 162
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 25. Der Indische Ocean",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 128
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 26. Ein neuer Vorschlag des Kapitä…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 178
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 27. Eine Perle von zehn Millionen",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 208
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 28. Das Rothe Meer",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 188
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 29. Der Arabische Tunnel",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 184
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 30. Der griechische Archipel",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 233
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 31. Das Mittelländische Meer in vi…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 62
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 32. Die Bai von Vigo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 226
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 33. Ein verschwundener Continent",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 175
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 34. Unterseeische Kohlenminen",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 200
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 35. Das Tang-Meer",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 146
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 36. Pottfische und Wallfische",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 219
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 37. Die Eisdecke",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 211
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 38. Der Südpol",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 221
+    },
+    {
+      "index": 38,
+      "id": "ch39",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 39. Unfall oder Zwischenfall",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/39-ch39.json",
+      "verseCount": 194
+    },
+    {
+      "index": 39,
+      "id": "ch40",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 40. Luftmangel",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/40-ch40.json",
+      "verseCount": 224
+    },
+    {
+      "index": 40,
+      "id": "ch41",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 41. Vom Cap Horn nach dem Amazonen…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/41-ch41.json",
+      "verseCount": 156
+    },
+    {
+      "index": 41,
+      "id": "ch42",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 42. Riesenpolypen",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/42-ch42.json",
+      "verseCount": 209
+    },
+    {
+      "index": 42,
+      "id": "ch43",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 43. Der Golfstrom",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/43-ch43.json",
+      "verseCount": 207
+    },
+    {
+      "index": 43,
+      "id": "ch44",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 44. Unter 47°24' Breite und 17°28'…",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/44-ch44.json",
+      "verseCount": 145
+    },
+    {
+      "index": 44,
+      "id": "ch45",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 45. Eine Hekatombe",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/45-ch45.json",
+      "verseCount": 222
+    },
+    {
+      "index": 45,
+      "id": "ch46",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 46. Letzte Worte des Kapitän Nemo",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/46-ch46.json",
+      "verseCount": 162
+    },
+    {
+      "index": 46,
+      "id": "ch47",
+      "nativeName": "Zwanzigtausend Meilen unter'm Meer · Kapitel 47. Schluß",
+      "enName": "Twenty Thousand Leagues Under the Seas",
+      "chunkFile": "chunks/47-ch47.json",
+      "verseCount": 27
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "id": "pl-verne-80days",
+  "language": "pl",
+  "title": "W osiemdziesiąt dni dookoła świata",
+  "subtitle": "Jules Verne · Direct English",
+  "translationSource": "VERNE → EN",
+  "unit": "sentence",
+  "totalVerses": 3584,
+  "quizVerses": 3569,
+  "totalVerbs": 5639,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 5639,
+    "p": 1329,
+    "n": 8659,
+    "a": 2407,
+    "r": 2623
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział I. Phileas Fogg, zachwycony Obież…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 67
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział II. Ideał Obieżyświata",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 51
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział III. Ważna rozmowa",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 125
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział IV. Obieżyświat przeraża się",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 72
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział V. Nowy papier wartościowy",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 50
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział VI. Fix niecierpliwi się",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 84
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział VII. Nieużyteczność paszportu wob…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 54
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział VIII. Obieżyświat gadułą",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 93
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział IX. Wszystko sprzyja planom pana…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 82
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział X. Przygody Obieżyświata",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 69
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XI. Phileas Fogg kupuje słonia",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 133
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XII. W lesie",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 123
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XIII. Szczęście sprzyja odważnym",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 122
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XIV. Obojętność pana Fogga na pię…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 85
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XV. Torba z banknotami staje się…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 126
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XVI. Fix udaje nieświadomego",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 90
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XVII. Od Singapuru do Hongkongu",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 85
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XVIII. Pan Fogg, Fix i Obieżyświa…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 76
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XIX. Obieżyświat dzieli los swego…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 149
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XX. Pan Fix nawiązuje stosunki z…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 121
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXI. Trudna przeprawa",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 143
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXII. Obieżyświat przekonuje się,…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 85
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXIII. Nos Obieżyświata wydłuża się",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 93
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXIV. Podróż przez Ocean Spokojny",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 90
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXV. San Francisco w dniu mityngu",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 116
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXVI. Nieprzewidziana przeszkoda",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 64
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXVII. Obieżyświat śledzi histori…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 55
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXVIII. Nad przepaścią",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 153
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXIX. Obieżyświat bohaterem",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 132
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXX. Pan Fogg spełnia swój obowią…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 166
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXI. Przeprawa na saniach z żagl…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 96
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXII. Dalsze przeciwności",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 69
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXIII. Phileas Fogg umie sobie r…",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 150
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXIV. Pomyłka",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 63
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXV. Smutek i radość Obieżyświata",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 104
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXVI. Chwile oczekiwania",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 66
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "W osiemdziesiąt dni dookoła świata · Rozdział XXXVII. Doba bezwiednie zyskana",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 67
+    }
+  ]
+}
