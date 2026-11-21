@@ -1,0 +1,33 @@
+{
+  "name": "verba-language-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "corpus:build:pl": "python scripts/build_corpus.py",
+    "corpus:build:de": "python scripts/build_corpus_de.py",
+    "corpus:build:cs": "python scripts/build_corpus_cs.py",
+    "corpus:translate": "python scripts/translate_corpus.py",
+    "corpus:verify": "python scripts/verify_corpus.py"
+  },
+  "dependencies": {
+    "allo-font": "^1.0.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^8.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "jsdom": "^29.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

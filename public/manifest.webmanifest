@@ -1,0 +1,17 @@
+{
+  "name": "VERBA — Verb Form Quiz",
+  "short_name": "VERBA",
+  "description": "Minimalist Swiss-design verb conjugation quiz set in Allo.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6F5F0",
+  "theme_color": "#F6F5F0",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
