@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   fontAxes: { ...DEFAULT_FONT_AXES },
   diacriticMode: 'strict',
   glossMode: 'always',
+  showGrammarCues: true,
   wordFormsByLang: {
     pl: { ...DEFAULT_WORD_FORMS },
     de: { ...DEFAULT_WORD_FORMS },
@@ -143,6 +144,10 @@ function readStoredSettings(): AppSettings {
       corpusId: parsed.corpusId ?? DEFAULT_SETTINGS.corpusId,
       diacriticMode: parsed.diacriticMode ?? DEFAULT_SETTINGS.diacriticMode,
       glossMode: sanitizeGlossMode(parsed.glossMode),
+      showGrammarCues:
+        typeof parsed.showGrammarCues === 'boolean'
+          ? parsed.showGrammarCues
+          : DEFAULT_SETTINGS.showGrammarCues,
       wordFormsByLang: sanitizeWordFormsByLang(parsed.wordFormsByLang, parsed.wordForms),
       includeBaseForms:
         typeof parsed.includeBaseForms === 'boolean'

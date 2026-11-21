@@ -4,6 +4,7 @@ import {
   type CorpusBookMeta,
   type CorpusManifest,
   type EnabledWordForms,
+  type QuizContextItem,
   type QuizQuestion,
   type RawCorpusEntry,
   type VerbBlank,
@@ -12,7 +13,7 @@ import {
   type WordFormKind,
 } from '../types/quiz';
 
-export type NormalizedSpan = [number, number, string, WordFormKind, boolean];
+export type NormalizedSpan = [number, number, string, WordFormKind, boolean, string?];
 
 export interface MergedCorpusItem {
   c: number;
@@ -33,12 +34,33 @@ const glossaryCache = new Map<string, Record<string, string>>();
 const SENTENCE_END_RE = /[.!?][»”"'\)\]]*\s*$/;
 
 /**
- * Remove unmatched stray quotation marks left on standalone English translations
- * when a multi-verse biblical quote starts or ends on another verse.
+ * Remove unmatched stray quotation marks (curly, straight, guillemets, low-high)
+ * left on standalone English translations when a multi-sentence quote starts or
+ * ends on another sentence.
  */
 export function cleanStrayQuotes(text: string): string {
   let out = text.trim();
   if (!out) return out;
+
+  // Balance guillemets (« ... » or inward » ... «)
+  let openGuil = (out.match(/«/g) ?? []).length;
+  let closeGuil = (out.match(/»/g) ?? []).length;
+  while (closeGuil > openGuil && out.startsWith('»')) {
+    out = out.slice(1).trimStart();
+    closeGuil -= 1;
+  }
+  while (closeGuil > openGuil && out.endsWith('»')) {
+    out = out.slice(0, -1).trimEnd();
+    closeGuil -= 1;
+  }
+  while (openGuil > closeGuil && out.startsWith('«')) {
+    out = out.slice(1).trimStart();
+    openGuil -= 1;
+  }
+  while (openGuil > closeGuil && out.endsWith('«')) {
+    out = out.slice(0, -1).trimEnd();
+    openGuil -= 1;
+  }
 
   // Balance curly double quotes (“ ... ”)
   let openCurly = (out.match(/“/g) ?? []).length;
@@ -74,6 +96,117 @@ export function cleanStrayQuotes(text: string): string {
   return out;
 }
 
+/**
+ * Strip unmatched outer quotation marks (e.g. Spanish RAE continuation "»",
+ * split multi-sentence « / », or unmatched „ / “ / ” / ") from a standalone
+ * original sentence while shifting every span's [start, end] offsets cleanly.
+ */
+export function cleanOriginalStrayQuotes(
+  original: string,
+  spans: NormalizedSpan[]
+): { original: string; spans: NormalizedSpan[] } {
+  let text = original;
+  let curSpans = spans.map((sp) => [...sp] as NormalizedSpan);
+
+  const removeAt = (pos: number, count = 1): boolean => {
+    if (pos < 0 || pos + count > text.length) return false;
+    // Never slice into an annotated word span
+    for (const [s, e] of curSpans) {
+      if (pos < e && pos + count > s) return false;
+    }
+    text = text.slice(0, pos) + text.slice(pos + count);
+    curSpans = curSpans.map(([s, e, l, k, b, c]) => [
+      s > pos ? s - count : s,
+      e > pos ? e - count : e,
+      l,
+      k,
+      b,
+      c,
+    ]);
+    return true;
+  };
+
+  const stripLeading = (ch: string) => {
+    if (text.startsWith(ch) && removeAt(0, 1)) {
+      while (text.startsWith(' ') && removeAt(0, 1)) {
+        // strip stray space immediately following removed opening quote
+      }
+      return true;
+    }
+    // Also handle dialogue dash + stray opening quote: "— «Text" or "— »Text"
+    const dashPrefix = /^(?:—|–|-)\s*/.exec(text);
+    if (dashPrefix && text[dashPrefix[0].length] === ch) {
+      const idx = dashPrefix[0].length;
+      if (removeAt(idx, 1)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const stripTrailing = (ch: string) => {
+    if (text.endsWith(ch) && removeAt(text.length - 1, 1)) {
+      while (text.endsWith(' ') && removeAt(text.length - 1, 1)) {
+        // strip trailing whitespace left behind
+      }
+      return true;
+    }
+    return false;
+  };
+
+  // 1. Guillemets (« and » — handles both Spanish «...» / continuation » and German/Czech »...«)
+  let cLeft = (text.match(/«/g) ?? []).length;
+  let cRight = (text.match(/»/g) ?? []).length;
+  while (cRight > cLeft) {
+    if (stripLeading('»') || stripTrailing('»')) {
+      cRight -= 1;
+    } else {
+      break;
+    }
+  }
+  while (cLeft > cRight) {
+    if (stripLeading('«') || stripTrailing('«')) {
+      cLeft -= 1;
+    } else {
+      break;
+    }
+  }
+
+  // 2. Low-high quotes („ paired with “ or ”) and curly quotes (“ ... ”)
+  let cLow = (text.match(/„/g) ?? []).length;
+  let cOpenCurly = (text.match(/“/g) ?? []).length;
+  let cCloseCurly = (text.match(/”/g) ?? []).length;
+  const highCount = cOpenCurly + cCloseCurly;
+  if (cLow > highCount) {
+    while (cLow > highCount && stripLeading('„')) {
+      cLow -= 1;
+    }
+  } else if (cLow === 0) {
+    while (cCloseCurly > cOpenCurly && stripTrailing('”')) {
+      cCloseCurly -= 1;
+    }
+    while (cOpenCurly > cCloseCurly && (stripLeading('“') || stripTrailing('“'))) {
+      cOpenCurly -= 1;
+    }
+  } else if (cLow < highCount) {
+    // Low quote present but extra closing high quote at end
+    let extra = highCount - cLow;
+    while (extra > 0 && (stripTrailing('“') || stripTrailing('”'))) {
+      extra -= 1;
+    }
+  }
+
+  // 3. Straight ASCII double quotes (")
+  const asciiCount = (text.match(/"/g) ?? []).length;
+  if (asciiCount === 1) {
+    if (!stripLeading('"')) {
+      stripTrailing('"');
+    }
+  }
+
+  return { original: text, spans: curSpans };
+}
+
 function startsWithLowercase(text: string): boolean {
   const trimmed = text.trimStart();
   if (!trimmed) return false;
@@ -99,8 +232,8 @@ export function mergeSplitVerses(entries: RawCorpusEntry[]): MergedCorpusItem[] 
       const offset = prev.o.length + 1;
       prev.o = `${prev.o} ${entry.o}`;
       prev.t = prev.t && entry.t ? `${prev.t} ${entry.t}` : prev.t || entry.t;
-      for (const [start, end, lemma, kind, isBase] of entry.m) {
-        prev.m.push([start + offset, end + offset, lemma, kind ?? 'v', Boolean(isBase)]);
+      for (const [start, end, lemma, kind, isBase, cue] of entry.m) {
+        prev.m.push([start + offset, end + offset, lemma, kind ?? 'v', Boolean(isBase), cue]);
       }
       prev.vEnd = entry.v;
       prev.verseCount += 1;
@@ -112,7 +245,7 @@ export function mergeSplitVerses(entries: RawCorpusEntry[]): MergedCorpusItem[] 
         verseCount: 1,
         o: entry.o,
         t: entry.t,
-        m: entry.m.map(([s, e, l, k, b]) => [s, e, l, k ?? 'v', Boolean(b)]),
+        m: entry.m.map(([s, e, l, k, b, c]) => [s, e, l, k ?? 'v', Boolean(b), c]),
         cleanStart: !startsWithLowercase(entry.o),
       });
     }
@@ -192,29 +325,73 @@ export function filterSpansByForms(
 
 const ALL_FORM_KINDS: WordFormKind[] = ['v', 'p', 'g', 't', 'd', 'n', 'a', 'r'];
 
+export function buildContextItems(
+  items: MergedCorpusItem[],
+  chosenIndex: number,
+  prevCount = 2,
+  nextCount = 1
+): QuizContextItem[] {
+  const chosen = items[chosenIndex];
+  if (!chosen) return [];
+  const context: QuizContextItem[] = [];
+
+  for (let offset = prevCount; offset >= 1; offset -= 1) {
+    const neighbor = items[chosenIndex - offset];
+    if (neighbor && neighbor.c === chosen.c) {
+      context.push({
+        position: 'prev',
+        chapter: neighbor.c,
+        verse: neighbor.vStart,
+        verseEnd: neighbor.vEnd,
+        original: cleanOriginalStrayQuotes(neighbor.o, []).original,
+        translation: cleanStrayQuotes(neighbor.t),
+      });
+    }
+  }
+
+  for (let offset = 1; offset <= nextCount; offset += 1) {
+    const neighbor = items[chosenIndex + offset];
+    if (neighbor && neighbor.c === chosen.c) {
+      context.push({
+        position: 'next',
+        chapter: neighbor.c,
+        verse: neighbor.vStart,
+        verseEnd: neighbor.vEnd,
+        original: cleanOriginalStrayQuotes(neighbor.o, []).original,
+        translation: cleanStrayQuotes(neighbor.t),
+      });
+    }
+  }
+
+  return context;
+}
+
 export function toQuizQuestion(
   manifest: CorpusManifest,
   book: CorpusBookMeta,
   item: MergedCorpusItem,
   wordForms: EnabledWordForms,
-  includeBaseForms = false
+  includeBaseForms = false,
+  context?: QuizContextItem[]
 ): QuizQuestion {
-  const activeSpans = filterSpansByForms(item.m, wordForms, includeBaseForms);
+  const cleaned = cleanOriginalStrayQuotes(item.o, item.m);
+  const activeSpans = filterSpansByForms(cleaned.spans, wordForms, includeBaseForms);
   // If an explicitly loaded deep-link has 0 spans in the selected categories, fall back to inflected spans (or all spans)
   const fallbackSpans = includeBaseForms
-    ? item.m
-    : item.m.filter(([, , , , isBase]) => !isBase);
+    ? cleaned.spans
+    : cleaned.spans.filter(([, , , , isBase]) => !isBase);
   const chosenSpans =
-    activeSpans.length > 0 ? activeSpans : fallbackSpans.length > 0 ? fallbackSpans : item.m;
+    activeSpans.length > 0 ? activeSpans : fallbackSpans.length > 0 ? fallbackSpans : cleaned.spans;
 
-  const blanks: VerbBlank[] = chosenSpans.map(([start, end, lemma, kind, isBase], index) => ({
+  const blanks: VerbBlank[] = chosenSpans.map(([start, end, lemma, kind, isBase, cue], index) => ({
     index,
     start,
     end,
-    answer: item.o.slice(start, end),
+    answer: cleaned.original.slice(start, end),
     lemma,
     kind,
     isBase,
+    ...(cue ? { cue } : {}),
   }));
 
   const bookNativeName = book.nativeName ?? book.plName ?? book.enName;
@@ -234,10 +411,11 @@ export function toQuizQuestion(
     verseEnd: item.vEnd,
     verseCount: item.verseCount,
     reference: `${bookNativeName} (${book.enName}) ${verseLabel}`,
-    original: item.o,
+    original: cleaned.original,
     translation: cleanStrayQuotes(item.t),
     translationSource: manifest.translationSource,
     blanks,
+    ...(context && context.length > 0 ? { context } : {}),
   };
 }
 
@@ -306,7 +484,15 @@ export async function pickRandomQuestion(
     );
     const pool = fresh.length > 0 ? fresh : matching;
     const chosen = pool[Math.floor(Math.random() * pool.length)];
-    return toQuizQuestion(manifest, book, chosen, wordForms, includeBaseForms);
+    const chosenIdx = items.indexOf(chosen);
+    return toQuizQuestion(
+      manifest,
+      book,
+      chosen,
+      wordForms,
+      includeBaseForms,
+      buildContextItems(items, chosenIdx)
+    );
   }
 
   for (const book of manifest.books) {
@@ -317,7 +503,15 @@ export async function pickRandomQuestion(
     );
     if (matching.length > 0) {
       const chosen = matching[Math.floor(Math.random() * matching.length)];
-      return toQuizQuestion(manifest, book, chosen, wordForms, includeBaseForms);
+      const chosenIdx = items.indexOf(chosen);
+      return toQuizQuestion(
+        manifest,
+        book,
+        chosen,
+        wordForms,
+        includeBaseForms,
+        buildContextItems(items, chosenIdx)
+      );
     }
   }
 
@@ -328,13 +522,28 @@ export async function pickRandomQuestion(
     );
     if (matching.length > 0) {
       const chosen = matching[Math.floor(Math.random() * matching.length)];
-      return toQuizQuestion(manifest, book, chosen, wordForms, includeBaseForms);
+      const chosenIdx = items.indexOf(chosen);
+      return toQuizQuestion(
+        manifest,
+        book,
+        chosen,
+        wordForms,
+        includeBaseForms,
+        buildContextItems(items, chosenIdx)
+      );
     }
   }
 
   const firstBook = manifest.books[0];
   const items = await loadBookMergedItems(manifestUrl, firstBook);
-  return toQuizQuestion(manifest, firstBook, items[0], wordForms, includeBaseForms);
+  return toQuizQuestion(
+    manifest,
+    firstBook,
+    items[0],
+    wordForms,
+    includeBaseForms,
+    buildContextItems(items, 0)
+  );
 }
 
 export async function loadSpecificQuestion(
@@ -350,8 +559,15 @@ export async function loadSpecificQuestion(
   if (!book) return null;
 
   const items = await loadBookMergedItems(manifestUrl, book);
-  const found = items.find((it) => it.c === chapter && it.vStart <= verse && verse <= it.vEnd);
-  if (!found) return null;
+  const foundIdx = items.findIndex((it) => it.c === chapter && it.vStart <= verse && verse <= it.vEnd);
+  if (foundIdx === -1) return null;
 
-  return toQuizQuestion(manifest, book, found, wordForms, includeBaseForms);
+  return toQuizQuestion(
+    manifest,
+    book,
+    items[foundIdx],
+    wordForms,
+    includeBaseForms,
+    buildContextItems(items, foundIdx)
+  );
 }

@@ -953,6 +953,10 @@ def main() -> None:
     lang_desc = f"{lang_name} literature ({args.author}, {args.title})"
     build_book_glossary(args.lang, out_dir, lang_desc, model_name)
 
+    # Enrich spans with NLP-verified grammatical disambiguation cues
+    from enrich_grammar_cues import process_corpus as enrich_cues_for_corpus
+    enrich_cues_for_corpus(args.id, {}, dry_run=False)
+
     print(
         f"=== Done [{args.id}] in {time.time() - t0:.1f}s | {quiz_sents}/{total_sents} sentences | {len(manifest_books)} chapters | Inflected: {counts} ===\n",
         flush=True,

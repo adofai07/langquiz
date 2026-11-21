@@ -18,6 +18,8 @@ export interface CorpusExampleRef {
   label: string;
 }
 
+export type CorpusArchaicLevel = 'archaic' | 'dated';
+
 export interface CorpusOption {
   id: string;
   language: LanguageCode;
@@ -27,6 +29,8 @@ export interface CorpusOption {
   manifestUrl: string;
   unit?: 'verse' | 'sentence';
   exampleRef?: CorpusExampleRef;
+  archaicLevel?: CorpusArchaicLevel;
+  archaicNote?: string;
   available: boolean;
 }
 
@@ -72,7 +76,7 @@ export const WORD_FORM_META: {
   { kind: 'r', label: 'Pronouns', shortTag: 'R' },
 ];
 
-export type RawCorpusSpan = [number, number, string, WordFormKind?, (0 | 1)?];
+export type RawCorpusSpan = [number, number, string, WordFormKind?, (0 | 1)?, string?];
 
 export interface RawCorpusEntry {
   /** Chapter (1-based) */
@@ -83,7 +87,7 @@ export interface RawCorpusEntry {
   o: string;
   /** English translation */
   t: string;
-  /** Word spans: [startChar, endChar, lemma, kind?, isBase?] */
+  /** Word spans: [startChar, endChar, lemma, kind?, isBase?, cue?] */
   m: RawCorpusSpan[];
 }
 
@@ -95,6 +99,16 @@ export interface VerbBlank {
   lemma: string;
   kind: WordFormKind;
   isBase?: boolean;
+  cue?: string;
+}
+
+export interface QuizContextItem {
+  position: 'prev' | 'next';
+  chapter: number;
+  verse: number;
+  verseEnd: number;
+  original: string;
+  translation: string;
 }
 
 export interface QuizQuestion {
@@ -112,6 +126,7 @@ export interface QuizQuestion {
   translation: string;
   translationSource: string;
   blanks: VerbBlank[];
+  context?: QuizContextItem[];
 }
 
 export interface AlloFontAxes {
@@ -149,6 +164,7 @@ export interface AppSettings {
   fontAxes: AlloFontAxes;
   diacriticMode: DiacriticMode;
   glossMode: GlossMode;
+  showGrammarCues: boolean;
   wordFormsByLang: Record<LanguageCode, EnabledWordForms>;
   includeBaseForms: boolean;
   verbRange: VerbRange;

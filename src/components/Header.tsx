@@ -1,13 +1,17 @@
 import React from 'react';
 import type { CorpusOption, LanguageOption } from '../types/quiz';
 
+export type AppViewMode = 'quiz' | 'study';
+
 interface HeaderProps {
   language: LanguageOption;
   corpus: CorpusOption;
+  viewMode: AppViewMode;
   solvedCount: number;
   attemptedCount: number;
   resolvedTheme: 'light' | 'dark';
   settingsOpen: boolean;
+  onChangeViewMode: (mode: AppViewMode) => void;
   onToggleTheme: () => void;
   onToggleSettings: () => void;
 }
@@ -15,10 +19,12 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   language,
   corpus,
+  viewMode,
   solvedCount,
   attemptedCount,
   resolvedTheme,
   settingsOpen,
+  onChangeViewMode,
   onToggleTheme,
   onToggleSettings,
 }) => {
@@ -37,6 +43,27 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="brand-meta tabular">
             {language.code.toUpperCase()} · {corpus.shortLabel}
           </span>
+        </div>
+
+        <div className="mode-toggle" role="tablist" aria-label="Mode">
+          <button
+            type="button"
+            role="tab"
+            className="mode-toggle-btn"
+            aria-selected={viewMode === 'quiz'}
+            onClick={() => onChangeViewMode('quiz')}
+          >
+            Quiz
+          </button>
+          <button
+            type="button"
+            role="tab"
+            className="mode-toggle-btn"
+            aria-selected={viewMode === 'study'}
+            onClick={() => onChangeViewMode('study')}
+          >
+            Study
+          </button>
         </div>
 
         <div className="header-actions">

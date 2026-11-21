@@ -181,6 +181,51 @@ select {
   gap: 0.75rem;
 }
 
+.mode-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--rule-strong);
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.mode-toggle-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--rule-strong);
+  padding: 0 0.85rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--allo-wght-medium);
+  font-variation-settings: var(--allo-fvs-medium);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.mode-toggle-btn:last-child {
+  border-right: none;
+}
+
+.mode-toggle-btn:hover {
+  color: var(--ink);
+}
+
+.mode-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mode-toggle-btn[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
 .session-counter {
   font-size: 0.8rem;
   letter-spacing: 0.06em;
@@ -255,6 +300,32 @@ select {
   justify-content: center;
 }
 
+.main-stage--study {
+  justify-content: flex-start;
+  padding-top: clamp(1.25rem, 3.5vh, 2.5rem);
+  padding-bottom: 4rem;
+}
+
+.stage-pane {
+  width: 100%;
+}
+
+.stage-hidden {
+  display: none;
+}
+
+.quiz-card {
+  width: 100%;
+}
+
+.quiz-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.15rem;
+  padding-bottom: 0.5rem;
+}
+
 .quiz-grid {
   border-top: 2px solid var(--rule-strong);
 }
@@ -297,12 +368,11 @@ select {
 }
 
 /* Row 1: Reference */
-.reference-row {
+.reference-head {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: 0.45rem 0.65rem;
 }
 
 .reference-text {
@@ -321,6 +391,7 @@ select {
   font-variation-settings: var(--allo-fvs-base);
 }
 
+.top-bar-link,
 .skip-link {
   appearance: none;
   background: none;
@@ -335,9 +406,92 @@ select {
   transition: color 120ms ease, border-color 120ms ease;
 }
 
+.top-bar-link:hover,
 .skip-link:hover {
   color: var(--ink);
   border-bottom-color: var(--ink);
+}
+
+.top-bar-link--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.top-bar-link--active:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.skip-link {
+  margin-left: auto;
+}
+
+/* Archaic / Dated Corpus Tag */
+.archaic-tag {
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: 0.64rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.08rem 0.36rem;
+  border: 1px solid var(--warn);
+  color: var(--warn);
+  line-height: 1.3;
+  vertical-align: middle;
+  font-weight: var(--allo-wght-bold);
+  font-variation-settings: var(--allo-fvs-bold);
+}
+
+.archaic-tag--strong {
+  background: var(--warn-bg);
+}
+
+.corpus-caption-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+/* Expandable Story / Chapter Context */
+.context-block {
+  border-left: 2px solid var(--rule);
+  padding-left: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+  color: var(--ink-3);
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  line-height: 1.55;
+  letter-spacing: var(--allo-letter-spacing);
+}
+
+.context-block--before {
+  margin-bottom: 0.85rem;
+}
+
+.context-block--after {
+  margin-top: 0.85rem;
+}
+
+.context-block--translation {
+  font-size: clamp(0.84rem, 1.1vw, 0.92rem);
+}
+
+.context-line {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.context-ref {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  opacity: 0.8;
+  flex-shrink: 0;
+  user-select: none;
 }
 
 /* Row 2: Original verse with inline inputs */
@@ -589,6 +743,23 @@ select {
 .verb-chip--wrong .verb-chip-gloss {
   color: currentColor;
   opacity: 0.78;
+}
+
+.verb-chip-cue {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  border-left: 1px solid var(--rule);
+  padding-left: 0.42rem;
+  font-weight: var(--allo-wght-medium);
+  font-variation-settings: var(--allo-fvs-medium);
+}
+
+.verb-chip--exact .verb-chip-cue,
+.verb-chip--diacritic .verb-chip-cue,
+.verb-chip--wrong .verb-chip-cue {
+  color: currentColor;
+  opacity: 0.85;
 }
 
 .verb-chip-kind {
@@ -1253,6 +1424,213 @@ select {
   font-size: 0.95rem;
 }
 
+/* ─── Study Grammar Reference View ─────────────────────────────────────── */
+
+.study-view {
+  width: 100%;
+}
+
+.study-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.study-grid {
+  border-top: 2px solid var(--rule-strong);
+}
+
+.study-head {
+  padding: clamp(1.15rem, 2.5vh, 1.65rem) 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.study-title {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: var(--allo-letter-spacing);
+  color: var(--ink);
+  font-weight: var(--allo-wght-bold);
+  font-variation-settings: var(--allo-fvs-bold);
+}
+
+.study-subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+.study-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.study-pill {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  padding: 0.32rem 0.65rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.38rem;
+  transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.study-pill:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.study-pill[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.study-pill-num {
+  font-size: 0.68rem;
+  color: var(--accent);
+  font-weight: var(--allo-wght-bold);
+  font-variation-settings: var(--allo-fvs-bold);
+}
+
+.study-pill[aria-pressed="true"] .study-pill-num {
+  color: var(--bg);
+  opacity: 0.72;
+}
+
+.study-section {
+  align-items: start;
+  padding: clamp(1.3rem, 2.8vh, 1.9rem) 0;
+}
+
+.study-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.study-section-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+}
+
+.study-section-title {
+  margin: 0;
+  font-size: 1.06rem;
+  color: var(--ink);
+  font-weight: var(--allo-wght-bold);
+  font-variation-settings: var(--allo-fvs-bold);
+}
+
+.study-section-native {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.study-summary {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.58;
+  color: var(--ink-2);
+}
+
+.grammar-table-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.grammar-table-caption {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: var(--allo-wght-label);
+  font-variation-settings: var(--allo-fvs-label);
+}
+
+.grammar-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.grammar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  letter-spacing: var(--allo-letter-spacing);
+}
+
+.grammar-table th,
+.grammar-table td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.grammar-table th:last-child,
+.grammar-table td:last-child {
+  border-right: none;
+}
+
+.grammar-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.grammar-table thead th {
+  background: var(--surface-subtle);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  font-weight: var(--allo-wght-medium);
+  font-variation-settings: var(--allo-fvs-medium);
+  white-space: nowrap;
+}
+
+.grammar-col-lead {
+  color: var(--ink-2);
+  white-space: nowrap;
+  font-weight: var(--allo-wght-medium);
+  font-variation-settings: var(--allo-fvs-medium);
+}
+
+.grammar-end {
+  color: var(--accent);
+  font-weight: var(--allo-wght-bold);
+  font-variation-settings: var(--allo-fvs-bold);
+}
+
+.grammar-notes {
+  margin: 0;
+  padding: 0.6rem 0.85rem 0.6rem 1.7rem;
+  border-left: 2px solid var(--rule-strong);
+  background: var(--surface-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.84rem;
+  line-height: 1.52;
+  color: var(--ink-2);
+}
+
 /* ─── Responsive Mobile Stack ──────────────────────────────────────────── */
 
 @media (max-width: 720px) {
@@ -1268,6 +1646,15 @@ select {
 
   .header-actions {
     gap: 0.45rem;
+  }
+
+  .mode-toggle {
+    height: 30px;
+  }
+
+  .mode-toggle-btn {
+    padding: 0 0.58rem;
+    font-size: 0.7rem;
   }
 
   .session-counter {

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Header } from './components/Header';
+import { Header, type AppViewMode } from './components/Header';
 import { QuizCard } from './components/QuizCard';
 import { SettingsDrawer } from './components/SettingsDrawer';
+import { StudyView } from './components/StudyView';
 import { buildFontVariationSettings, clampAxisWeight } from './config/alloAxes';
 import { getCorpusOption, getLanguageOption } from './config/catalog';
 import { usePersistedSettings } from './hooks/usePersistedSettings';
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<AppViewMode>('quiz');
   const [solvedCount, setSolvedCount] = useState<number>(0);
   const [attemptedCount, setAttemptedCount] = useState<number>(0);
   const recentIdsRef = useRef<Set<string>>(new Set());
@@ -135,6 +137,7 @@ export const App: React.FC = () => {
   }, [corpus.manifestUrl]);
 
   const loadCorpusExample = useCallback(async () => {
+    setViewMode('quiz');
     setLoading(true);
     setError(null);
     const ref = corpus.exampleRef ?? { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' };
@@ -345,40 +348,52 @@ export const App: React.FC = () => {
       <Header
         language={language}
         corpus={corpus}
+        viewMode={viewMode}
         solvedCount={solvedCount}
         attemptedCount={attemptedCount}
         resolvedTheme={resolvedTheme}
         settingsOpen={settingsOpen}
+        onChangeViewMode={setViewMode}
         onToggleTheme={handleToggleTheme}
         onToggleSettings={() => setSettingsOpen((v) => !v)}
       />
 
-      <main className="main-stage">
-        {loading && !question ? (
-          <div className="status-panel">
-            <span>Loading {corpus.name}…</span>
-          </div>
-        ) : error ? (
-          <div className="status-panel" role="alert">
-            <span>{error}</span>
-            <button type="button" className="btn btn--primary" onClick={fetchNextQuestion}>
-              Retry
-            </button>
-          </div>
-        ) : question ? (
-          <QuizCard
-            question={question}
-            languageCode={language.code}
-            alphabet={language.alphabet}
-            diacritics={language.diacritics}
-            diacriticMode={settings.diacriticMode}
-            glossMode={settings.glossMode}
-            glossary={glossary}
-            wordForms={activeWordForms}
-            onComplete={handleComplete}
-            onNext={fetchNextQuestion}
-          />
-        ) : null}
+      <main className={`main-stage${viewMode === 'study' ? ' main-stage--study' : ''}`}>
+        <div className={viewMode === 'quiz' ? 'stage-pane' : 'stage-hidden'}>
+          {loading && !question ? (
+            <div className="status-panel">
+              <span>Loading {corpus.name}…</span>
+            </div>
+          ) : error ? (
+            <div className="status-panel" role="alert">
+              <span>{error}</span>
+              <button type="button" className="btn btn--primary" onClick={fetchNextQuestion}>
+                Retry
+              </button>
+            </div>
+          ) : question ? (
+            <QuizCard
+              question={question}
+              languageCode={language.code}
+              alphabet={language.alphabet}
+              diacritics={language.diacritics}
+              diacriticMode={settings.diacriticMode}
+              glossMode={settings.glossMode}
+              showGrammarCues={settings.showGrammarCues}
+              archaicLevel={corpus.archaicLevel}
+              archaicNote={corpus.archaicNote}
+              glossary={glossary}
+              wordForms={activeWordForms}
+              isActive={viewMode === 'quiz'}
+              onComplete={handleComplete}
+              onNext={fetchNextQuestion}
+            />
+          ) : null}
+        </div>
+
+        {viewMode === 'study' && (
+          <StudyView language={language} onBackToQuiz={() => setViewMode('quiz')} />
+        )}
       </main>
 
       <SettingsDrawer

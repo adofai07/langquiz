@@ -8,12 +8,15 @@ import {
   stripSpanishDiacritics,
 } from '../services/answerCheck';
 import {
+  buildContextItems,
+  cleanOriginalStrayQuotes,
   cleanStrayQuotes,
   filterSpansByForms,
   matchesVerbRange,
   matchesVerseRange,
   mergeSplitVerses,
 } from '../services/corpusLoader';
+import { resolveBlankCue } from '../services/grammarCue';
 import { buildFontVariationSettings, DEFAULT_FONT_AXES } from '../config/alloAxes';
 import {
   CORPORA,
@@ -24,8 +27,12 @@ import {
   SPANISH_ALPHABET,
 } from '../config/catalog';
 import { DualRangeSlider } from '../components/DualRangeSlider';
+import { Header } from '../components/Header';
 import { QuizCard } from '../components/QuizCard';
 import { SettingsDrawer } from '../components/SettingsDrawer';
+import { StudyView } from '../components/StudyView';
+import { getCorpusOption, getLanguageOption, LANGUAGES } from '../config/catalog';
+import { GRAMMAR_GUIDES } from '../data/grammarGuides';
 import { DEFAULT_SETTINGS, DEFAULT_WORD_FORMS } from '../hooks/usePersistedSettings';
 import type { QuizQuestion } from '../types/quiz';
 
@@ -581,6 +588,14 @@ describe('SettingsDrawer', () => {
     expect(matchesVerseRange(4, { min: 1, max: 3 })).toBe(false);
     expect(matchesVerseRange(9, { min: 1, max: 5 })).toBe(true);
 
+    expect(screen.getByRole('button', { name: 'Gen 3:13' })).toBeInTheDocument();
+    const cuesGroup = screen.getByRole('group', { name: /Grammar cues display/i });
+    const cuesOffBtn = cuesGroup.querySelectorAll('button')[1];
+    fireEvent.click(cuesOffBtn);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ showGrammarCues: false })
+    );
+
     fireEvent.click(screen.getByRole('button', { name: 'Gen 3:13' }));
     expect(onLoadExample).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -728,5 +743,258 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
       expect(c.manifestUrl).toBe(`/data/${c.id}/manifest.json`);
       expect(['pl', 'de', 'cs', 'es']).toContain(c.language);
     }
+  });
+
+  it('strips stray outer guillemets (like es-verne-20k 2:52) while shifting span offsets accurately', () => {
+    const raw = '»El narval vulgar o unicornio marino alcanza a menudo una longitud de sesenta pies.';
+    const spans: [number, number, string, 'v' | 'n', boolean][] = [
+      [37, 44, 'alcanzar', 'v', false],
+      [4, 10, 'narval', 'n', true],
+    ];
+    const cleaned = cleanOriginalStrayQuotes(raw, spans);
+    expect(cleaned.original).toBe(
+      'El narval vulgar o unicornio marino alcanza a menudo una longitud de sesenta pies.'
+    );
+    expect(cleaned.original.slice(cleaned.spans[0][0], cleaned.spans[0][1])).toBe('alcanza');
+    expect(cleaned.original.slice(cleaned.spans[1][0], cleaned.spans[1][1])).toBe('narval');
+
+    // Balanced guillemets («...» or German »...«) stay untouched
+    const balanced = cleanOriginalStrayQuotes('«Hola» dijo él.', [[7, 11, 'decir', 'v', false]]);
+    expect(balanced.original).toBe('«Hola» dijo él.');
+    expect(balanced.original.slice(balanced.spans[0][0], balanced.spans[0][1])).toBe('dijo');
+
+    // Stray closing guillemet in translation is also stripped
+    expect(cleanStrayQuotes('»The common narwhal reaches sixty feet.')).toBe(
+      'The common narwhal reaches sixty feet.'
+    );
+  });
+
+  it('resolves grammatical cues across PL, CS, ES, and DE without spoiling visible pronouns', () => {
+    // Polish pl-verne-20k 37:185 ("Chciałem go wziąć z sobą." -> m.)
+    const verne185: QuizQuestion = {
+      id: 'pl-verne-20k:ch37:37:185-185:v',
+      bookIndex: 36,
+      bookId: 'ch37',
+      bookNativeName: '20 000 mil podmorskiej żeglugi · Biegun południowy',
+      bookEnName: 'Twenty Thousand Leagues Under the Seas',
+      chapter: 37,
+      verse: 185,
+      verseEnd: 185,
+      verseCount: 1,
+      reference: '20 000 mil podmorskiej żeglugi 37:185',
+      original: 'Chciałem go wziąć z sobą.',
+      translation: 'I wanted to take him with me.',
+      translationSource: 'VERNE → EN',
+      blanks: [{ index: 0, start: 0, end: 8, answer: 'Chciałem', lemma: 'chcieć', kind: 'v', cue: 'm' }],
+    };
+    expect(resolveBlankCue(verne185.blanks[0], verne185, 'pl')?.label).toBe('m.');
+
+    // Polish 1sg present of -łać verbs (wołam / zdołam) must NOT falsely trigger feminine past cue
+    const wolamQ: QuizQuestion = {
+      ...verne185,
+      original: 'Nie zdołam opisać.',
+      blanks: [{ index: 0, start: 4, end: 10, answer: 'zdołam', lemma: 'zdołać', kind: 'v' }],
+    };
+    expect(resolveBlankCue(wolamQ.blanks[0], wolamQ, 'pl')).toBeNull();
+
+    // German: "Du gehst" hides 'sg.' when "Du" is visible, and shows 'sg.' when Pronouns blanks "Du"
+    const deVisibleDu: QuizQuestion = {
+      ...verne185,
+      original: 'Du gehst nach Hause.',
+      blanks: [{ index: 0, start: 3, end: 8, answer: 'gehst', lemma: 'gehen', kind: 'v', cue: '2s' }],
+    };
+    expect(resolveBlankCue(deVisibleDu.blanks[0], deVisibleDu, 'de')).toBeNull();
+
+    const deBlankedDu: QuizQuestion = {
+      ...deVisibleDu,
+      blanks: [
+        { index: 0, start: 0, end: 2, answer: 'Du', lemma: 'du', kind: 'r', cue: '2s' },
+        { index: 1, start: 3, end: 8, answer: 'gehst', lemma: 'gehen', kind: 'v', cue: '2s' },
+      ],
+    };
+    expect(resolveBlankCue(deBlankedDu.blanks[0], deBlankedDu, 'de')?.label).toBe('sg.');
+    expect(resolveBlankCue(deBlankedDu.blanks[1], deBlankedDu, 'de')?.label).toBe('sg.');
+
+    // Czech vykání ("Viděl jste ho?")
+    const csVykani: QuizQuestion = {
+      ...verne185,
+      original: 'Viděl jste ho?',
+      blanks: [
+        { index: 0, start: 0, end: 5, answer: 'Viděl', lemma: 'vidět', kind: 'v', cue: 'fsm' },
+        { index: 1, start: 6, end: 10, answer: 'jste', lemma: 'být', kind: 'v', cue: 'fs' },
+      ],
+    };
+    expect(resolveBlankCue(csVykani.blanks[0], csVykani, 'cs')?.label).toBe('formal m.');
+    expect(resolveBlankCue(csVykani.blanks[1], csVykani, 'cs')?.label).toBe('formal');
+
+    // Spanish 2sg/2pl ("Hablas" / "Habláis")
+    const esYou: QuizQuestion = {
+      ...verne185,
+      original: 'Habláis muy bien.',
+      blanks: [{ index: 0, start: 0, end: 7, answer: 'Habláis', lemma: 'hablar', kind: 'v', cue: '2p' }],
+    };
+    expect(resolveBlankCue(esYou.blanks[0], esYou, 'es')?.label).toBe('pl.');
+  });
+
+  it('renders Skip in top utility rail above grid, shows grammar cues, and toggles chapter Context', () => {
+    const items = mergeSplitVerses([
+      {
+        c: 37,
+        v: 184,
+        o: 'Gdy na tym stanęło, poszedłem zobaczyć się z Nedem Landem.',
+        t: 'Upon that, I went to see Ned Land.',
+        m: [[20, 29, 'pójść', 'v']],
+      },
+      {
+        c: 37,
+        v: 185,
+        o: 'Chciałem go wziąć z sobą.',
+        t: 'I wanted to take him with me.',
+        m: [[0, 8, 'chcieć', 'v', 0, 'm']],
+      },
+      {
+        c: 37,
+        v: 186,
+        o: 'Uparty Kanadyjczyk odmówił.',
+        t: 'The obstinate Canadian refused.',
+        m: [[19, 26, 'odmówić', 'v']],
+      },
+    ]);
+    const context = buildContextItems(items, 1);
+    expect(context).toHaveLength(2);
+
+    const question: QuizQuestion = {
+      id: 'pl-verne-20k:ch37:37:185-185:v',
+      bookIndex: 36,
+      bookId: 'ch37',
+      bookNativeName: '20 000 mil podmorskiej żeglugi · Biegun południowy',
+      bookEnName: 'Twenty Thousand Leagues Under the Seas',
+      chapter: 37,
+      verse: 185,
+      verseEnd: 185,
+      verseCount: 1,
+      reference: '20 000 mil podmorskiej żeglugi 37:185',
+      original: 'Chciałem go wziąć z sobą.',
+      translation: 'I wanted to take him with me.',
+      translationSource: 'VERNE → EN',
+      blanks: [{ index: 0, start: 0, end: 8, answer: 'Chciałem', lemma: 'chcieć', kind: 'v', cue: 'm' }],
+      context,
+    };
+
+    const { container, rerender } = render(
+      <QuizCard
+        question={question}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        showGrammarCues={true}
+        archaicLevel="dated"
+        archaicNote="19th-c. literary Polish — contains dated forms (rzekłem, żem, ów, mą)."
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+
+    // Top utility rail has Show Context on the left and Skip → constantly on the right above .quiz-grid
+    const topBar = container.querySelector('.quiz-top-bar');
+    expect(topBar).not.toBeNull();
+    const topButtons = topBar?.querySelectorAll('button');
+    expect(topButtons).toHaveLength(2);
+    expect(topButtons?.[0].textContent).toBe('Show context');
+    expect(topButtons?.[1].textContent).toBe('Skip →');
+
+    // Compact Dated tag renders cleanly inside Row 01 Reference without long explanation text
+    const datedTag = screen.getByText('Dated');
+    expect(datedTag).toBeInTheDocument();
+    expect(screen.queryByText(/19th-c\. literary Polish/)).not.toBeInTheDocument();
+
+    // Grammar cue badge renders cleanly on row 03 chip
+    expect(screen.getByText('m.')).toBeInTheDocument();
+
+    // Context is hidden until toggled via Show context
+    expect(screen.queryByText(/poszedłem zobaczyć się/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show context' }));
+    expect(screen.getByRole('button', { name: 'Hide context' })).toBeInTheDocument();
+    expect(screen.getByText(/poszedłem zobaczyć się/)).toBeInTheDocument();
+    expect(screen.getByText(/Upon that, I went to see Ned Land\./)).toBeInTheDocument();
+    expect(screen.getByText(/Uparty Kanadyjczyk odmówił\./)).toBeInTheDocument();
+
+    // Turning off showGrammarCues hides the cue badge cleanly
+    rerender(
+      <QuizCard
+        question={question}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        showGrammarCues={false}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    expect(screen.queryByText('m.')).not.toBeInTheDocument();
+  });
+
+  it('displays compact archaic corpus tag inside SettingsDrawer corpus selector', () => {
+    render(
+      <SettingsDrawer
+        open={true}
+        settings={{ ...DEFAULT_SETTINGS, language: 'cs', corpusId: 'cs-bible-bkr' }}
+        manifest={null}
+        onChange={vi.fn()}
+        onLoadExample={vi.fn()}
+        onClose={vi.fn()}
+      />
+    );
+    expect(screen.getByText('Archaic')).toBeInTheDocument();
+    expect(screen.queryByText(/Archaic 16th-c\. Czech/)).not.toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Bible (Kralická) [Archaic]' })).toBeInTheDocument();
+  });
+
+  it('toggles Quiz / Study mode in the Header and renders grammar tables for all 4 languages', () => {
+    const onChangeMode = vi.fn();
+    render(
+      <Header
+        language={getLanguageOption('pl')}
+        corpus={getCorpusOption('pl-verne-20k')}
+        viewMode="quiz"
+        solvedCount={3}
+        attemptedCount={4}
+        resolvedTheme="light"
+        settingsOpen={false}
+        onChangeViewMode={onChangeMode}
+        onToggleTheme={vi.fn()}
+        onToggleSettings={vi.fn()}
+      />
+    );
+
+    const quizTab = screen.getByRole('tab', { name: 'Quiz' });
+    const studyTab = screen.getByRole('tab', { name: 'Study' });
+    expect(quizTab).toHaveAttribute('aria-selected', 'true');
+    expect(studyTab).toHaveAttribute('aria-selected', 'false');
+
+    fireEvent.click(studyTab);
+    expect(onChangeMode).toHaveBeenCalledWith('study');
+
+    // StudyView renders grammar tables and filters sections cleanly across all 4 languages
+    for (const lang of LANGUAGES) {
+      expect(GRAMMAR_GUIDES[lang.code].sections.length).toBeGreaterThanOrEqual(6);
+    }
+
+    const onBack = vi.fn();
+    render(<StudyView language={getLanguageOption('pl')} onBackToQuiz={onBack} />);
+    expect(screen.getByText('Polish Inflection Reference')).toBeInTheDocument();
+    expect(screen.getByText('Past Endings (Example: chcieć — to want)')).toBeInTheDocument();
+
+    // Filtering to Past Tense hides unrelated Present section
+    fireEvent.click(screen.getByRole('button', { name: /02\s*Past Tense/i }));
+    expect(screen.queryByText('Four Present Conjugation Classes')).not.toBeInTheDocument();
+    expect(screen.getByText('Past Endings (Example: chcieć — to want)')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Back to Quiz/i }));
+    expect(onBack).toHaveBeenCalledTimes(1);
   });
 });

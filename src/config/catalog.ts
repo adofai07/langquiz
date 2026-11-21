@@ -98,6 +98,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-verne-20k/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. literary Polish — contains dated forms (rzekłem, żem, ów, mą).',
     available: true,
   },
   {
@@ -109,6 +111,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-verne-80days/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. literary Polish — contains dated forms (rzekłem, żem, ów).',
     available: true,
   },
   {
@@ -120,6 +124,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-doyle-baskerville/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Early 20th-c. literary Polish — occasional dated forms (rzekłem, ów, żem).',
     available: true,
   },
   {
@@ -131,6 +137,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-doyle-scarlet/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Early 20th-c. literary Polish — occasional dated forms (rzekłem, ów, żem).',
     available: true,
   },
   {
@@ -142,6 +150,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-stevenson-treasure/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. literary Polish — occasional dated forms (rzekłem, ów, żem).',
     available: true,
   },
   {
@@ -153,6 +163,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-dumas-musketeers/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. literary Polish — contains dated forms (rzekłem, żem, ów, waść).',
     available: true,
   },
   {
@@ -186,6 +198,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/pl-defoe-robinson/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. literary Polish — occasional dated forms (rzekłem, ów, żem).',
     available: true,
   },
   {
@@ -209,6 +223,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-bible-sch1951/manifest.json',
     unit: 'verse',
     exampleRef: { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Archaic & pre-1996 German — biblical forms (ward, Weibe, dative -e) and ß spellings (muß, wußte, läßt).',
     available: true,
   },
   {
@@ -220,6 +236,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-verne-20k/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. / pre-1996 German orthography — historical spellings (muß, wußte, läßt, Thür, ward).',
     available: true,
   },
   {
@@ -231,6 +249,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-verne-80days/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. / pre-1996 German orthography — historical spellings (muß, wußte, läßt, Thür).',
     available: true,
   },
   {
@@ -242,6 +262,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-doyle-scarlet/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Pre-1996 German spelling — uses traditional ß forms (muß, mußte, wußte, läßt).',
     available: true,
   },
   {
@@ -253,6 +275,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-stevenson-treasure/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Pre-1996 German spelling — uses traditional ß forms (muß, mußte, wußte, läßt).',
     available: true,
   },
   {
@@ -264,6 +288,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-twain-tomsawyer/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Pre-1996 German spelling — uses traditional ß forms (muß, mußte, wußte, läßt).',
     available: true,
   },
   {
@@ -275,6 +301,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-carroll-alice/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. / pre-1996 German orthography — historical spellings (muß, wußte, Thür, ward).',
     available: true,
   },
   {
@@ -286,6 +314,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-defoe-robinson/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: '19th-c. / pre-1996 German orthography — historical spellings (muß, wußte, ward, dative -e).',
     available: true,
   },
   {
@@ -297,6 +327,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-kafka-verwandlung/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Pre-1996 German spelling (1915) — uses traditional ß forms (muß, mußte, wußte, läßt).',
     available: true,
   },
   {
@@ -308,6 +340,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/de-hesse-siddhartha/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Pre-1996 German spelling (1922) — uses traditional ß forms (muß, wußte, läßt) and poetic diction.',
     available: true,
   },
   // Czech (7)
@@ -320,6 +354,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/cs-bible-bkr/manifest.json',
     unit: 'verse',
     exampleRef: { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Archaic 16th-c. Czech — contains archaic -ti infinitives, -ť verbs, jest, and transgressives.',
     available: true,
   },
   {
@@ -331,6 +367,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/cs-doyle-baskerville/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Archaic early 20th-c. literary Czech (1903) — uses jest, -ti infinitives, and frequent transgressives.',
     available: true,
   },
   {
@@ -342,6 +380,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/cs-verne-2years/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Dated literary Czech — occasional -ti infinitives, jest, and literary transgressives.',
     available: true,
   },
   {
@@ -353,6 +393,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/cs-defoe-robinson/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Dated literary Czech — occasional -ti infinitives, jest, and literary transgressives.',
     available: true,
   },
   {
@@ -364,6 +406,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/cs-kipling-jungle/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'dated',
+    archaicNote: 'Dated literary Czech — contains -ti infinitives, jest, and literary transgressives.',
     available: true,
   },
   {
@@ -398,6 +442,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/es-bible-rv1909/manifest.json',
     unit: 'verse',
     exampleRef: { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Classical biblical Spanish (1909) — uses future subjunctive (hubiere, fuere), literary vosotros, and archaic idioms.',
     available: true,
   },
   {
@@ -464,6 +510,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/es-cervantes-quijote/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Archaic Golden Age Spanish (1605) — contains agora, mesmo, trujo, vuestra merced, and future subjunctive.',
     available: true,
   },
   {
@@ -486,6 +534,8 @@ export const CORPORA: CorpusOption[] = [
     manifestUrl: '/data/es-lazarillo/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    archaicLevel: 'archaic',
+    archaicNote: 'Archaic Golden Age Spanish (1554) — contains archaic verb forms, contractions (deste), and Renaissance syntax.',
     available: true,
   },
   {

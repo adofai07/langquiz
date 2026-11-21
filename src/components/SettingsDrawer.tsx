@@ -188,15 +188,44 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             {availableCorpora.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
+                {c.archaicLevel === 'archaic'
+                  ? ' [Archaic]'
+                  : c.archaicLevel === 'dated'
+                    ? ' [Dated]'
+                    : ''}
               </option>
             ))}
           </select>
           {manifest && (
             <p className="corpus-caption tabular">
-              <span>{manifest.subtitle}</span>
+              <span className="corpus-caption-main">
+                <span>{manifest.subtitle}</span>
+                {activeCorpus.archaicLevel && (
+                  <span
+                    className={`archaic-tag tabular${
+                      activeCorpus.archaicLevel === 'archaic' ? ' archaic-tag--strong' : ''
+                    }`}
+                    title={activeCorpus.archaicNote}
+                  >
+                    {activeCorpus.archaicLevel === 'archaic' ? 'Archaic' : 'Dated'}
+                  </span>
+                )}
+              </span>
               <span>
                 {manifest.quizVerses.toLocaleString()}{' '}
                 {isSentenceCorpus ? 'sentences' : 'verses'}
+              </span>
+            </p>
+          )}
+          {!manifest && activeCorpus.archaicLevel && (
+            <p className="corpus-caption tabular">
+              <span
+                className={`archaic-tag tabular${
+                  activeCorpus.archaicLevel === 'archaic' ? ' archaic-tag--strong' : ''
+                }`}
+                title={activeCorpus.archaicNote}
+              >
+                {activeCorpus.archaicLevel === 'archaic' ? 'Archaic' : 'Dated'}
               </span>
             </p>
           )}
@@ -443,6 +472,28 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                   {label}
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div className="segment-group">
+            <span className="segment-title">Grammar cues (gender / you)</span>
+            <div className="segmented" role="group" aria-label="Grammar cues display">
+              <button
+                type="button"
+                className="segmented-btn"
+                aria-pressed={settings.showGrammarCues}
+                onClick={() => onChange({ ...settings, showGrammarCues: true })}
+              >
+                Auto
+              </button>
+              <button
+                type="button"
+                className="segmented-btn"
+                aria-pressed={!settings.showGrammarCues}
+                onClick={() => onChange({ ...settings, showGrammarCues: false })}
+              >
+                Off
+              </button>
             </div>
           </div>
 

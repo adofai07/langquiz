@@ -5,13 +5,16 @@ import {
   isEvaluationCorrect,
   matchOriginalCase,
 } from '../services/answerCheck';
+import { resolveBlankCue } from '../services/grammarCue';
 import {
   WORD_FORM_META,
   type BlankEvaluation,
+  type CorpusArchaicLevel,
   type DiacriticMode,
   type EnabledWordForms,
   type GlossMode,
   type LanguageCode,
+  type QuizContextItem,
   type QuizQuestion,
 } from '../types/quiz';
 import { PolishKeyboardBar } from './PolishKeyboardBar';
@@ -23,8 +26,12 @@ interface QuizCardProps {
   diacritics: string[];
   diacriticMode: DiacriticMode;
   glossMode?: GlossMode;
+  showGrammarCues?: boolean;
+  archaicLevel?: CorpusArchaicLevel;
+  archaicNote?: string;
   glossary?: Record<string, string>;
   wordForms: EnabledWordForms;
+  isActive?: boolean;
   onComplete: (allCorrect: boolean) => void;
   onNext: () => void;
 }
@@ -43,8 +50,12 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   diacritics,
   diacriticMode,
   glossMode = 'always',
+  showGrammarCues = true,
+  archaicLevel,
+  archaicNote,
   glossary,
   wordForms,
+  isActive = true,
   onComplete,
   onNext,
 }) => {
@@ -52,6 +63,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [phase, setPhase] = useState<RoundPhase>('answering');
   const [evaluations, setEvaluations] = useState<BlankEvaluation[] | null>(null);
+  const [contextOpen, setContextOpen] = useState<boolean>(false);
   const scoredForQuestionRef = useRef<string | null>(null);
   const composingRef = useRef<boolean>(false);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -63,6 +75,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
     setActiveIndex(0);
     setPhase('answering');
     setEvaluations(null);
+    setContextOpen(false);
     scoredForQuestionRef.current = null;
     inputRefs.current = [];
     const timer = window.setTimeout(() => {
@@ -73,7 +86,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
 
   // Move focus to Next button once checked/revealed and allow Enter anywhere to advance
   useEffect(() => {
-    if (phase === 'answering') return;
+    if (phase === 'answering' || !isActive) return;
     nextBtnRef.current?.focus();
 
     const onKey = (e: KeyboardEvent) => {
@@ -93,7 +106,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [phase, onNext]);
+  }, [phase, isActive, onNext]);
 
   const handleInputChange = (idx: number, value: string, skipFilter = false) => {
     const cleaned = skipFilter ? value : filterAlphabetInput(value, alphabet);
@@ -318,173 +331,264 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const showGloss =
     Boolean(glossary) &&
     (glossMode === 'always' || (glossMode === 'after-check' && phase !== 'answering'));
+  const prevContext: QuizContextItem[] = (question.context ?? []).filter(
+    (c) => c.position === 'prev'
+  );
+  const nextContext: QuizContextItem[] = (question.context ?? []).filter(
+    (c) => c.position === 'next'
+  );
+  const hasContext = prevContext.length > 0 || nextContext.length > 0;
+
+  const formatContextRef = (c: QuizContextItem) =>
+    c.verse === c.verseEnd ? `${c.chapter}:${c.verse}` : `${c.chapter}:${c.verse}–${c.verseEnd}`;
 
   return (
-    <article className="quiz-grid" aria-label="Verb form quiz question">
-      {/* 01 / REFERENCE */}
-      <div className="grid-row">
-        <div className="grid-label tabular">
-          <span className="grid-label-num">01</span>
-          <span>Reference</span>
-        </div>
-        <div className="grid-value reference-row">
-          <h1 className="reference-text tabular">
-            {question.bookNativeName}{' '}
-            <span className="reference-sub">({question.bookEnName})</span>{' '}
-            {question.verse === question.verseEnd
-              ? `${question.chapter}:${question.verse}`
-              : `${question.chapter}:${question.verse}–${question.verseEnd}`}
-          </h1>
-          <button type="button" className="skip-link" onClick={onNext}>
-            Skip →
-          </button>
-        </div>
-      </div>
-
-      {/* 02 / ORIGINAL */}
-      <div className="grid-row grid-row--original">
-        <div className="grid-label tabular">
-          <span className="grid-label-num">02</span>
-          <span>Original</span>
-        </div>
-        <div className="grid-value">
-          <p className="original-sentence" lang={languageCode}>
-            {renderOriginal()}
-          </p>
-        </div>
-      </div>
-
-      {/* 03 / VERB OR FORMS */}
-      <div className="grid-row">
-        <div className="grid-label tabular">
-          <span className="grid-label-num">03</span>
-          <span>{formsRowLabel}</span>
-        </div>
-        <div className="grid-value">
-          <ul className="verb-list" aria-label="Base forms">
-            {question.blanks.map((blank, idx) => {
-              const ev = evaluations?.[idx];
-              const isActive = phase === 'answering' && activeIndex === idx;
-              const statusClass = ev
-                ? ev.status === 'exact'
-                  ? ' verb-chip--exact'
-                  : ev.status === 'diacritic-close'
-                    ? ' verb-chip--diacritic'
-                    : ev.status === 'wrong'
-                      ? ' verb-chip--wrong'
-                      : ''
-                : isActive
-                  ? ' verb-chip--active'
-                  : '';
-              const kindMeta = KIND_TAG_MAP[blank.kind];
-              const meaning = showGloss
-                ? (glossary?.[blank.lemma] ?? glossary?.[blank.lemma.toLowerCase()])
-                : undefined;
-
-              return (
-                <li key={`${blank.start}-${idx}`}>
-                  <button
-                    type="button"
-                    className={`verb-chip${statusClass}`}
-                    title={kindMeta?.label}
-                    onClick={() => {
-                      if (phase === 'answering') {
-                        setActiveIndex(idx);
-                        inputRefs.current[idx]?.focus();
-                      }
-                    }}
-                  >
-                    <span className="verb-chip-idx tabular">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span lang={languageCode}>{blank.lemma}</span>
-                    {meaning && (
-                      <span className="verb-chip-gloss" lang="en">
-                        {meaning}
-                      </span>
-                    )}
-                    {showKindTags && kindMeta && (
-                      <span className="verb-chip-kind tabular" aria-label={kindMeta.label}>
-                        {kindMeta.shortTag}
-                      </span>
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-
-      {/* 04 / TRANSLATION */}
-      <div className="grid-row">
-        <div className="grid-label tabular">
-          <span className="grid-label-num">04</span>
-          <span>Translation</span>
-        </div>
-        <div className="grid-value">
-          <p className="translation-text" lang="en">
-            {question.translation}
-            <span className="translation-source">{question.translationSource}</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Action Rail */}
-      <div className="action-rail">
-        <PolishKeyboardBar
-          diacritics={diacritics}
-          disabled={phase !== 'answering'}
-          onInsert={handleInsertDiacritic}
-        />
-
-        <div className="action-buttons">
-          {phase === 'answering' ? (
-            <>
-              <button type="button" className="btn btn--ghost" onClick={handleReveal}>
-                Reveal
-              </button>
-              <button type="button" className="btn btn--primary" onClick={handleCheck}>
-                Check ↵
-              </button>
-            </>
-          ) : (
-            <>
-              {!allCorrect && (
-                <button type="button" className="btn btn--ghost" onClick={handleRetry}>
-                  Retry
-                </button>
-              )}
-              <button
-                ref={nextBtnRef}
-                type="button"
-                className={`btn ${allCorrect ? 'btn--primary' : 'btn--accent'}`}
-                onClick={onNext}
-              >
-                Next →
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Subtle Post-Check Summary */}
-      {phase !== 'answering' && evaluations && (
-        <div className="feedback-banner" role="status" aria-live="polite">
-          <span
-            className={`feedback-status tabular ${
-              allCorrect ? 'feedback-status--ok' : 'feedback-status--err'
-            }`}
+    <article className="quiz-card" aria-label="Verb form quiz question">
+      {/* Top Utility Rail — Show Context on left, Skip constantly anchored at far right above top rule */}
+      <div className="quiz-top-bar">
+        {hasContext ? (
+          <button
+            type="button"
+            className={`top-bar-link${contextOpen ? ' top-bar-link--active' : ''}`}
+            aria-expanded={contextOpen}
+            onClick={() => setContextOpen((v) => !v)}
           >
-            {phase === 'revealed'
-              ? `Revealed — ${totalBlanks} ${totalBlanks === 1 ? 'form' : 'forms'}`
-              : allCorrect
-                ? `Correct — ${correctCount} / ${totalBlanks}`
-                : `${correctCount} / ${totalBlanks} correct`}
-          </span>
-          <span className="feedback-hint">Press Enter for next</span>
+            {contextOpen ? 'Hide context' : 'Show context'}
+          </button>
+        ) : (
+          <span aria-hidden="true" />
+        )}
+        <button type="button" className="skip-link" onClick={onNext}>
+          Skip →
+        </button>
+      </div>
+
+      <div className="quiz-grid">
+        {/* 01 / REFERENCE */}
+        <div className="grid-row">
+          <div className="grid-label tabular">
+            <span className="grid-label-num">01</span>
+            <span>Reference</span>
+          </div>
+          <div className="grid-value reference-head">
+            <h1 className="reference-text tabular">
+              {question.bookNativeName}{' '}
+              <span className="reference-sub">({question.bookEnName})</span>{' '}
+              {question.verse === question.verseEnd
+                ? `${question.chapter}:${question.verse}`
+                : `${question.chapter}:${question.verse}–${question.verseEnd}`}
+            </h1>
+            {archaicLevel && (
+              <span
+                className={`archaic-tag tabular${
+                  archaicLevel === 'archaic' ? ' archaic-tag--strong' : ''
+                }`}
+                title={archaicNote}
+              >
+                {archaicLevel === 'archaic' ? 'Archaic' : 'Dated'}
+              </span>
+            )}
+          </div>
         </div>
-      )}
+
+        {/* 02 / ORIGINAL */}
+        <div className="grid-row grid-row--original">
+          <div className="grid-label tabular">
+            <span className="grid-label-num">02</span>
+            <span>Original</span>
+          </div>
+          <div className="grid-value">
+            {contextOpen && prevContext.length > 0 && (
+              <div className="context-block context-block--before" lang={languageCode}>
+                {prevContext.map((c) => (
+                  <p key={`po-${c.chapter}-${c.verse}`} className="context-line">
+                    <span className="context-ref tabular">{formatContextRef(c)}</span>
+                    <span>{c.original}</span>
+                  </p>
+                ))}
+              </div>
+            )}
+            <p className="original-sentence" lang={languageCode}>
+              {renderOriginal()}
+            </p>
+            {contextOpen && nextContext.length > 0 && (
+              <div className="context-block context-block--after" lang={languageCode}>
+                {nextContext.map((c) => (
+                  <p key={`no-${c.chapter}-${c.verse}`} className="context-line">
+                    <span className="context-ref tabular">{formatContextRef(c)}</span>
+                    <span>{c.original}</span>
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 03 / VERB OR FORMS */}
+        <div className="grid-row">
+          <div className="grid-label tabular">
+            <span className="grid-label-num">03</span>
+            <span>{formsRowLabel}</span>
+          </div>
+          <div className="grid-value">
+            <ul className="verb-list" aria-label="Base forms">
+              {question.blanks.map((blank, idx) => {
+                const ev = evaluations?.[idx];
+                const isActive = phase === 'answering' && activeIndex === idx;
+                const statusClass = ev
+                  ? ev.status === 'exact'
+                    ? ' verb-chip--exact'
+                    : ev.status === 'diacritic-close'
+                      ? ' verb-chip--diacritic'
+                      : ev.status === 'wrong'
+                        ? ' verb-chip--wrong'
+                        : ''
+                  : isActive
+                    ? ' verb-chip--active'
+                    : '';
+                const kindMeta = KIND_TAG_MAP[blank.kind];
+                const meaning = showGloss
+                  ? (glossary?.[blank.lemma] ?? glossary?.[blank.lemma.toLowerCase()])
+                  : undefined;
+                const cue = showGrammarCues
+                  ? resolveBlankCue(blank, question, languageCode)
+                  : null;
+                const chipTitle = [kindMeta?.label, cue?.title].filter(Boolean).join(' · ') || undefined;
+
+                return (
+                  <li key={`${blank.start}-${idx}`}>
+                    <button
+                      type="button"
+                      className={`verb-chip${statusClass}`}
+                      title={chipTitle}
+                      onClick={() => {
+                        if (phase === 'answering') {
+                          setActiveIndex(idx);
+                          inputRefs.current[idx]?.focus();
+                        }
+                      }}
+                    >
+                      <span className="verb-chip-idx tabular">
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                      <span lang={languageCode}>{blank.lemma}</span>
+                      {meaning && (
+                        <span className="verb-chip-gloss" lang="en">
+                          {meaning}
+                        </span>
+                      )}
+                      {cue && (
+                        <span
+                          className="verb-chip-cue tabular"
+                          title={cue.title}
+                          aria-label={cue.title}
+                        >
+                          {cue.label}
+                        </span>
+                      )}
+                      {showKindTags && kindMeta && (
+                        <span className="verb-chip-kind tabular" aria-label={kindMeta.label}>
+                          {kindMeta.shortTag}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+
+        {/* 04 / TRANSLATION */}
+        <div className="grid-row">
+          <div className="grid-label tabular">
+            <span className="grid-label-num">04</span>
+            <span>Translation</span>
+          </div>
+          <div className="grid-value">
+            {contextOpen && prevContext.length > 0 && (
+              <div className="context-block context-block--before context-block--translation" lang="en">
+                {prevContext.map((c) => (
+                  <p key={`pt-${c.chapter}-${c.verse}`} className="context-line">
+                    <span className="context-ref tabular">{formatContextRef(c)}</span>
+                    <span>{c.translation}</span>
+                  </p>
+                ))}
+              </div>
+            )}
+            <p className="translation-text" lang="en">
+              {question.translation}
+              <span className="translation-source">{question.translationSource}</span>
+            </p>
+            {contextOpen && nextContext.length > 0 && (
+              <div className="context-block context-block--after context-block--translation" lang="en">
+                {nextContext.map((c) => (
+                  <p key={`nt-${c.chapter}-${c.verse}`} className="context-line">
+                    <span className="context-ref tabular">{formatContextRef(c)}</span>
+                    <span>{c.translation}</span>
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Action Rail */}
+        <div className="action-rail">
+          <PolishKeyboardBar
+            diacritics={diacritics}
+            disabled={phase !== 'answering'}
+            onInsert={handleInsertDiacritic}
+          />
+
+          <div className="action-buttons">
+            {phase === 'answering' ? (
+              <>
+                <button type="button" className="btn btn--ghost" onClick={handleReveal}>
+                  Reveal
+                </button>
+                <button type="button" className="btn btn--primary" onClick={handleCheck}>
+                  Check ↵
+                </button>
+              </>
+            ) : (
+              <>
+                {!allCorrect && (
+                  <button type="button" className="btn btn--ghost" onClick={handleRetry}>
+                    Retry
+                  </button>
+                )}
+                <button
+                  ref={nextBtnRef}
+                  type="button"
+                  className={`btn ${allCorrect ? 'btn--primary' : 'btn--accent'}`}
+                  onClick={onNext}
+                >
+                  Next →
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Subtle Post-Check Summary */}
+        {phase !== 'answering' && evaluations && (
+          <div className="feedback-banner" role="status" aria-live="polite">
+            <span
+              className={`feedback-status tabular ${
+                allCorrect ? 'feedback-status--ok' : 'feedback-status--err'
+              }`}
+            >
+              {phase === 'revealed'
+                ? `Revealed — ${totalBlanks} ${totalBlanks === 1 ? 'form' : 'forms'}`
+                : allCorrect
+                  ? `Correct — ${correctCount} / ${totalBlanks}`
+                  : `${correctCount} / ${totalBlanks} correct`}
+            </span>
+            <span className="feedback-hint">Press Enter for next</span>
+          </div>
+        )}
+      </div>
     </article>
   );
 };
