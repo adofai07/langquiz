@@ -5,11 +5,13 @@ import {
   isEvaluationCorrect,
   matchOriginalCase,
 } from '../services/answerCheck';
-import type {
-  BlankEvaluation,
-  DiacriticMode,
-  LanguageCode,
-  QuizQuestion,
+import {
+  WORD_FORM_META,
+  type BlankEvaluation,
+  type DiacriticMode,
+  type EnabledWordForms,
+  type LanguageCode,
+  type QuizQuestion,
 } from '../types/quiz';
 import { PolishKeyboardBar } from './PolishKeyboardBar';
 
@@ -19,11 +21,17 @@ interface QuizCardProps {
   alphabet: string;
   diacritics: string[];
   diacriticMode: DiacriticMode;
+  wordForms: EnabledWordForms;
   onComplete: (allCorrect: boolean) => void;
   onNext: () => void;
 }
 
 type RoundPhase = 'answering' | 'checked' | 'revealed';
+
+const KIND_TAG_MAP = Object.fromEntries(WORD_FORM_META.map((m) => [m.kind, m])) as Record<
+  string,
+  { label: string; shortTag: string }
+>;
 
 export const QuizCard: React.FC<QuizCardProps> = ({
   question,
@@ -31,6 +39,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   alphabet,
   diacritics,
   diacriticMode,
+  wordForms,
   onComplete,
   onNext,
 }) => {
@@ -297,6 +306,10 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const correctCount = evaluations ? evaluations.filter(isEvaluationCorrect).length : 0;
   const totalBlanks = question.blanks.length;
   const allCorrect = evaluations !== null && correctCount === totalBlanks && phase === 'checked';
+  const enabledCount = Object.values(wordForms).filter(Boolean).length;
+  const verbsOnly = enabledCount === 1 && wordForms.v;
+  const formsRowLabel = verbsOnly ? 'Verb' : 'Forms';
+  const showKindTags = enabledCount > 1;
 
   return (
     <article className="quiz-grid" aria-label="Verb form quiz question">
@@ -333,14 +346,14 @@ export const QuizCard: React.FC<QuizCardProps> = ({
         </div>
       </div>
 
-      {/* 03 / VERB */}
+      {/* 03 / VERB OR FORMS */}
       <div className="grid-row">
         <div className="grid-label tabular">
           <span className="grid-label-num">03</span>
-          <span>Verb</span>
+          <span>{formsRowLabel}</span>
         </div>
         <div className="grid-value">
-          <ul className="verb-list" aria-label="Infinitive verbs">
+          <ul className="verb-list" aria-label="Base forms">
             {question.blanks.map((blank, idx) => {
               const ev = evaluations?.[idx];
               const isActive = phase === 'answering' && activeIndex === idx;
@@ -355,12 +368,14 @@ export const QuizCard: React.FC<QuizCardProps> = ({
                 : isActive
                   ? ' verb-chip--active'
                   : '';
+              const kindMeta = KIND_TAG_MAP[blank.kind];
 
               return (
                 <li key={`${blank.start}-${idx}`}>
                   <button
                     type="button"
                     className={`verb-chip${statusClass}`}
+                    title={kindMeta?.label}
                     onClick={() => {
                       if (phase === 'answering') {
                         setActiveIndex(idx);
@@ -372,6 +387,11 @@ export const QuizCard: React.FC<QuizCardProps> = ({
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     <span lang={languageCode}>{blank.lemma}</span>
+                    {showKindTags && kindMeta && (
+                      <span className="verb-chip-kind tabular" aria-label={kindMeta.label}>
+                        {kindMeta.shortTag}
+                      </span>
+                    )}
                   </button>
                 </li>
               );

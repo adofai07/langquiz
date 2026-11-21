@@ -7,6 +7,7 @@ import {
   VERSE_RANGE_MIN,
   type AppSettings,
   type CountRange,
+  type EnabledWordForms,
   type VerbRange,
   type VerseRange,
 } from '../types/quiz';
@@ -23,15 +24,40 @@ export const DEFAULT_VERSE_RANGE: VerseRange = {
   max: 3,
 };
 
+export const DEFAULT_WORD_FORMS: EnabledWordForms = {
+  v: true,
+  p: false,
+  n: false,
+  a: false,
+  r: false,
+};
+
 export const DEFAULT_SETTINGS: AppSettings = {
   language: 'pl',
   corpusId: 'pl-bible-ubg',
   fontAxes: { ...DEFAULT_FONT_AXES },
   diacriticMode: 'strict',
+  wordForms: { ...DEFAULT_WORD_FORMS },
   verbRange: { ...DEFAULT_VERB_RANGE },
   verseRange: { ...DEFAULT_VERSE_RANGE },
   theme: 'system',
 };
+
+function sanitizeWordForms(raw: unknown): EnabledWordForms {
+  if (!raw || typeof raw !== 'object') return { ...DEFAULT_WORD_FORMS };
+  const obj = raw as Partial<Record<keyof EnabledWordForms, unknown>>;
+  const next: EnabledWordForms = {
+    v: typeof obj.v === 'boolean' ? obj.v : DEFAULT_WORD_FORMS.v,
+    p: typeof obj.p === 'boolean' ? obj.p : DEFAULT_WORD_FORMS.p,
+    n: typeof obj.n === 'boolean' ? obj.n : DEFAULT_WORD_FORMS.n,
+    a: typeof obj.a === 'boolean' ? obj.a : DEFAULT_WORD_FORMS.a,
+    r: typeof obj.r === 'boolean' ? obj.r : DEFAULT_WORD_FORMS.r,
+  };
+  if (!Object.values(next).some(Boolean)) {
+    next.v = true;
+  }
+  return next;
+}
 
 function sanitizeRange(
   raw: unknown,
@@ -71,6 +97,7 @@ function readStoredSettings(): AppSettings {
       language: parsed.language ?? DEFAULT_SETTINGS.language,
       corpusId: parsed.corpusId ?? DEFAULT_SETTINGS.corpusId,
       diacriticMode: parsed.diacriticMode ?? DEFAULT_SETTINGS.diacriticMode,
+      wordForms: sanitizeWordForms(parsed.wordForms),
       verbRange: sanitizeVerbRange(parsed.verbRange, parsed.blankLimit),
       verseRange: sanitizeRange(
         parsed.verseRange,

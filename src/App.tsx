@@ -75,6 +75,7 @@ export const App: React.FC = () => {
     const boldFvs = buildFontVariationSettings(fontAxes, 260);
     const labelFvs = buildFontVariationSettings(fontAxes, 180);
     const optical = fontAxes.opszAuto ? 'auto' : 'none';
+    const letterSpacing = `${fontAxes.tracking.toFixed(3)}em`;
 
     root.style.setProperty('--allo-wght-base', String(baseWght));
     root.style.setProperty('--allo-wght-medium', String(mediumWght));
@@ -86,6 +87,7 @@ export const App: React.FC = () => {
     root.style.setProperty('--allo-fvs-bold', boldFvs);
     root.style.setProperty('--allo-fvs-label', labelFvs);
     root.style.setProperty('--allo-optical-sizing', optical);
+    root.style.setProperty('--allo-letter-spacing', letterSpacing);
 
     // Also set directly on <body> so every browser engine flushes glyph caches immediately
     document.body.style.fontWeight = String(baseWght);
@@ -93,6 +95,8 @@ export const App: React.FC = () => {
     document.body.style.fontOpticalSizing = optical;
   }, [settings.fontAxes]);
 
+  const wordFormsRef = useRef(settings.wordForms);
+  wordFormsRef.current = settings.wordForms;
   const verbRangeRef = useRef(settings.verbRange);
   verbRangeRef.current = settings.verbRange;
   const verseRangeRef = useRef(settings.verseRange);
@@ -106,11 +110,12 @@ export const App: React.FC = () => {
       setManifest(m);
       const q = await pickRandomQuestion(
         corpus.manifestUrl,
+        wordFormsRef.current,
         verbRangeRef.current,
         verseRangeRef.current,
         recentIdsRef.current
       );
-      recentIdsRef.current.add(q.id);
+      recentIdsRef.current.add(q.id.split(':').slice(0, 4).join(':'));
       if (recentIdsRef.current.size > 120) {
         const first = recentIdsRef.current.values().next().value;
         if (first) recentIdsRef.current.delete(first);
@@ -129,7 +134,13 @@ export const App: React.FC = () => {
     try {
       const m = await loadCorpusManifest(corpus.manifestUrl);
       setManifest(m);
-      const q = await loadSpecificQuestion(corpus.manifestUrl, 'gn', 3, 13);
+      const q = await loadSpecificQuestion(
+        corpus.manifestUrl,
+        'gn',
+        3,
+        13,
+        wordFormsRef.current
+      );
       if (q) {
         setQuestion(q);
       } else {
@@ -142,7 +153,7 @@ export const App: React.FC = () => {
     }
   }, [corpus.manifestUrl, fetchNextQuestion]);
 
-  // StrictMode-safe initial load (supports ?ref=gn-3-13 deep link) & reload when corpus/blankLimit changes
+  // StrictMode-safe initial load (supports ?ref=gn-3-13 deep link) & reload when corpus changes
   const appliedInitialRefForUrl = useRef<string | null>(null);
   useEffect(() => {
     let cancelled = false;
@@ -163,7 +174,8 @@ export const App: React.FC = () => {
             corpus.manifestUrl,
             bookId.toLowerCase(),
             Number(chStr),
-            Number(vStr)
+            Number(vStr),
+            wordFormsRef.current
           );
           if (cancelled) return;
           appliedInitialRefForUrl.current = corpus.manifestUrl;
@@ -190,29 +202,67 @@ export const App: React.FC = () => {
     };
   }, [corpus.manifestUrl, fetchNextQuestion]);
 
-  // Only re-fetch when the user changes verbRange/verseRange and the active verse no longer fits
-  // (never override an explicitly loaded example or ?ref= deep link)
+  // Re-apply active wordForms on the current verse immediately when toggled, or re-fetch if range no longer fits
   const prevFilterRef = useRef({
+    forms: settings.wordForms,
     verb: settings.verbRange,
     verse: settings.verseRange,
   });
   useEffect(() => {
     const prev = prevFilterRef.current;
-    prevFilterRef.current = { verb: settings.verbRange, verse: settings.verseRange };
-    const unchanged =
-      prev.verb.min === settings.verbRange.min &&
-      prev.verb.max === settings.verbRange.max &&
-      prev.verse.min === settings.verseRange.min &&
-      prev.verse.max === settings.verseRange.max;
-    if (unchanged) return;
+    prevFilterRef.current = {
+      forms: settings.wordForms,
+      verb: settings.verbRange,
+      verse: settings.verseRange,
+    };
+    const formsChanged =
+      prev.forms.v !== settings.wordForms.v ||
+      prev.forms.p !== settings.wordForms.p ||
+      prev.forms.n !== settings.wordForms.n ||
+      prev.forms.a !== settings.wordForms.a ||
+      prev.forms.r !== settings.wordForms.r;
+    const rangesChanged =
+      prev.verb.min !== settings.verbRange.min ||
+      prev.verb.max !== settings.verbRange.max ||
+      prev.verse.min !== settings.verseRange.min ||
+      prev.verse.max !== settings.verseRange.max;
+
+    if (!formsChanged && !rangesChanged) return;
     if (!question || loading) return;
+
+    if (formsChanged) {
+      void (async () => {
+        const refreshed = await loadSpecificQuestion(
+          corpus.manifestUrl,
+          question.bookId,
+          question.chapter,
+          question.verse,
+          settings.wordForms
+        );
+        if (refreshed && matchesVerbRange(refreshed.blanks.length, settings.verbRange)) {
+          setQuestion(refreshed);
+        } else {
+          await fetchNextQuestion();
+        }
+      })();
+      return;
+    }
+
     if (
       !matchesVerbRange(question.blanks.length, settings.verbRange) ||
       !matchesVerseRange(question.verseCount, settings.verseRange)
     ) {
       void fetchNextQuestion();
     }
-  }, [settings.verbRange, settings.verseRange, question, loading, fetchNextQuestion]);
+  }, [
+    settings.wordForms,
+    settings.verbRange,
+    settings.verseRange,
+    corpus.manifestUrl,
+    question,
+    loading,
+    fetchNextQuestion,
+  ]);
 
   const handleComplete = useCallback((allCorrect: boolean) => {
     setAttemptedCount((c) => c + 1);
@@ -286,6 +336,7 @@ export const App: React.FC = () => {
             alphabet={language.alphabet}
             diacritics={language.diacritics}
             diacriticMode={settings.diacriticMode}
+            wordForms={settings.wordForms}
             onComplete={handleComplete}
             onNext={fetchNextQuestion}
           />

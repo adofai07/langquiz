@@ -272,7 +272,7 @@ def main() -> None:
             print(f"\n--- {args.corpus} Genesis 3:13 ---")
             print("Original:   ", gen313["o"])
             print("Translation:", gen313["t"])
-            print("Verbs:      ", [lem for _, _, lem in gen313["m"]])
+            print("Forms:      ", [sp[2] for sp in gen313["m"]])
 
 
 if __name__ == "__main__":

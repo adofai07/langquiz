@@ -39,6 +39,7 @@
   --allo-fvs-bold: "wght" 660, "ROND" 50, "opsz" 14;
   --allo-fvs-label: "wght" 580, "ROND" 50, "opsz" 14;
   --allo-optical-sizing: none;
+  --allo-letter-spacing: 0em;
 
   --grid-max: 1020px;
   --gutter: clamp(1.1rem, 4.5vw, 3rem);
@@ -344,7 +345,7 @@ select {
   margin: 0;
   font-size: clamp(1.32rem, 2.55vw, 2.02rem);
   line-height: 1.72;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--allo-letter-spacing);
   color: var(--ink);
   word-wrap: break-word;
   font-weight: var(--allo-wght-base);
@@ -515,6 +516,7 @@ select {
   align-items: baseline;
   gap: 0.45rem;
   font-size: 0.96rem;
+  letter-spacing: var(--allo-letter-spacing);
   cursor: pointer;
   color: var(--ink);
   font-weight: var(--allo-wght-base);
@@ -567,11 +569,21 @@ select {
   color: var(--ok);
 }
 
+.verb-chip-kind {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  border-left: 1px solid var(--rule);
+  padding-left: 0.4rem;
+  margin-left: 0.05rem;
+}
+
 /* Row 4: Translation */
 .translation-text {
   margin: 0;
   font-size: clamp(0.98rem, 1.35vw, 1.12rem);
   line-height: 1.62;
+  letter-spacing: var(--allo-letter-spacing);
   color: var(--ink-2);
   font-weight: var(--allo-wght-base);
   font-variation-settings: var(--allo-fvs-base);
@@ -901,6 +913,7 @@ select {
   font-family: "Allo Variable", "Allo", system-ui, sans-serif;
   font-size: 1.65rem;
   line-height: 1.25;
+  letter-spacing: var(--allo-letter-spacing);
   color: var(--ink);
   font-weight: var(--allo-wght-base);
   font-variation-settings: var(--allo-fvs-base);
@@ -1067,6 +1080,79 @@ select {
   color: var(--bg);
   font-weight: var(--allo-wght-medium);
   font-variation-settings: var(--allo-fvs-medium);
+}
+
+/* Word Form Checkboxes */
+.form-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.38rem;
+}
+
+.form-check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.44rem 0.6rem;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  user-select: none;
+  transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.form-check input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.form-check:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.form-check--checked {
+  border-color: var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: var(--allo-wght-medium);
+  font-variation-settings: var(--allo-fvs-medium);
+}
+
+.form-check--locked {
+  cursor: default;
+}
+
+.form-check-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--rule-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.form-check--checked .form-check-box {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.form-check-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-check-tag {
+  font-size: 0.66rem;
+  color: var(--ink-3);
 }
 
 /* Dual-Thumb Start-End Range Slider */

@@ -5,8 +5,15 @@
   "subtitle": "Schlachter 1951 · Direct English",
   "translationSource": "SCH1951 → EN",
   "totalVerses": 31102,
-  "quizVerses": 29228,
-  "totalVerbs": 101020,
+  "quizVerses": 30850,
+  "totalVerbs": 85083,
+  "formCounts": {
+    "v": 85083,
+    "p": 15937,
+    "n": 44963,
+    "a": 12129,
+    "r": 103589
+  },
   "books": [
     {
       "index": 0,
@@ -14,7 +21,7 @@
       "nativeName": "1. Mose",
       "enName": "Genesis",
       "chunkFile": "chunks/01-gn.json",
-      "verseCount": 1489
+      "verseCount": 1526
     },
     {
       "index": 1,
@@ -22,7 +29,7 @@
       "nativeName": "2. Mose",
       "enName": "Exodus",
       "chunkFile": "chunks/02-ex.json",
-      "verseCount": 1131
+      "verseCount": 1207
     },
     {
       "index": 2,
@@ -30,7 +37,7 @@
       "nativeName": "3. Mose",
       "enName": "Leviticus",
       "chunkFile": "chunks/03-lv.json",
-      "verseCount": 828
+      "verseCount": 859
     },
     {
       "index": 3,
@@ -38,7 +45,7 @@
       "nativeName": "4. Mose",
       "enName": "Numbers",
       "chunkFile": "chunks/04-nm.json",
-      "verseCount": 1119
+      "verseCount": 1261
     },
     {
       "index": 4,
@@ -46,7 +53,7 @@
       "nativeName": "5. Mose",
       "enName": "Deuteronomy",
       "chunkFile": "chunks/05-dt.json",
-      "verseCount": 930
+      "verseCount": 958
     },
     {
       "index": 5,
@@ -54,7 +61,7 @@
       "nativeName": "Josua",
       "enName": "Joshua",
       "chunkFile": "chunks/06-js.json",
-      "verseCount": 570
+      "verseCount": 606
     },
     {
       "index": 6,
@@ -62,7 +69,7 @@
       "nativeName": "Richter",
       "enName": "Judges",
       "chunkFile": "chunks/07-jz.json",
-      "verseCount": 616
+      "verseCount": 618
     },
     {
       "index": 7,
@@ -78,7 +85,7 @@
       "nativeName": "1. Samuel",
       "enName": "1 Samuel",
       "chunkFile": "chunks/09-1sm.json",
-      "verseCount": 804
+      "verseCount": 810
     },
     {
       "index": 9,
@@ -86,7 +93,7 @@
       "nativeName": "2. Samuel",
       "enName": "2 Samuel",
       "chunkFile": "chunks/10-2sm.json",
-      "verseCount": 670
+      "verseCount": 684
     },
     {
       "index": 10,
@@ -94,7 +101,7 @@
       "nativeName": "1. Könige",
       "enName": "1 Kings",
       "chunkFile": "chunks/11-1rs.json",
-      "verseCount": 804
+      "verseCount": 811
     },
     {
       "index": 11,
@@ -102,7 +109,7 @@
       "nativeName": "2. Könige",
       "enName": "2 Kings",
       "chunkFile": "chunks/12-2rs.json",
-      "verseCount": 715
+      "verseCount": 719
     },
     {
       "index": 12,
@@ -110,7 +117,7 @@
       "nativeName": "1. Chronik",
       "enName": "1 Chronicles",
       "chunkFile": "chunks/13-1cr.json",
-      "verseCount": 662
+      "verseCount": 884
     },
     {
       "index": 13,
@@ -118,7 +125,7 @@
       "nativeName": "2. Chronik",
       "enName": "2 Chronicles",
       "chunkFile": "chunks/14-2cr.json",
-      "verseCount": 806
+      "verseCount": 819
     },
     {
       "index": 14,
@@ -126,7 +133,7 @@
       "nativeName": "Esra",
       "enName": "Ezra",
       "chunkFile": "chunks/15-ed.json",
-      "verseCount": 175
+      "verseCount": 271
     },
     {
       "index": 15,
@@ -134,7 +141,7 @@
       "nativeName": "Nehemia",
       "enName": "Nehemiah",
       "chunkFile": "chunks/16-ne.json",
-      "verseCount": 290
+      "verseCount": 362
     },
     {
       "index": 16,
@@ -142,7 +149,7 @@
       "nativeName": "Esther",
       "enName": "Esther",
       "chunkFile": "chunks/17-et.json",
-      "verseCount": 164
+      "verseCount": 165
     },
     {
       "index": 17,
@@ -150,7 +157,7 @@
       "nativeName": "Hiob",
       "enName": "Job",
       "chunkFile": "chunks/18-job.json",
-      "verseCount": 1018
+      "verseCount": 1069
     },
     {
       "index": 18,
@@ -158,7 +165,7 @@
       "nativeName": "Psalmen",
       "enName": "Psalms",
       "chunkFile": "chunks/19-sl.json",
-      "verseCount": 2239
+      "verseCount": 2455
     },
     {
       "index": 19,
@@ -166,7 +173,7 @@
       "nativeName": "Sprüche",
       "enName": "Proverbs",
       "chunkFile": "chunks/20-pv.json",
-      "verseCount": 846
+      "verseCount": 913
     },
     {
       "index": 20,
@@ -174,7 +181,7 @@
       "nativeName": "Prediger",
       "enName": "Ecclesiastes",
       "chunkFile": "chunks/21-ec.json",
-      "verseCount": 218
+      "verseCount": 222
     },
     {
       "index": 21,
@@ -182,7 +189,7 @@
       "nativeName": "Hohelied",
       "enName": "Song of Solomon",
       "chunkFile": "chunks/22-ct.json",
-      "verseCount": 110
+      "verseCount": 117
     },
     {
       "index": 22,
@@ -190,7 +197,7 @@
       "nativeName": "Jesaja",
       "enName": "Isaiah",
       "chunkFile": "chunks/23-is.json",
-      "verseCount": 1224
+      "verseCount": 1289
     },
     {
       "index": 23,
@@ -198,7 +205,7 @@
       "nativeName": "Jeremia",
       "enName": "Jeremiah",
       "chunkFile": "chunks/24-jr.json",
-      "verseCount": 1328
+      "verseCount": 1362
     },
     {
       "index": 24,
@@ -206,7 +213,7 @@
       "nativeName": "Klagelieder",
       "enName": "Lamentations",
       "chunkFile": "chunks/25-lm.json",
-      "verseCount": 149
+      "verseCount": 154
     },
     {
       "index": 25,
@@ -214,7 +221,7 @@
       "nativeName": "Hesekiel",
       "enName": "Ezekiel",
       "chunkFile": "chunks/26-ez.json",
-      "verseCount": 1225
+      "verseCount": 1273
     },
     {
       "index": 26,
@@ -222,7 +229,7 @@
       "nativeName": "Daniel",
       "enName": "Daniel",
       "chunkFile": "chunks/27-dn.json",
-      "verseCount": 349
+      "verseCount": 356
     },
     {
       "index": 27,
@@ -230,7 +237,7 @@
       "nativeName": "Hosea",
       "enName": "Hosea",
       "chunkFile": "chunks/28-os.json",
-      "verseCount": 191
+      "verseCount": 197
     },
     {
       "index": 28,
@@ -238,7 +245,7 @@
       "nativeName": "Joel",
       "enName": "Joel",
       "chunkFile": "chunks/29-jl.json",
-      "verseCount": 67
+      "verseCount": 72
     },
     {
       "index": 29,
@@ -246,7 +253,7 @@
       "nativeName": "Amos",
       "enName": "Amos",
       "chunkFile": "chunks/30-am.json",
-      "verseCount": 139
+      "verseCount": 146
     },
     {
       "index": 30,
@@ -254,7 +261,7 @@
       "nativeName": "Obadja",
       "enName": "Obadiah",
       "chunkFile": "chunks/31-ob.json",
-      "verseCount": 20
+      "verseCount": 21
     },
     {
       "index": 31,
@@ -262,7 +269,7 @@
       "nativeName": "Jona",
       "enName": "Jonah",
       "chunkFile": "chunks/32-jn.json",
-      "verseCount": 46
+      "verseCount": 48
     },
     {
       "index": 32,
@@ -270,7 +277,7 @@
       "nativeName": "Micha",
       "enName": "Micah",
       "chunkFile": "chunks/33-mq.json",
-      "verseCount": 100
+      "verseCount": 105
     },
     {
       "index": 33,
@@ -278,15 +285,15 @@
       "nativeName": "Nahum",
       "enName": "Nahum",
       "chunkFile": "chunks/34-na.json",
-      "verseCount": 44
+      "verseCount": 47
     },
     {
       "index": 34,
       "id": "hc",
       "nativeName": "Habakuk",
-      "enName": "Habakuk",
+      "enName": "Habakkuk",
       "chunkFile": "chunks/35-hc.json",
-      "verseCount": 54
+      "verseCount": 56
     },
     {
       "index": 35,
@@ -294,7 +301,7 @@
       "nativeName": "Zephanja",
       "enName": "Zephaniah",
       "chunkFile": "chunks/36-sf.json",
-      "verseCount": 48
+      "verseCount": 53
     },
     {
       "index": 36,
@@ -302,7 +309,7 @@
       "nativeName": "Haggai",
       "enName": "Haggai",
       "chunkFile": "chunks/37-ag.json",
-      "verseCount": 37
+      "verseCount": 38
     },
     {
       "index": 37,
@@ -310,7 +317,7 @@
       "nativeName": "Sacharja",
       "enName": "Zechariah",
       "chunkFile": "chunks/38-zc.json",
-      "verseCount": 204
+      "verseCount": 211
     },
     {
       "index": 38,
@@ -326,7 +333,7 @@
       "nativeName": "Matthäus",
       "enName": "Matthew",
       "chunkFile": "chunks/40-mt.json",
-      "verseCount": 1047
+      "verseCount": 1069
     },
     {
       "index": 40,
@@ -334,7 +341,7 @@
       "nativeName": "Markus",
       "enName": "Mark",
       "chunkFile": "chunks/41-mc.json",
-      "verseCount": 666
+      "verseCount": 677
     },
     {
       "index": 41,
@@ -342,7 +349,7 @@
       "nativeName": "Lukas",
       "enName": "Luke",
       "chunkFile": "chunks/42-lc.json",
-      "verseCount": 1111
+      "verseCount": 1150
     },
     {
       "index": 42,
@@ -350,7 +357,7 @@
       "nativeName": "Johannes",
       "enName": "John",
       "chunkFile": "chunks/43-jo.json",
-      "verseCount": 873
+      "verseCount": 879
     },
     {
       "index": 43,
@@ -358,7 +365,7 @@
       "nativeName": "Apostelgeschichte",
       "enName": "Acts",
       "chunkFile": "chunks/44-atos.json",
-      "verseCount": 994
+      "verseCount": 1007
     },
     {
       "index": 44,
@@ -366,7 +373,7 @@
       "nativeName": "Römer",
       "enName": "Romans",
       "chunkFile": "chunks/45-rm.json",
-      "verseCount": 409
+      "verseCount": 432
     },
     {
       "index": 45,
@@ -374,7 +381,7 @@
       "nativeName": "1. Korinther",
       "enName": "1 Corinthians",
       "chunkFile": "chunks/46-1co.json",
-      "verseCount": 411
+      "verseCount": 433
     },
     {
       "index": 46,
@@ -382,7 +389,7 @@
       "nativeName": "2. Korinther",
       "enName": "2 Corinthians",
       "chunkFile": "chunks/47-2co.json",
-      "verseCount": 238
+      "verseCount": 256
     },
     {
       "index": 47,
@@ -390,7 +397,7 @@
       "nativeName": "Galater",
       "enName": "Galatians",
       "chunkFile": "chunks/48-gl.json",
-      "verseCount": 146
+      "verseCount": 149
     },
     {
       "index": 48,
@@ -398,7 +405,7 @@
       "nativeName": "Epheser",
       "enName": "Ephesians",
       "chunkFile": "chunks/49-ef.json",
-      "verseCount": 141
+      "verseCount": 155
     },
     {
       "index": 49,
@@ -406,7 +413,7 @@
       "nativeName": "Philipper",
       "enName": "Philippians",
       "chunkFile": "chunks/50-fp.json",
-      "verseCount": 99
+      "verseCount": 104
     },
     {
       "index": 50,
@@ -414,7 +421,7 @@
       "nativeName": "Kolosser",
       "enName": "Colossians",
       "chunkFile": "chunks/51-cl.json",
-      "verseCount": 86
+      "verseCount": 95
     },
     {
       "index": 51,
@@ -422,7 +429,7 @@
       "nativeName": "1. Thessalonicher",
       "enName": "1 Thessalonians",
       "chunkFile": "chunks/52-1ts.json",
-      "verseCount": 78
+      "verseCount": 89
     },
     {
       "index": 52,
@@ -430,7 +437,7 @@
       "nativeName": "2. Thessalonicher",
       "enName": "2 Thessalonians",
       "chunkFile": "chunks/53-2ts.json",
-      "verseCount": 42
+      "verseCount": 47
     },
     {
       "index": 53,
@@ -438,7 +445,7 @@
       "nativeName": "1. Timotheus",
       "enName": "1 Timothy",
       "chunkFile": "chunks/54-1tm.json",
-      "verseCount": 97
+      "verseCount": 112
     },
     {
       "index": 54,
@@ -446,7 +453,7 @@
       "nativeName": "2. Timotheus",
       "enName": "2 Timothy",
       "chunkFile": "chunks/55-2tm.json",
-      "verseCount": 70
+      "verseCount": 82
     },
     {
       "index": 55,
@@ -454,7 +461,7 @@
       "nativeName": "Titus",
       "enName": "Titus",
       "chunkFile": "chunks/56-tt.json",
-      "verseCount": 37
+      "verseCount": 46
     },
     {
       "index": 56,
@@ -462,7 +469,7 @@
       "nativeName": "Philemon",
       "enName": "Philemon",
       "chunkFile": "chunks/57-fm.json",
-      "verseCount": 21
+      "verseCount": 25
     },
     {
       "index": 57,
@@ -470,7 +477,7 @@
       "nativeName": "Hebräer",
       "enName": "Hebrews",
       "chunkFile": "chunks/58-hb.json",
-      "verseCount": 286
+      "verseCount": 303
     },
     {
       "index": 58,
@@ -478,7 +485,7 @@
       "nativeName": "Jakobus",
       "enName": "James",
       "chunkFile": "chunks/59-tg.json",
-      "verseCount": 106
+      "verseCount": 108
     },
     {
       "index": 59,
@@ -486,7 +493,7 @@
       "nativeName": "1. Petrus",
       "enName": "1 Peter",
       "chunkFile": "chunks/60-1pe.json",
-      "verseCount": 99
+      "verseCount": 105
     },
     {
       "index": 60,
@@ -494,7 +501,7 @@
       "nativeName": "2. Petrus",
       "enName": "2 Peter",
       "chunkFile": "chunks/61-2pe.json",
-      "verseCount": 59
+      "verseCount": 61
     },
     {
       "index": 61,
@@ -502,7 +509,7 @@
       "nativeName": "1. Johannes",
       "enName": "1 John",
       "chunkFile": "chunks/62-1jo.json",
-      "verseCount": 103
+      "verseCount": 105
     },
     {
       "index": 62,
@@ -510,7 +517,7 @@
       "nativeName": "2. Johannes",
       "enName": "2 John",
       "chunkFile": "chunks/63-2jo.json",
-      "verseCount": 12
+      "verseCount": 13
     },
     {
       "index": 63,
@@ -526,7 +533,7 @@
       "nativeName": "Judas",
       "enName": "Jude",
       "chunkFile": "chunks/65-jd.json",
-      "verseCount": 22
+      "verseCount": 25
     },
     {
       "index": 65,
@@ -534,7 +541,7 @@
       "nativeName": "Offenbarung",
       "enName": "Revelation",
       "chunkFile": "chunks/66-ap.json",
-      "verseCount": 391
+      "verseCount": 404
     }
   ]
 }

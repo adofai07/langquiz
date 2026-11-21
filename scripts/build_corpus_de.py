@@ -1,15 +1,16 @@
 """
-Build the German Bible (Schlachter 1951) verb-form quiz corpus.
+Build the German Bible (Schlachter 1951) inflected word-form quiz corpus.
 
-Uses spaCy (`de_core_news_md`) STTS POS tagging (VVFIN, VAFIN, VMFIN, VVPP, VAPP,
-VMPP, VVIMP, VAIMP) to identify conjugated verbs and verbal past participles, and
-lemmatizes all unique verb surface forms via a local OpenAI-compatible LLM endpoint
-(default http://localhost:8000) for gold-standard German infinitive
-accuracy on both modern and 1951 Schlachter forms (e.g. aß -> essen, ward -> werden,
-getan -> tun, sollest -> sollen, muß -> müssen).
+Extracts all 5 inflecting German word categories via spaCy (`de_core_news_md` STTS):
+  - 'v': finite conjugated verbs (VVFIN, VAFIN, VMFIN, VVIMP, VAIMP)
+  - 'p': verbal past participles (VVPP, VAPP, VMPP)
+  - 'n': inflected nouns (NN where surface != lemma)
+  - 'a': inflected attributive adjectives (ADJA where surface != lemma)
+  - 'r': inflected pronouns & determiners/articles (ART, PPER, PPOSAT, PDS, PRELS, PIS, PWS where surface != lemma)
 
-Usage:
-    python scripts/build_corpus_de.py
+Lemmatizes unique verb/participle/archaic forms via local OpenAI-compatible LLM
+(reusing cached lemmas + all 29,228 cached direct English translations in
+`raw_data/en_llm_translations_de.json`).
 """
 
 from __future__ import annotations
@@ -27,8 +28,10 @@ import spacy
 
 ROOT = Path(__file__).resolve().parent.parent
 DE_PATH = ROOT / "de_sch1951.json"
+EN_LLM_CACHE = ROOT / "raw_data" / "en_llm_translations_de.json"
 BSB_PATH = ROOT / "raw_data" / "en_bsb.json"
 LEMMA_CACHE_PATH = ROOT / "raw_data" / "de_verb_lemmas.json"
+NOUN_LEMMA_CACHE_PATH = ROOT / "raw_data" / "de_noun_adj_lemmas.json"
 OUT_DIR = ROOT / "public" / "data" / "de-bible-sch1951"
 CHUNKS_DIR = OUT_DIR / "chunks"
 
@@ -44,7 +47,7 @@ def resolve_model() -> str:
         data = json.loads(resp.read().decode("utf-8"))
     return str(data["data"][0]["id"])
 
-# Canonical German + English book names aligned 1-to-1 with de_sch1951.json (66 books)
+
 BOOKS_META: List[Tuple[str, str, str]] = [
     ("gn", "1. Mose", "Genesis"),
     ("ex", "2. Mose", "Exodus"),
@@ -80,7 +83,7 @@ BOOKS_META: List[Tuple[str, str, str]] = [
     ("jn", "Jona", "Jonah"),
     ("mq", "Micha", "Micah"),
     ("na", "Nahum", "Nahum"),
-    ("hc", "Habakuk", "Habakuk"),
+    ("hc", "Habakuk", "Habakkuk"),
     ("sf", "Zephanja", "Zephaniah"),
     ("ag", "Haggai", "Haggai"),
     ("zc", "Sacharja", "Zechariah"),
@@ -114,68 +117,49 @@ BOOKS_META: List[Tuple[str, str, str]] = [
     ("ap", "Offenbarung", "Revelation"),
 ]
 
-TARGET_STTS_TAGS = {"VVFIN", "VAFIN", "VMFIN", "VVPP", "VAPP", "VMPP", "VVIMP", "VAIMP"}
+FINITE_VERB_TAGS = {"VVFIN", "VAFIN", "VMFIN", "VVIMP", "VAIMP"}
+PARTICIPLE_TAGS = {"VVPP", "VAPP", "VMPP"}
+PRONOUN_DET_TAGS = {"ART", "PPER", "PPOSAT", "PPOSS", "PDS", "PDAT", "PRELS", "PRELAT", "PIS", "PIAT", "PWS", "PWAT"}
 DE_WORD_RE = re.compile(r"^[A-Za-zÄÖÜäöüßẞ]+$")
 
-# Deterministic high-frequency & archaic 1951 overrides (instant, 100% reliable)
-KNOWN_LEMMAS: Dict[str, str] = {
-    "ist": "sein", "bin": "sein", "bist": "sein", "sind": "sein", "seid": "sein",
-    "war": "sein", "warst": "sein", "wart": "sein", "waren": "sein", "wäre": "sein",
-    "wärest": "sein", "wären": "sein", "wäret": "sein", "sei": "sein", "seist": "sein",
-    "seiest": "sein", "seien": "sein", "seiet": "sein", "gewesen": "sein",
-    "hat": "haben", "habe": "haben", "hast": "haben", "habt": "haben", "habet": "haben",
-    "hatte": "haben", "hattest": "haben", "hatten": "haben", "hattet": "haben",
-    "hätte": "haben", "hättest": "haben", "hätten": "haben", "hättet": "haben", "gehabt": "haben",
-    "wird": "werden", "werde": "werden", "wirst": "werden", "werdet": "werden",
-    "wurde": "werden", "wurdest": "werden", "wurden": "werden", "wurdet": "werden",
-    "ward": "werden", "wardst": "werden", "würde": "werden", "würdest": "werden",
-    "würden": "werden", "würdet": "werden", "geworden": "werden", "worden": "werden",
-    "sprach": "sprechen", "sprachst": "sprechen", "sprachen": "sprechen", "spricht": "sprechen",
-    "sprichst": "sprechen", "sprich": "sprechen", "gesprochen": "sprechen",
-    "tat": "tun", "tatest": "tun", "taten": "tun", "tatet": "tun", "tut": "tun",
-    "tust": "tun", "tue": "tun", "tuest": "tun", "tuet": "tun", "täte": "tun", "getan": "tun",
-    "aß": "essen", "aßest": "essen", "aßen": "essen", "aßt": "essen", "ißt": "essen",
-    "isst": "essen", "iß": "essen", "gegessen": "essen",
-    "muß": "müssen", "muss": "müssen", "mußt": "müssen", "musst": "müssen",
-    "mußte": "müssen", "musste": "müssen", "mußten": "müssen", "müßte": "müssen", "müßt": "müssen",
-    "soll": "sollen", "sollst": "sollen", "sollest": "sollen", "sollt": "sollen",
-    "sollet": "sollen", "sollte": "sollen", "solltest": "sollen", "sollten": "sollen",
-    "will": "wollen", "willst": "wollen", "wollt": "wollen", "wollet": "wollen",
-    "wollte": "wollen", "wolltest": "wollen", "wollten": "wollen",
-    "kann": "können", "kannst": "können", "könnt": "können", "könnet": "können",
-    "konnte": "können", "konntest": "können", "konnten": "können", "könnte": "können",
-    "darf": "dürfen", "darfst": "dürfen", "dürft": "dürfen", "durfte": "dürfen", "dürfte": "dürfen",
-    "mag": "mögen", "magst": "mögen", "mögt": "mögen", "mochte": "mögen", "möchte": "mögen",
-    "ließ": "lassen", "ließest": "lassen", "ließen": "lassen", "läßt": "lassen",
-    "lässt": "lassen", "laß": "lassen", "lass": "lassen", "laßt": "lassen", "gelassen": "lassen",
-    "gab": "geben", "gabst": "geben", "gaben": "geben", "gibt": "geben", "gibst": "geben",
-    "gib": "geben", "gebe": "geben", "gäbe": "geben", "gegeben": "geben",
-    "nahm": "nehmen", "nahmst": "nehmen", "nahmen": "nehmen", "nimmt": "nehmen",
-    "nimmst": "nehmen", "nimm": "nehmen", "genommen": "nehmen",
-    "kam": "kommen", "kamst": "kommen", "kamen": "kommen", "kommt": "kommen",
-    "kommst": "kommen", "komm": "kommen", "kommet": "kommen", "gekommen": "kommen",
-    "ging": "gehen", "gingst": "gehen", "gingen": "gehen", "geht": "gehen",
-    "gehst": "gehen", "geh": "gehen", "gehe": "gehen", "gehet": "gehen", "gegangen": "gehen",
-    "sah": "sehen", "sahst": "sehen", "sahen": "sehen", "sieht": "sehen",
-    "siehst": "sehen", "siehe": "sehen", "sieh": "sehen", "gesehen": "sehen",
-    "stand": "stehen", "standest": "stehen", "standen": "stehen", "steht": "stehen",
-    "stehst": "stehen", "steh": "stehen", "stehe": "stehen", "gestanden": "stehen",
-    "weiß": "wissen", "weißt": "wissen", "wußte": "wissen", "wusste": "wissen",
-    "wußten": "wissen", "wüßte": "wissen", "gewußt": "wissen", "gewusst": "wissen",
-    "schlief": "schlafen", "schliefen": "schlafen", "schläft": "schlafen", "geschlafen": "schlafen",
-    "schuf": "schaffen", "schufen": "schaffen", "geschaffen": "schaffen",
-    "gebot": "gebieten", "geboten": "gebieten", "gebietet": "gebieten",
+# Deterministic German pronoun/determiner base forms
+PRONOUN_LEMMAS: Dict[str, str] = {
+    "der": "der", "die": "der", "das": "der", "den": "der", "dem": "der", "des": "der",
+    "deren": "der", "dessen": "der", "denen": "der",
+    "ein": "ein", "eine": "ein", "einen": "ein", "einem": "ein", "einer": "ein", "eines": "ein",
+    "kein": "kein", "keine": "kein", "keinen": "kein", "keinem": "kein", "keiner": "kein", "keines": "kein",
+    "ich": "ich", "mich": "ich", "mir": "ich", "meiner": "ich",
+    "du": "du", "dich": "du", "dir": "du", "deiner": "du",
+    "er": "er", "ihn": "er", "ihm": "er", "seiner": "er",
+    "sie": "sie", "ihr": "ihr", "ihnen": "sie",
+    "es": "es",
+    "wir": "wir", "uns": "wir", "unser": "unser",
+    "euch": "ihr", "euer": "euer",
+    "mein": "mein", "meine": "mein", "meinen": "mein", "meinem": "mein", "meines": "mein",
+    "dein": "dein", "deine": "dein", "deinen": "dein", "deinem": "dein", "deines": "dein",
+    "sein": "sein", "seine": "sein", "seinen": "sein", "seinem": "sein", "seines": "sein",
+    "ihre": "ihr", "ihren": "ihr", "ihrem": "ihr", "ihres": "ihr", "ihrer": "ihr",
+    "unsere": "unser", "unseren": "unser", "unserem": "unser", "unseres": "unser", "unserer": "unser",
+    "unsre": "unser", "unsren": "unser", "unsrem": "unser", "unsres": "unser", "unsrer": "unser",
+    "eure": "euer", "euren": "euer", "eurem": "euer", "eures": "euer", "eurer": "euer",
+    "dieser": "dieser", "diese": "dieser", "dieses": "dieser", "diesen": "dieser", "diesem": "dieser",
+    "jener": "jener", "jene": "jener", "jenes": "jener", "jenen": "jener", "jenem": "jener",
+    "welcher": "welcher", "welche": "welcher", "welches": "welcher", "welchen": "welcher", "welchem": "welcher",
+    "jeder": "jeder", "jede": "jeder", "jedes": "jeder", "jeden": "jeder", "jedem": "jeder",
+    "alle": "all", "allen": "all", "aller": "all", "alles": "all", "allem": "all",
+    "mancher": "mancher", "manche": "mancher", "manches": "mancher", "manchen": "mancher", "manchem": "mancher",
+    "solcher": "solcher", "solche": "solcher", "solches": "solcher", "solchen": "solcher", "solchem": "solcher",
+    "wen": "wer", "wem": "wer", "wessen": "wer",
 }
 
-LEMMA_SYSTEM_PROMPT = (
-    "You are an expert German historical and modern linguist (Schlachter 1951 Bible). "
-    "For each entry in the input JSON object mapping a German conjugated verb or past participle "
-    "to an example sentence where it appears, return its standard lowercase German dictionary infinitive "
-    "(e.g., 'sprach' -> 'sprechen', 'aß' -> 'essen', 'ward' -> 'werden', 'getan' -> 'tun', "
-    "'wanderte' -> 'wandern', 'verschloß' -> 'verschließen', 'zugesellt' -> 'zugesellen', "
-    "'machte' in 'machte sich ... auf' -> 'machen' [only the base verb without separated prefix]). "
-    "If a word is NOT actually a German verb form (e.g., a noun, adjective, or adverb), return empty string \"\". "
-    "Return ONLY a valid JSON object mapping the exact input keys to their lowercase German infinitive strings."
+ARCHAIC_NOUN_DATIVE_PROMPT = (
+    "You are a German linguist normalizing Schlachter 1951 Bible nouns and attributive adjectives. "
+    "For each entry in the input JSON object mapping an inflected German noun (capitalized) or attributive adjective "
+    "to a short context, return its standard German dictionary base form (nominative singular capitalized for nouns, "
+    "uninflected lowercase base for adjectives; e.g. 'Weibe' -> 'Weib', 'Tage' -> 'Tag', 'Heiligtums' -> 'Heiligtum', "
+    "'Wassern' -> 'Wasser', 'silberne' -> 'silbern', 'finstern' -> 'finster'). "
+    "If the word is already in its exact base form (e.g. 'Schlange' -> 'Schlange', 'Weib' -> 'Weib'), return that base form unchanged. "
+    "Return ONLY a valid JSON object mapping the exact input keys to their dictionary base forms."
 )
 
 
@@ -188,15 +172,15 @@ def is_valid_german_infinitive(lemma: str) -> bool:
     )
 
 
-def lemmatize_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
+def lemmatize_generic_batch(batch: Dict[str, str], model_name: str, system_prompt: str) -> Dict[str, str]:
     payload = {
         "model": model_name,
         "messages": [
-            {"role": "system", "content": LEMMA_SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": json.dumps(batch, ensure_ascii=False)},
         ],
         "temperature": 0.0,
-        "max_tokens": min(4096, max(512, len(batch) * 45)),
+        "max_tokens": min(4096, max(1024, len(batch) * 90)),
         "reasoning_effort": "low",
         "response_format": {"type": "json_object"},
     }
@@ -208,38 +192,42 @@ def lemmatize_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
     )
     with urllib.request.urlopen(req, timeout=90) as resp:
         body = json.loads(resp.read().decode("utf-8"))
-    parsed = json.loads(body["choices"][0]["message"]["content"])
+    content = body["choices"][0]["message"].get("content")
+    if not content:
+        raise ValueError("Empty content from model")
+    parsed = json.loads(content)
     if not isinstance(parsed, dict):
         return {}
     out: Dict[str, str] = {}
     for k in batch:
         val = parsed.get(k)
         if isinstance(val, str):
-            v = val.strip().lower()
-            if v == "":
-                out[k] = ""
-            elif is_valid_german_infinitive(v):
+            v = val.strip()
+            if v and DE_WORD_RE.match(v):
                 out[k] = v
     return out
 
 
-def lemmatize_batch_with_retry(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
+def lemmatize_generic_batch_with_retry(
+    batch: Dict[str, str], model_name: str, system_prompt: str
+) -> Dict[str, str]:
     results: Dict[str, str] = {}
     remaining = dict(batch)
     for attempt in range(2):
         if not remaining:
             break
         try:
-            got = lemmatize_batch(remaining, model_name)
-            results.update(got)
+            results.update(lemmatize_generic_batch(remaining, model_name, system_prompt))
             remaining = {k: v for k, v in remaining.items() if k not in results}
         except Exception:
             if attempt == 0 and len(remaining) > 1:
                 items = list(remaining.items())
                 mid = len(items) // 2
                 for sub in (dict(items[:mid]), dict(items[mid:])):
+                    if not sub:
+                        continue
                     try:
-                        results.update(lemmatize_batch(sub, model_name))
+                        results.update(lemmatize_generic_batch(sub, model_name, system_prompt))
                     except Exception:
                         pass
                 remaining = {k: v for k, v in remaining.items() if k not in results}
@@ -248,106 +236,129 @@ def lemmatize_batch_with_retry(batch: Dict[str, str], model_name: str) -> Dict[s
 
 def main() -> None:
     t0 = time.time()
-    print("Loading German Schlachter 1951 dataset...", flush=True)
+    print("Loading German Schlachter 1951 dataset + cached translations...", flush=True)
     de_books = json.loads(DE_PATH.read_text(encoding="utf-8-sig"))
-    assert len(de_books) == 66, "Expected 66 books in de_sch1951.json"
-
-    # Optional BSB seed fallback (will be replaced by direct DE->EN LLM translations)
+    en_llm = json.loads(EN_LLM_CACHE.read_text(encoding="utf-8")) if EN_LLM_CACHE.exists() else {}
     bsb_books = json.loads(BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if BSB_PATH.exists() else None
+    verb_lemmas: Dict[str, str] = (
+        json.loads(LEMMA_CACHE_PATH.read_text(encoding="utf-8")) if LEMMA_CACHE_PATH.exists() else {}
+    )
+    noun_adj_cache: Dict[str, str] = (
+        json.loads(NOUN_LEMMA_CACHE_PATH.read_text(encoding="utf-8")) if NOUN_LEMMA_CACHE_PATH.exists() else {}
+    )
 
-    print("Loading spaCy de_core_news_md (POS/STTS tagger)...", flush=True)
-    nlp = spacy.load("de_core_news_md", disable=["ner", "parser", "lemmatizer"])
+    print("Loading spaCy de_core_news_md...", flush=True)
+    nlp = spacy.load("de_core_news_md", disable=["ner", "parser"])
 
     flat_items: List[Tuple[int, int, int, str, str]] = []
     for bi in range(66):
-        en_map = {}
+        book_id = BOOKS_META[bi][0]
+        bsb_map = {}
         if bsb_books:
-            en_map = {
+            bsb_map = {
                 c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
                 for c in bsb_books[bi]["chapters"]
             }
         for ci, verses in enumerate(de_books[bi]["chapters"], 1):
             for vi, de_text in enumerate(verses, 1):
-                en_seed = en_map.get(ci, {}).get(vi, "")
-                flat_items.append((bi, ci, vi, de_text.strip(), en_seed))
+                key = f"{book_id}:{ci}:{vi}"
+                en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
+                flat_items.append((bi, ci, vi, de_text.strip(), en_text))
 
-    print(f"POS-tagging {len(flat_items)} German verses...", flush=True)
-    raw_spans: List[List[Tuple[int, int, str]]] = []
-    unique_forms: Dict[str, str] = {}
+    print(f"Tagging {len(flat_items)} German verses (v, p, n, a, r)...", flush=True)
+    raw_tokens_per_verse: List[List[Tuple[int, int, str, str, str]]] = []
+    archaic_nouns_to_check: Dict[str, str] = {}
 
     texts = (item[3] for item in flat_items)
     for (_, _, _, de_text, _), doc in zip(flat_items, nlp.pipe(texts, batch_size=512)):
-        spans: List[Tuple[int, int, str]] = []
+        toks: List[Tuple[int, int, str, str, str]] = []
         for tok in doc:
-            if tok.tag_ not in TARGET_STTS_TAGS:
-                continue
-            if tok.pos_ not in ("VERB", "AUX"):
-                continue
             surf = tok.text
             if not DE_WORD_RE.match(surf):
                 continue
+            start = tok.idx
+            end = start + len(surf)
+            tag = tok.tag_
             s_low = surf.lower()
-            spans.append((tok.idx, tok.idx + len(surf), s_low))
-            if s_low not in KNOWN_LEMMAS and s_low not in unique_forms:
-                unique_forms[s_low] = de_text[:180]
-        raw_spans.append(spans)
+
+            if tag in FINITE_VERB_TAGS and tok.pos_ in ("VERB", "AUX"):
+                toks.append((start, end, surf, "v", verb_lemmas.get(s_low, "")))
+            elif tag in PARTICIPLE_TAGS and tok.pos_ in ("VERB", "AUX"):
+                toks.append((start, end, surf, "p", verb_lemmas.get(s_low, "")))
+            elif tag in PRONOUN_DET_TAGS and tok.pos_ in ("PRON", "DET"):
+                lem = PRONOUN_LEMMAS.get(s_low)
+                if lem and lem != s_low:
+                    toks.append((start, end, surf, "r", lem))
+            elif tag == "ADJA" and tok.pos_ == "ADJ":
+                lem = tok.lemma_.lower()
+                if DE_WORD_RE.match(lem) and lem != s_low:
+                    toks.append((start, end, surf, "a", lem))
+            elif tag == "NN" and tok.pos_ == "NOUN":
+                sp_lem = tok.lemma_
+                if not DE_WORD_RE.match(sp_lem):
+                    continue
+                # Archaic 1951 dative -e nouns (like Weibe, Tage, Hause, Lande) often aren't lemmatized by modern spaCy
+                if sp_lem.lower() == s_low and "Case=Dat" in str(tok.morph) and s_low.endswith("e") and len(s_low) >= 4:
+                    if surf not in noun_adj_cache and surf not in archaic_nouns_to_check:
+                        archaic_nouns_to_check[surf] = de_text[:140]
+                    toks.append((start, end, surf, "n", ""))
+                elif sp_lem.lower() != s_low:
+                    toks.append((start, end, surf, "n", sp_lem))
+        raw_tokens_per_verse.append(toks)
 
     print(
-        f"POS-tagging done in {time.time() - t0:.1f}s | Unique verb forms to lemmatize: {len(unique_forms)}",
+        f"Tagging done in {time.time() - t0:.1f}s | Archaic dative nouns to check: {len(archaic_nouns_to_check)}",
         flush=True,
     )
 
-    lemma_map: Dict[str, str] = dict(KNOWN_LEMMAS)
-    if LEMMA_CACHE_PATH.exists():
-        lemma_map.update(json.loads(LEMMA_CACHE_PATH.read_text(encoding="utf-8")))
-
-    todo = [(w, ctx) for w, ctx in unique_forms.items() if w not in lemma_map]
-    print(f"Lemmatizing {len(todo)} uncached unique German verb forms...", flush=True)
-
-    if todo:
+    if archaic_nouns_to_check:
         model_name = resolve_model()
-        batches = [dict(todo[i : i + 35]) for i in range(0, len(todo), 35)]
-        t_lem = time.time()
-        done = 0
-        with concurrent.futures.ThreadPoolExecutor(max_workers=32) as pool:
-            futs = [pool.submit(lemmatize_batch_with_retry, b, model_name) for b in batches]
+        items = list(archaic_nouns_to_check.items())
+        batches = [dict(items[i : i + 35]) for i in range(0, len(items), 35)]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=24) as pool:
+            futs = [
+                pool.submit(lemmatize_generic_batch_with_retry, b, model_name, ARCHAIC_NOUN_DATIVE_PROMPT)
+                for b in batches
+            ]
             for fut in concurrent.futures.as_completed(futs):
-                got = fut.result()
-                lemma_map.update(got)
-                done += 1
-                if done % 25 == 0 or done == len(batches):
-                    print(f"  [{done}/{len(batches)}] {len(lemma_map)} lemmas ({time.time() - t_lem:.1f}s)", flush=True)
+                noun_adj_cache.update(fut.result())
+        NOUN_LEMMA_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        NOUN_LEMMA_CACHE_PATH.write_text(json.dumps(noun_adj_cache, ensure_ascii=False, indent=2), encoding="utf-8")
 
-        LEMMA_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        LEMMA_CACHE_PATH.write_text(json.dumps(lemma_map, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    # Assemble book chunks
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
     book_entries: List[List[dict]] = [[] for _ in range(66)]
+    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
     quiz_verses = 0
-    total_verbs = 0
 
-    for (bi, ci, vi, de_text, en_seed), spans in zip(flat_items, raw_spans):
-        verbs = []
-        for start, end, s_low in spans:
-            lemma = lemma_map.get(s_low, "")
-            if not lemma or not is_valid_german_infinitive(lemma):
-                continue
-            # Skip forms identical to their infinitive (e.g. 1st/3rd pl present 'trösten' == 'trösten')
-            if s_low == lemma:
-                continue
-            verbs.append([start, end, lemma])
-        if not verbs:
+    for (bi, ci, vi, de_text, en_text), toks in zip(flat_items, raw_tokens_per_verse):
+        forms = []
+        for start, end, surf, kind, lem in toks:
+            s_low = surf.lower()
+            if kind in ("v", "p"):
+                if not lem or not is_valid_german_infinitive(lem) or lem == s_low:
+                    continue
+                forms.append([start, end, lem, kind])
+            elif kind == "n":
+                resolved = lem or noun_adj_cache.get(surf, "")
+                if not resolved or resolved.lower() == s_low or not DE_WORD_RE.match(resolved):
+                    continue
+                forms.append([start, end, resolved, "n"])
+            else:
+                if not lem or lem.lower() == s_low:
+                    continue
+                forms.append([start, end, lem, kind])
+        if not forms:
             continue
         book_entries[bi].append({
             "c": ci,
             "v": vi,
             "o": de_text,
-            "t": en_seed,
-            "m": verbs,
+            "t": en_text,
+            "m": forms,
         })
         quiz_verses += 1
-        total_verbs += len(verbs)
+        for _, _, _, k in forms:
+            counts[k] += 1
 
     manifest_books = []
     for bi, (book_id, native_name, en_name) in enumerate(BOOKS_META):
@@ -374,21 +385,18 @@ def main() -> None:
         "translationSource": "SCH1951 → EN",
         "totalVerses": len(flat_items),
         "quizVerses": quiz_verses,
-        "totalVerbs": total_verbs,
+        "totalVerbs": counts["v"],
+        "formCounts": counts,
         "books": manifest_books,
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(
-        f"Done in {time.time() - t0:.1f}s! Quiz verses: {quiz_verses}/{len(flat_items)}, total verb blanks: {total_verbs}",
-        flush=True,
-    )
-
-    gen313 = next((e for e in book_entries[0] if e["c"] == 3 and e["v"] == 13), None)
-    if gen313:
-        print("\n--- German Genesis 3:13 Verification ---")
-        print("Original:", gen313["o"])
-        print("Blanks:", [(gen313["o"][s:e], lem) for s, e, lem in gen313["m"]])
+    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
+    for label, bi, c, v in [("Gen 3:13", 0, 3, 13), ("Num 7:43", 3, 7, 43)]:
+        e = next((x for x in book_entries[bi] if x["c"] == c and x["v"] == v), None)
+        if e:
+            print(f"\n--- DE {label} ---")
+            print([(e["o"][s:en], lem, k) for s, en, lem, k in e["m"]])
 
 
 if __name__ == "__main__":

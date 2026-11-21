@@ -3,11 +3,13 @@ import {
   VERSE_RANGE_MAX,
   type CorpusBookMeta,
   type CorpusManifest,
+  type EnabledWordForms,
   type QuizQuestion,
   type RawCorpusEntry,
   type VerbBlank,
   type VerbRange,
   type VerseRange,
+  type WordFormKind,
 } from '../types/quiz';
 
 export interface MergedCorpusItem {
@@ -17,7 +19,7 @@ export interface MergedCorpusItem {
   verseCount: number;
   o: string;
   t: string;
-  m: [number, number, string][];
+  m: [number, number, string, WordFormKind][];
   /** True when the merged unit begins cleanly (not orphaned mid-sentence after a missing verse). */
   cleanStart: boolean;
 }
@@ -52,8 +54,8 @@ export function mergeSplitVerses(entries: RawCorpusEntry[]): MergedCorpusItem[] 
       const offset = prev.o.length + 1;
       prev.o = `${prev.o} ${entry.o}`;
       prev.t = prev.t && entry.t ? `${prev.t} ${entry.t}` : prev.t || entry.t;
-      for (const [start, end, lemma] of entry.m) {
-        prev.m.push([start + offset, end + offset, lemma]);
+      for (const [start, end, lemma, kind] of entry.m) {
+        prev.m.push([start + offset, end + offset, lemma, kind ?? 'v']);
       }
       prev.vEnd = entry.v;
       prev.verseCount += 1;
@@ -65,7 +67,7 @@ export function mergeSplitVerses(entries: RawCorpusEntry[]): MergedCorpusItem[] 
         verseCount: 1,
         o: entry.o,
         t: entry.t,
-        m: entry.m.map(([s, e, l]) => [s, e, l]),
+        m: entry.m.map(([s, e, l, k]) => [s, e, l, k ?? 'v']),
         cleanStart: !startsWithLowercase(entry.o),
       });
     }
@@ -110,25 +112,41 @@ export async function loadBookMergedItems(
   return merged;
 }
 
+export function filterSpansByForms(
+  spans: [number, number, string, WordFormKind][],
+  wordForms: EnabledWordForms
+): [number, number, string, WordFormKind][] {
+  return spans.filter(([, , , kind]) => Boolean(wordForms[kind]));
+}
+
 export function toQuizQuestion(
   manifest: CorpusManifest,
   book: CorpusBookMeta,
-  item: MergedCorpusItem
+  item: MergedCorpusItem,
+  wordForms: EnabledWordForms
 ): QuizQuestion {
-  const blanks: VerbBlank[] = item.m.map(([start, end, lemma], index) => ({
+  const activeSpans = filterSpansByForms(item.m, wordForms);
+  // If an explicitly loaded deep-link has 0 spans in the selected categories, fall back to all spans on that verse
+  const chosenSpans = activeSpans.length > 0 ? activeSpans : item.m;
+
+  const blanks: VerbBlank[] = chosenSpans.map(([start, end, lemma, kind], index) => ({
     index,
     start,
     end,
     answer: item.o.slice(start, end),
     lemma,
+    kind,
   }));
 
   const bookNativeName = book.nativeName ?? book.plName ?? book.enName;
   const verseLabel =
     item.vStart === item.vEnd ? `${item.c}:${item.vStart}` : `${item.c}:${item.vStart}–${item.vEnd}`;
+  const formsKey = (['v', 'p', 'n', 'a', 'r'] as WordFormKind[])
+    .filter((k) => wordForms[k])
+    .join('');
 
   return {
-    id: `${manifest.id}:${book.id}:${item.c}:${item.vStart}-${item.vEnd}`,
+    id: `${manifest.id}:${book.id}:${item.c}:${item.vStart}-${item.vEnd}:${formsKey}`,
     bookIndex: book.index,
     bookId: book.id,
     bookNativeName,
@@ -145,10 +163,10 @@ export function toQuizQuestion(
   };
 }
 
-export function matchesVerbRange(verbCount: number, range: VerbRange): boolean {
-  if (verbCount <= 0) return false;
-  if (verbCount < range.min) return false;
-  if (range.max < VERB_RANGE_MAX && verbCount > range.max) return false;
+export function matchesVerbRange(blankCount: number, range: VerbRange): boolean {
+  if (blankCount <= 0) return false;
+  if (blankCount < range.min) return false;
+  if (range.max < VERB_RANGE_MAX && blankCount > range.max) return false;
   return true;
 }
 
@@ -161,12 +179,14 @@ export function matchesVerseRange(verseCount: number, range: VerseRange): boolea
 
 function matchesFilters(
   item: MergedCorpusItem,
+  wordForms: EnabledWordForms,
   verbRange: VerbRange,
   verseRange: VerseRange
 ): boolean {
+  const count = filterSpansByForms(item.m, wordForms).length;
   return (
     item.cleanStart &&
-    matchesVerbRange(item.m.length, verbRange) &&
+    matchesVerbRange(count, verbRange) &&
     matchesVerseRange(item.verseCount, verseRange)
   );
 }
@@ -184,6 +204,7 @@ function pickWeightedBook(books: CorpusBookMeta[]): CorpusBookMeta {
 
 export async function pickRandomQuestion(
   manifestUrl: string,
+  wordForms: EnabledWordForms,
   verbRange: VerbRange,
   verseRange: VerseRange,
   recentIds: Set<string>
@@ -195,7 +216,7 @@ export async function pickRandomQuestion(
     const book = pickWeightedBook(manifest.books);
     triedBooks.add(book.id);
     const items = await loadBookMergedItems(manifestUrl, book);
-    const matching = items.filter((it) => matchesFilters(it, verbRange, verseRange));
+    const matching = items.filter((it) => matchesFilters(it, wordForms, verbRange, verseRange));
     if (matching.length === 0) continue;
 
     const fresh = matching.filter(
@@ -203,40 +224,41 @@ export async function pickRandomQuestion(
     );
     const pool = fresh.length > 0 ? fresh : matching;
     const chosen = pool[Math.floor(Math.random() * pool.length)];
-    return toQuizQuestion(manifest, book, chosen);
+    return toQuizQuestion(manifest, book, chosen, wordForms);
   }
 
-  // Deterministic scan across remaining books for narrow/high combinations
   for (const book of manifest.books) {
     if (triedBooks.has(book.id)) continue;
     const items = await loadBookMergedItems(manifestUrl, book);
-    const matching = items.filter((it) => matchesFilters(it, verbRange, verseRange));
+    const matching = items.filter((it) => matchesFilters(it, wordForms, verbRange, verseRange));
     if (matching.length > 0) {
       const chosen = matching[Math.floor(Math.random() * matching.length)];
-      return toQuizQuestion(manifest, book, chosen);
+      return toQuizQuestion(manifest, book, chosen, wordForms);
     }
   }
 
-  // Fallback relaxing verseRange if a strict combination (e.g. 5+ verses with 1 verb) has 0 matches
   for (const book of manifest.books) {
     const items = await loadBookMergedItems(manifestUrl, book);
-    const matching = items.filter((it) => matchesVerbRange(it.m.length, verbRange));
+    const matching = items.filter(
+      (it) => filterSpansByForms(it.m, wordForms).length > 0
+    );
     if (matching.length > 0) {
       const chosen = matching[Math.floor(Math.random() * matching.length)];
-      return toQuizQuestion(manifest, book, chosen);
+      return toQuizQuestion(manifest, book, chosen, wordForms);
     }
   }
 
   const firstBook = manifest.books[0];
   const items = await loadBookMergedItems(manifestUrl, firstBook);
-  return toQuizQuestion(manifest, firstBook, items[0]);
+  return toQuizQuestion(manifest, firstBook, items[0], wordForms);
 }
 
 export async function loadSpecificQuestion(
   manifestUrl: string,
   bookId: string,
   chapter: number,
-  verse: number
+  verse: number,
+  wordForms: EnabledWordForms
 ): Promise<QuizQuestion | null> {
   const manifest = await loadCorpusManifest(manifestUrl);
   const book = manifest.books.find((b) => b.id === bookId);
@@ -246,5 +268,5 @@ export async function loadSpecificQuestion(
   const found = items.find((it) => it.c === chapter && it.vStart <= verse && verse <= it.vEnd);
   if (!found) return null;
 
-  return toQuizQuestion(manifest, book, found);
+  return toQuizQuestion(manifest, book, found, wordForms);
 }

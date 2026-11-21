@@ -1,9 +1,16 @@
 """
-Build the Polish Bible (UBG) + English (BSB) verb-form quiz corpus.
+Build the Polish Bible (UBG) inflected word-form quiz corpus.
 
-Uses spaCy (`pl_core_news_md`) for contextual POS disambiguation combined with
-Morfeusz2 (SGJP Polish morphological dictionary) for gold-standard finite verb
-verification and infinitive lemmatization.
+Extracts all 5 inflecting Polish word categories verified via spaCy (`pl_core_news_md`)
++ Morfeusz2 (SGJP dictionary):
+  - 'v': finite conjugated verbs
+  - 'p': verbal participles (ppas, pact, pcon, pant)
+  - 'n': inflected nouns (surface != lemma)
+  - 'a': inflected adjectives (surface != lemma)
+  - 'r': inflected pronouns & determiners (surface != lemma)
+
+Reuses existing direct English translations cached in `raw_data/en_llm_translations.json`
+(falling back to `raw_data/en_bsb.json` if a verse is uncached).
 
 Usage:
     python scripts/build_corpus.py
@@ -20,13 +27,15 @@ from typing import Dict, List, Optional, Tuple
 import morfeusz2
 import spacy
 
+from fix_lemmas import disambiguate
+
 ROOT = Path(__file__).resolve().parent.parent
 PL_PATH = ROOT / "pl_ubg.json"
-EN_PATH = ROOT / "raw_data" / "en_bsb.json"
+EN_LLM_CACHE = ROOT / "raw_data" / "en_llm_translations.json"
+EN_BSB_PATH = ROOT / "raw_data" / "en_bsb.json"
 OUT_DIR = ROOT / "public" / "data" / "pl-bible-ubg"
 CHUNKS_DIR = OUT_DIR / "chunks"
 
-# Canonical Polish + English book names aligned 1-to-1 with pl_ubg.json & BSB.json (66 books)
 BOOKS_META: List[Tuple[str, str, str]] = [
     ("gn", "Księga Rodzaju", "Genesis"),
     ("ex", "Księga Wyjścia", "Exodus"),
@@ -97,55 +106,58 @@ BOOKS_META: List[Tuple[str, str, str]] = [
 ]
 
 FINITE_VERB_TAGS = {"fin", "praet", "impt", "bedzie", "imps", "winien"}
+PARTICIPLE_TAGS = {"ppas", "pact", "pcon", "pant"}
+PRONOUN_TAGS = {"ppron12", "ppron3", "siebie"}
+PRONOUN_LEMMAS = {
+    "ten", "tamten", "taki", "swój", "mój", "twój", "nasz", "wasz",
+    "który", "jaki", "czyj", "wszystek", "każdy", "żaden", "sam", "ów",
+    "kto", "co", "ktoś", "coś", "nikt", "nic", "ktokolwiek", "cokolwiek",
+}
 TRAILING_CLITIC_TAGS = {"aglt", "part"}
-EXCLUDED_SPACY_TAGS = {"ADJ", "QUB", "PART", "CONJ", "SCONJ", "CCONJ", "ADP", "ADV", "NUM", "PRON", "DET", "INTJ"}
+EXCLUDED_VERB_SPACY_TAGS = {"ADJ", "QUB", "PART", "CONJ", "SCONJ", "CCONJ", "ADP", "ADV", "NUM", "PRON", "DET", "INTJ"}
 WORD_RE = re.compile(r"^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+$")
 
 
-def clean_lemma(raw_lemma: str) -> str:
-    """Strip Morfeusz2 homonym tag suffix (e.g. 'stać:Vp' -> 'stać')."""
-    return raw_lemma.split(":", 1)[0].strip().lower()
+def clean_lemma(raw_lemma: str, keep_case: bool = False) -> str:
+    base = raw_lemma.split(":", 1)[0].strip()
+    return base if keep_case else base.lower()
 
 
 def is_valid_infinitive(lemma: str) -> bool:
-    """Check that a Polish lemma is a genuine infinitive ending in -ć or -c."""
     return len(lemma) >= 3 and (lemma.endswith("ć") or lemma.endswith("c")) and bool(WORD_RE.match(lemma))
 
 
-class PolishVerbAnalyzer:
+class PolishMorphAnalyzer:
     def __init__(self) -> None:
         self.morf = morfeusz2.Morfeusz()
-        self._cache: Dict[str, List[str]] = {}
+        self._cache: Dict[str, Dict[str, List[str]]] = {}
 
-    def finite_verb_lemmas(self, surface_lower: str) -> List[str]:
+    def analyze_word(self, surface: str) -> Dict[str, List[str]]:
         """
-        Return verified Polish infinitive lemmas if `surface_lower` can be analyzed by
-        Morfeusz2 as a conjugated finite verb (optionally with trailing clitics like
-        -m, -ś, -śmy, -ście, -by).
+        Return verified Morfeusz2 lemma lists bucketed by category ('v', 'p', 'n', 'a', 'r')
+        for a single orthographic Polish word.
         """
-        cached = self._cache.get(surface_lower)
+        s_low = surface.lower()
+        cached = self._cache.get(s_low)
         if cached is not None:
             return cached
 
-        if not WORD_RE.match(surface_lower):
-            self._cache[surface_lower] = []
-            return []
+        buckets: Dict[str, List[str]] = {"v": [], "p": [], "n": [], "a": [], "r": []}
+        if not WORD_RE.match(s_low):
+            self._cache[s_low] = buckets
+            return buckets
 
-        analyses = self.morf.analyse(surface_lower)
+        analyses = self.morf.analyse(surface)
         if not analyses:
-            self._cache[surface_lower] = []
-            return []
+            self._cache[s_low] = buckets
+            return buckets
 
         max_node = max(end for _, end, _ in analyses)
-
-        # Build adjacency from node -> list of (end_node, lemma, pos_tag)
         adj: Dict[int, List[Tuple[int, str, str]]] = {}
         for start, end, (_orth, lemma, tag, *_rest) in analyses:
             pos = tag.split(":", 1)[0]
             adj.setdefault(start, []).append((end, lemma, pos))
 
-        # Check valid paths starting at node 0 with a finite verb tag,
-        # optionally followed ONLY by clitic/particle tags (aglt, part) to max_node.
         def can_reach_end_via_clitics(node: int) -> bool:
             if node == max_node:
                 return True
@@ -154,135 +166,201 @@ class PolishVerbAnalyzer:
                     return True
             return False
 
-        lemmas: List[str] = []
-        seen = set()
+        seen: Dict[str, set] = {k: set() for k in buckets}
         for end, raw_lem, pos in adj.get(0, []):
+            # Finite verbs (may have trailing -m, -ś, -śmy, -ście, -by)
             if pos in FINITE_VERB_TAGS and can_reach_end_via_clitics(end):
                 lem = clean_lemma(raw_lem)
-                if is_valid_infinitive(lem) and lem != surface_lower and lem not in seen:
-                    seen.add(lem)
-                    lemmas.append(lem)
+                if is_valid_infinitive(lem) and lem != s_low and lem not in seen["v"]:
+                    seen["v"].add(lem)
+                    buckets["v"].append(lem)
+                continue
 
-        self._cache[surface_lower] = lemmas
-        return lemmas
+            # All other categories must span the full orthographic token
+            if end != max_node:
+                continue
+
+            if pos in PARTICIPLE_TAGS:
+                lem = clean_lemma(raw_lem)
+                if is_valid_infinitive(lem) and lem != s_low and lem not in seen["p"]:
+                    seen["p"].add(lem)
+                    buckets["p"].append(lem)
+            elif pos in PRONOUN_TAGS:
+                lem = clean_lemma(raw_lem)
+                if lem and WORD_RE.match(lem) and lem != s_low and lem not in seen["r"]:
+                    seen["r"].add(lem)
+                    buckets["r"].append(lem)
+            elif pos == "subst":
+                lem_case = clean_lemma(raw_lem, keep_case=True)
+                lem_low = lem_case.lower()
+                if lem_low in PRONOUN_LEMMAS:
+                    if lem_low != s_low and lem_low not in seen["r"]:
+                        seen["r"].add(lem_low)
+                        buckets["r"].append(lem_low)
+                elif len(lem_low) >= 2 and WORD_RE.match(lem_low) and lem_low != s_low:
+                    # Keep capitalized lemma only for proper nouns (where Morfeusz2 itself capitalizes)
+                    out_lem = lem_case if lem_case[0].isupper() else lem_low
+                    if out_lem.lower() not in seen["n"]:
+                        seen["n"].add(out_lem.lower())
+                        buckets["n"].append(out_lem)
+            elif pos == "adj":
+                lem = clean_lemma(raw_lem)
+                if len(lem) >= 2 and WORD_RE.match(lem) and lem != s_low:
+                    if lem in PRONOUN_LEMMAS:
+                        if lem not in seen["r"]:
+                            seen["r"].add(lem)
+                            buckets["r"].append(lem)
+                    elif lem not in seen["a"]:
+                        seen["a"].add(lem)
+                        buckets["a"].append(lem)
+
+        self._cache[s_low] = buckets
+        return buckets
 
 
-def pick_best_lemma(
-    candidates: List[str],
-    spacy_lemma: str,
-    next_token_lower: Optional[str],
-) -> str:
-    """Disambiguate when Morfeusz2 returns multiple finite-verb lemmas."""
+def pick_best(candidates: List[str], spacy_lemma: str, next_lower: Optional[str] = None) -> str:
     if len(candidates) == 1:
         return candidates[0]
-
-    # Special high-frequency Polish biblical disambiguation:
-    # "stanie się" -> "stać" (to happen/become), whereas "stanie" alone often -> "stanąć" (to stand)
-    if next_token_lower == "się" and "stać" in candidates:
+    if next_lower == "się" and "stać" in candidates:
         return "stać"
-
     spacy_head = clean_lemma(spacy_lemma.split()[0]) if spacy_lemma else ""
-    if spacy_head in candidates:
-        return spacy_head
-
-    # Prefer imperfective/shorter standard lemma or first SGJP candidate
+    for c in candidates:
+        if c.lower() == spacy_head:
+            return c
     return candidates[0]
 
 
-def extract_verbs(doc: spacy.tokens.Doc, analyzer: PolishVerbAnalyzer) -> List[List[object]]:
-    """
-    Extract [start_char, end_char, infinitive_lemma] tuples for conjugated finite verbs.
-    """
+def extract_forms(
+    doc: spacy.tokens.Doc,
+    en_text: str,
+    analyzer: PolishMorphAnalyzer,
+) -> List[List[object]]:
+    """Extract [start, end, lemma, kind] for all inflected Polish words."""
     matches: List[List[object]] = []
+    pl_text = doc.text
     n = len(doc)
+
     for i, tok in enumerate(doc):
-        if tok.pos_ not in ("VERB", "AUX"):
+        if tok.is_punct or tok.is_space or tok.pos_ in ("ADP", "CCONJ", "SCONJ", "PART", "ADV", "INTJ", "NUM", "SYM", "X"):
             continue
-        if tok.tag_ in EXCLUDED_SPACY_TAGS:
-            continue
-        # Skip pure infinitives in the original text (trivial if answer == hint)
-        verb_forms = tok.morph.get("VerbForm")
-        if verb_forms and "Inf" in verb_forms and "Fin" not in verb_forms:
+        surf = tok.text
+        if not WORD_RE.match(surf):
             continue
 
-        surface = tok.text
-        surface_lower = surface.lower()
-
-        candidates = analyzer.finite_verb_lemmas(surface_lower)
-        if not candidates:
-            continue
-
-        # Additional guard: skip homographs where spaCy explicitly says non-finite participle
-        if tok.tag_ in ("PPAS", "PACT", "PCON", "PANT", "GER"):
-            continue
-
+        start = tok.idx
+        end = start + len(surf)
+        buckets = analyzer.analyze_word(surf)
         next_lower = doc[i + 1].text.lower() if i + 1 < n else None
-        lemma = pick_best_lemma(candidates, tok.lemma_, next_lower)
-        matches.append([tok.idx, tok.idx + len(surface), lemma])
+
+        # 1. Finite verbs ('v')
+        if tok.pos_ in ("VERB", "AUX") and tok.tag_ not in EXCLUDED_VERB_SPACY_TAGS:
+            verb_forms = tok.morph.get("VerbForm")
+            if not (verb_forms and "Inf" in verb_forms and "Fin" not in verb_forms):
+                if tok.tag_ not in ("PPAS", "PACT", "PCON", "PANT", "GER") and buckets["v"]:
+                    lem = pick_best(buckets["v"], tok.lemma_, next_lower)
+                    lem = disambiguate(surf, lem, pl_text, en_text, start, end)
+                    matches.append([start, end, lem, "v"])
+                    continue
+
+        # 2. Verbal participles ('p')
+        if (tok.tag_ in ("PPAS", "PACT", "PCON", "PANT") or "VerbForm=Part" in str(tok.morph)) and buckets["p"]:
+            lem = pick_best(buckets["p"], tok.lemma_)
+            matches.append([start, end, lem, "p"])
+            continue
+
+        # 3. Pronouns & Determiners ('r')
+        if tok.pos_ in ("PRON", "DET") and buckets["r"]:
+            lem = pick_best(buckets["r"], tok.lemma_)
+            matches.append([start, end, lem, "r"])
+            continue
+
+        # 4. Nouns ('n') — note spaCy sometimes mislabels declined nouns like 'oliwą' as ADJ with tag SUBST
+        if (tok.pos_ in ("NOUN", "PROPN") or (tok.tag_ == "SUBST" and not buckets["a"])) and buckets["n"]:
+            lem = pick_best(buckets["n"], tok.lemma_)
+            matches.append([start, end, lem, "n"])
+            continue
+
+        # 5. Adjectives ('a') — also catch participles if spaCy missed PPAS tag but Morfeusz knows only ppas
+        if tok.pos_ == "ADJ" or tok.tag_ == "ADJ":
+            if buckets["r"]:
+                lem = pick_best(buckets["r"], tok.lemma_)
+                matches.append([start, end, lem, "r"])
+                continue
+            if buckets["a"]:
+                lem = pick_best(buckets["a"], tok.lemma_)
+                matches.append([start, end, lem, "a"])
+                continue
+            if buckets["p"]:
+                lem = pick_best(buckets["p"], tok.lemma_)
+                matches.append([start, end, lem, "p"])
+                continue
 
     return matches
 
 
 def main() -> None:
     t0 = time.time()
-    print("Loading Polish UBG and English BSB datasets...")
+    print("Loading Polish UBG and cached English translations...", flush=True)
     pl_books = json.loads(PL_PATH.read_text(encoding="utf-8-sig"))
-    en_data = json.loads(EN_PATH.read_text(encoding="utf-8-sig"))
-    en_books = en_data["books"]
+    en_llm = json.loads(EN_LLM_CACHE.read_text(encoding="utf-8")) if EN_LLM_CACHE.exists() else {}
+    en_bsb = json.loads(EN_BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if EN_BSB_PATH.exists() else None
 
-    assert len(pl_books) == 66 and len(en_books) == 66, "Expected 66 books in both corpora"
+    assert len(pl_books) == 66, "Expected 66 books in pl_ubg.json"
 
-    print("Loading spaCy pl_core_news_md + Morfeusz2...")
+    print("Loading spaCy pl_core_news_md + Morfeusz2...", flush=True)
     nlp = spacy.load("pl_core_news_md", disable=["ner", "parser"])
-    analyzer = PolishVerbAnalyzer()
+    analyzer = PolishMorphAnalyzer()
 
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Flatten verses to leverage spaCy nlp.pipe batch processing
     flat_items: List[Tuple[int, int, int, str, str]] = []
     for bi in range(66):
-        pl_chapters = pl_books[bi]["chapters"]
-        en_map = {
-            c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
-            for c in en_books[bi]["chapters"]
-        }
-        for ci, verses in enumerate(pl_chapters, 1):
+        book_id = BOOKS_META[bi][0]
+        bsb_map = {}
+        if en_bsb:
+            bsb_map = {
+                c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
+                for c in en_bsb[bi]["chapters"]
+            }
+        for ci, verses in enumerate(pl_books[bi]["chapters"], 1):
             for vi, pl_text in enumerate(verses, 1):
-                en_text = en_map[ci][vi]
+                key = f"{book_id}:{ci}:{vi}"
+                en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
                 flat_items.append((bi, ci, vi, pl_text.strip(), en_text))
 
-    print(f"Processing {len(flat_items)} verses with spaCy + Morfeusz2...")
+    print(f"Processing {len(flat_items)} Polish verses (v, p, n, a, r)...", flush=True)
     book_entries: List[List[dict]] = [[] for _ in range(66)]
-    total_verbs = 0
+    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
     quiz_verses = 0
 
     texts = (item[3] for item in flat_items)
     for (bi, ci, vi, pl_text, en_text), doc in zip(flat_items, nlp.pipe(texts, batch_size=512)):
-        verbs = extract_verbs(doc, analyzer)
-        if not verbs:
+        forms = extract_forms(doc, en_text, analyzer)
+        if not forms:
             continue
         book_entries[bi].append({
             "c": ci,
             "v": vi,
             "o": pl_text,
             "t": en_text,
-            "m": verbs,
+            "m": forms,
         })
         quiz_verses += 1
-        total_verbs += len(verbs)
+        for _, _, _, k in forms:
+            counts[k] += 1
 
     manifest_books = []
     for bi, (book_id, pl_name, en_name) in enumerate(BOOKS_META):
         entries = book_entries[bi]
         chunk_rel = f"chunks/{bi + 1:02d}-{book_id}.json"
-        chunk_path = OUT_DIR / chunk_rel
-        chunk_path.write_text(
+        (OUT_DIR / chunk_rel).write_text(
             json.dumps(entries, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
         manifest_books.append({
             "index": bi,
             "id": book_id,
+            "nativeName": pl_name,
             "plName": pl_name,
             "enName": en_name,
             "chunkFile": chunk_rel,
@@ -293,31 +371,23 @@ def main() -> None:
         "id": "pl-bible-ubg",
         "language": "pl",
         "title": "Bible",
-        "subtitle": "Uwspółcześniona Biblia Gdańska · Berean Standard Bible",
-        "translationSource": "BSB",
+        "subtitle": "Uwspółcześniona Biblia Gdańska · Direct English",
+        "translationSource": "UBG → EN",
         "totalVerses": len(flat_items),
         "quizVerses": quiz_verses,
-        "totalVerbs": total_verbs,
+        "totalVerbs": counts["v"],
+        "formCounts": counts,
         "books": manifest_books,
     }
-    (OUT_DIR / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    elapsed = time.time() - t0
-    print(f"Done in {elapsed:.1f}s! Quiz verses: {quiz_verses}/{len(flat_items)}, total verb blanks: {total_verbs}")
+    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
 
-    # Verify Genesis 3:13 specifically
-    gen_entries = book_entries[0]
-    gen313 = next((e for e in gen_entries if e["c"] == 3 and e["v"] == 13), None)
-    print("\n--- Genesis 3:13 Verification ---")
-    if gen313:
-        print("Original:", gen313["o"])
-        print("Translation:", gen313["t"])
-        print("Blanks:", [(gen313["o"][s:e], lem) for s, e, lem in gen313["m"]])
-    else:
-        print("WARNING: Genesis 3:13 not found!")
+    for label, bi, c, v in [("Gen 3:13", 0, 3, 13), ("Num 7:43", 3, 7, 43)]:
+        e = next((x for x in book_entries[bi] if x["c"] == c and x["v"] == v), None)
+        if e:
+            print(f"\n--- PL {label} ---")
+            print([(e["o"][s:en], lem, k) for s, en, lem, k in e["m"]])
 
 
 if __name__ == "__main__":

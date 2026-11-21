@@ -17,7 +17,7 @@ import {
 import { DualRangeSlider } from '../components/DualRangeSlider';
 import { QuizCard } from '../components/QuizCard';
 import { SettingsDrawer } from '../components/SettingsDrawer';
-import { DEFAULT_SETTINGS } from '../hooks/usePersistedSettings';
+import { DEFAULT_SETTINGS, DEFAULT_WORD_FORMS } from '../hooks/usePersistedSettings';
 import type { QuizQuestion } from '../types/quiz';
 
 const GENESIS_3_13: QuizQuestion = {
@@ -37,11 +37,11 @@ const GENESIS_3_13: QuizQuestion = {
     'And the LORD God asked the woman: What have you done? And the woman answered: The serpent deceived me, and I ate.',
   translationSource: 'UBG → EN',
   blanks: [
-    { index: 0, start: 8, end: 15, answer: 'zapytał', lemma: 'zapytać' },
-    { index: 1, start: 28, end: 36, answer: 'zrobiłaś', lemma: 'zrobić' },
-    { index: 2, start: 40, end: 53, answer: 'odpowiedziała', lemma: 'odpowiedzieć' },
-    { index: 3, start: 72, end: 78, answer: 'zwiódł', lemma: 'zwieść' },
-    { index: 4, start: 81, end: 88, answer: 'zjadłam', lemma: 'zjeść' },
+    { index: 0, start: 8, end: 15, answer: 'zapytał', lemma: 'zapytać', kind: 'v' },
+    { index: 1, start: 28, end: 36, answer: 'zrobiłaś', lemma: 'zrobić', kind: 'v' },
+    { index: 2, start: 40, end: 53, answer: 'odpowiedziała', lemma: 'odpowiedzieć', kind: 'v' },
+    { index: 3, start: 72, end: 78, answer: 'zwiódł', lemma: 'zwieść', kind: 'v' },
+    { index: 4, start: 81, end: 88, answer: 'zjadłam', lemma: 'zjeść', kind: 'v' },
   ],
 };
 
@@ -62,12 +62,12 @@ const DE_GENESIS_3_13: QuizQuestion = {
     'Then the LORD God spoke to the woman: Why have you done that? The woman answered: The serpent deceived me, so that I ate!',
   translationSource: 'SCH1951 → EN',
   blanks: [
-    { index: 0, start: 3, end: 9, answer: 'sprach', lemma: 'sprechen' },
-    { index: 1, start: 41, end: 45, answer: 'hast', lemma: 'haben' },
-    { index: 2, start: 53, end: 58, answer: 'getan', lemma: 'tun' },
-    { index: 3, start: 69, end: 79, answer: 'antwortete', lemma: 'antworten' },
-    { index: 4, start: 94, end: 103, answer: 'verführte', lemma: 'verführen' },
-    { index: 5, start: 118, end: 120, answer: 'aß', lemma: 'essen' },
+    { index: 0, start: 3, end: 9, answer: 'sprach', lemma: 'sprechen', kind: 'v' },
+    { index: 1, start: 41, end: 45, answer: 'hast', lemma: 'haben', kind: 'v' },
+    { index: 2, start: 53, end: 58, answer: 'getan', lemma: 'tun', kind: 'p' },
+    { index: 3, start: 69, end: 79, answer: 'antwortete', lemma: 'antworten', kind: 'v' },
+    { index: 4, start: 94, end: 103, answer: 'verführte', lemma: 'verführen', kind: 'v' },
+    { index: 5, start: 118, end: 120, answer: 'aß', lemma: 'essen', kind: 'v' },
   ],
 };
 
@@ -86,14 +86,14 @@ describe('answerCheck', () => {
   it('grades lowercase answers as exact even when the target verb is capitalized', () => {
     expect(
       evaluateBlank(
-        { index: 0, start: 0, end: 6, answer: 'Napisz', lemma: 'napisać' },
+        { index: 0, start: 0, end: 6, answer: 'Napisz', lemma: 'napisać', kind: 'v' },
         'napisz',
         'strict'
       ).status
     ).toBe('exact');
     expect(
       evaluateBlank(
-        { index: 0, start: 0, end: 7, answer: 'Ćwiczył', lemma: 'ćwiczyć' },
+        { index: 0, start: 0, end: 7, answer: 'Ćwiczył', lemma: 'ćwiczyć', kind: 'v' },
         'ćwiczył',
         'strict'
       ).status
@@ -117,7 +117,7 @@ describe('answerCheck', () => {
   });
 
   it('evaluates Czech diacritics in strict vs lenient mode', () => {
-    const blank = { index: 0, start: 2, end: 6, answer: 'řekl', lemma: 'říci' };
+    const blank = { index: 0, start: 2, end: 6, answer: 'řekl', lemma: 'říci', kind: 'v' as const };
     expect(evaluateBlank(blank, 'řekl', 'strict', 'cs').status).toBe('exact');
     expect(evaluateBlank(blank, 'rekl', 'strict', 'cs').status).toBe('wrong');
     expect(evaluateBlank(blank, 'rekl', 'lenient', 'cs').status).toBe('diacritic-close');
@@ -139,7 +139,7 @@ describe('alloAxes', () => {
       '"wght" 400, "ROND" 50, "opsz" 14'
     );
     expect(
-      buildFontVariationSettings({ wght: 650, rond: 100, opsz: 32, opszAuto: true })
+      buildFontVariationSettings({ wght: 650, rond: 100, opsz: 32, opszAuto: true, tracking: 0 })
     ).toBe('"wght" 650, "ROND" 100');
   });
 });
@@ -156,6 +156,7 @@ describe('QuizCard', () => {
         alphabet={POLISH_ALPHABET}
         diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
         diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
         onComplete={onComplete}
         onNext={onNext}
       />
@@ -187,6 +188,7 @@ describe('QuizCard', () => {
         alphabet={POLISH_ALPHABET}
         diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
         diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
         onComplete={vi.fn()}
         onNext={vi.fn()}
       />
@@ -221,6 +223,7 @@ describe('QuizCard', () => {
         alphabet={POLISH_ALPHABET}
         diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
         diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
         onComplete={vi.fn()}
         onNext={vi.fn()}
       />
@@ -253,6 +256,7 @@ describe('QuizCard', () => {
         alphabet={GERMAN_ALPHABET}
         diacritics={['ä', 'ö', 'ü', 'ß']}
         diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
         onComplete={onComplete}
         onNext={vi.fn()}
       />
@@ -294,8 +298,8 @@ describe('QuizCard', () => {
       translation: 'And the LORD God said to the woman: What have you done?',
       translationSource: 'BKR → EN',
       blanks: [
-        { index: 0, start: 2, end: 6, answer: 'řekl', lemma: 'říci' },
-        { index: 1, start: 37, end: 44, answer: 'učinila', lemma: 'učinit' },
+        { index: 0, start: 2, end: 6, answer: 'řekl', lemma: 'říci', kind: 'v' },
+        { index: 1, start: 37, end: 44, answer: 'učinila', lemma: 'učinit', kind: 'v' },
       ],
     };
 
@@ -307,6 +311,7 @@ describe('QuizCard', () => {
         alphabet={CZECH_ALPHABET}
         diacritics={['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž']}
         diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
         onComplete={onComplete}
         onNext={vi.fn()}
       />
@@ -355,6 +360,14 @@ describe('SettingsDrawer', () => {
       })
     );
 
+    const kerningSlider = screen.getByRole('slider', { name: /Kerning/i });
+    fireEvent.change(kerningSlider, { target: { value: '0.03' } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fontAxes: expect.objectContaining({ tracking: 0.03 }),
+      })
+    );
+
     fireEvent.click(screen.getByRole('button', { name: 'Dark' }));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ theme: 'dark' })
@@ -363,6 +376,14 @@ describe('SettingsDrawer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Lenient' }));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ diacriticMode: 'lenient' })
+    );
+
+    const nounsCheckbox = screen.getByRole('checkbox', { name: /^Nouns/i });
+    fireEvent.click(nounsCheckbox);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        wordForms: expect.objectContaining({ v: true, n: true }),
+      })
     );
 
     const minVerbSlider = screen.getByRole('slider', { name: /Minimum verbs/i });

@@ -42,6 +42,22 @@ export interface CorpusManifest {
   books: CorpusBookMeta[];
 }
 
+export type WordFormKind = 'v' | 'p' | 'n' | 'a' | 'r';
+
+export type EnabledWordForms = Record<WordFormKind, boolean>;
+
+export const WORD_FORM_META: {
+  kind: WordFormKind;
+  label: string;
+  shortTag: string;
+}[] = [
+  { kind: 'v', label: 'Verbs', shortTag: 'V' },
+  { kind: 'p', label: 'Participles', shortTag: 'P' },
+  { kind: 'n', label: 'Nouns', shortTag: 'N' },
+  { kind: 'a', label: 'Adjectives', shortTag: 'A' },
+  { kind: 'r', label: 'Pronouns', shortTag: 'R' },
+];
+
 export interface RawCorpusEntry {
   /** Chapter (1-based) */
   c: number;
@@ -51,8 +67,8 @@ export interface RawCorpusEntry {
   o: string;
   /** English translation */
   t: string;
-  /** Verb spans: [startChar, endChar, infinitiveLemma] */
-  m: [number, number, string][];
+  /** Inflected spans: [startChar, endChar, lemma, kind?] (kind defaults to 'v') */
+  m: [number, number, string, WordFormKind?][];
 }
 
 export interface VerbBlank {
@@ -61,6 +77,7 @@ export interface VerbBlank {
   end: number;
   answer: string;
   lemma: string;
+  kind: WordFormKind;
 }
 
 export interface QuizQuestion {
@@ -85,6 +102,8 @@ export interface AlloFontAxes {
   rond: number;
   opsz: number;
   opszAuto: boolean;
+  /** Extra letter-spacing / kerning adjustment in em (e.g. -0.04 .. +0.12). */
+  tracking: number;
 }
 
 export type DiacriticMode = 'strict' | 'lenient';
@@ -111,6 +130,7 @@ export interface AppSettings {
   corpusId: string;
   fontAxes: AlloFontAxes;
   diacriticMode: DiacriticMode;
+  wordForms: EnabledWordForms;
   verbRange: VerbRange;
   verseRange: VerseRange;
   theme: ThemeMode;

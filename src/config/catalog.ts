@@ -26,7 +26,7 @@ export const LANGUAGES: LanguageOption[] = [
     nativeName: 'Polski',
     alphabet: POLISH_ALPHABET,
     diacritics: ['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż'],
-    specimen: 'PAN Bóg zapytał — 3:13',
+    specimen: 'PAN Bóg zapytał · ołtarzu',
     available: true,
   },
   {

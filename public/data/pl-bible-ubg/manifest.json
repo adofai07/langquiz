@@ -5,68 +5,83 @@
   "subtitle": "Uwspółcześniona Biblia Gdańska · Direct English",
   "translationSource": "UBG → EN",
   "totalVerses": 31102,
-  "quizVerses": 29750,
+  "quizVerses": 30919,
   "totalVerbs": 94586,
+  "formCounts": {
+    "v": 94586,
+    "p": 9110,
+    "n": 117253,
+    "a": 19325,
+    "r": 71950
+  },
   "books": [
     {
       "index": 0,
       "id": "gn",
+      "nativeName": "Księga Rodzaju",
       "plName": "Księga Rodzaju",
       "enName": "Genesis",
       "chunkFile": "chunks/01-gn.json",
-      "verseCount": 1484
+      "verseCount": 1524
     },
     {
       "index": 1,
       "id": "ex",
+      "nativeName": "Księga Wyjścia",
       "plName": "Księga Wyjścia",
       "enName": "Exodus",
       "chunkFile": "chunks/02-ex.json",
-      "verseCount": 1150
+      "verseCount": 1212
     },
     {
       "index": 2,
       "id": "lv",
+      "nativeName": "Księga Kapłańska",
       "plName": "Księga Kapłańska",
       "enName": "Leviticus",
       "chunkFile": "chunks/03-lv.json",
-      "verseCount": 840
+      "verseCount": 856
     },
     {
       "index": 3,
       "id": "nm",
+      "nativeName": "Księga Liczb",
       "plName": "Księga Liczb",
       "enName": "Numbers",
       "chunkFile": "chunks/04-nm.json",
-      "verseCount": 1147
+      "verseCount": 1283
     },
     {
       "index": 4,
       "id": "dt",
+      "nativeName": "Księga Powtórzonego Prawa",
       "plName": "Księga Powtórzonego Prawa",
       "enName": "Deuteronomy",
       "chunkFile": "chunks/05-dt.json",
-      "verseCount": 938
+      "verseCount": 957
     },
     {
       "index": 5,
       "id": "js",
+      "nativeName": "Księga Jozuego",
       "plName": "Księga Jozuego",
       "enName": "Joshua",
       "chunkFile": "chunks/06-js.json",
-      "verseCount": 548
+      "verseCount": 618
     },
     {
       "index": 6,
       "id": "jz",
+      "nativeName": "Księga Sędziów",
       "plName": "Księga Sędziów",
       "enName": "Judges",
       "chunkFile": "chunks/07-jz.json",
-      "verseCount": 617
+      "verseCount": 618
     },
     {
       "index": 7,
       "id": "rt",
+      "nativeName": "Księga Rut",
       "plName": "Księga Rut",
       "enName": "Ruth",
       "chunkFile": "chunks/08-rt.json",
@@ -75,70 +90,79 @@
     {
       "index": 8,
       "id": "1sm",
+      "nativeName": "1 Księga Samuela",
       "plName": "1 Księga Samuela",
       "enName": "1 Samuel",
       "chunkFile": "chunks/09-1sm.json",
-      "verseCount": 807
+      "verseCount": 810
     },
     {
       "index": 9,
       "id": "2sm",
+      "nativeName": "2 Księga Samuela",
       "plName": "2 Księga Samuela",
       "enName": "2 Samuel",
       "chunkFile": "chunks/10-2sm.json",
-      "verseCount": 676
+      "verseCount": 685
     },
     {
       "index": 10,
       "id": "1rs",
+      "nativeName": "1 Księga Królewska",
       "plName": "1 Księga Królewska",
       "enName": "1 Kings",
       "chunkFile": "chunks/11-1rs.json",
-      "verseCount": 797
+      "verseCount": 814
     },
     {
       "index": 11,
       "id": "2rs",
+      "nativeName": "2 Księga Królewska",
       "plName": "2 Księga Królewska",
       "enName": "2 Kings",
       "chunkFile": "chunks/12-2rs.json",
-      "verseCount": 718
+      "verseCount": 719
     },
     {
       "index": 12,
       "id": "1cr",
+      "nativeName": "1 Księga Kronik",
       "plName": "1 Księga Kronik",
       "enName": "1 Chronicles",
       "chunkFile": "chunks/13-1cr.json",
-      "verseCount": 650
+      "verseCount": 881
     },
     {
       "index": 13,
       "id": "2cr",
+      "nativeName": "2 Księga Kronik",
       "plName": "2 Księga Kronik",
       "enName": "2 Chronicles",
       "chunkFile": "chunks/14-2cr.json",
-      "verseCount": 807
+      "verseCount": 820
     },
     {
       "index": 14,
       "id": "ed",
+      "nativeName": "Księga Ezdrasza",
       "plName": "Księga Ezdrasza",
       "enName": "Ezra",
       "chunkFile": "chunks/15-ed.json",
-      "verseCount": 176
+      "verseCount": 273
     },
     {
       "index": 15,
       "id": "ne",
+      "nativeName": "Księga Nehemiasza",
       "plName": "Księga Nehemiasza",
       "enName": "Nehemiah",
       "chunkFile": "chunks/16-ne.json",
-      "verseCount": 293
+      "verseCount": 370
     },
     {
       "index": 16,
       "id": "et",
+      "nativeName": "Księga Estery",
       "plName": "Księga Estery",
       "enName": "Esther",
       "chunkFile": "chunks/17-et.json",
@@ -147,86 +171,97 @@
     {
       "index": 17,
       "id": "job",
+      "nativeName": "Księga Hioba",
       "plName": "Księga Hioba",
       "enName": "Job",
       "chunkFile": "chunks/18-job.json",
-      "verseCount": 1062
+      "verseCount": 1070
     },
     {
       "index": 18,
       "id": "sl",
+      "nativeName": "Księga Psalmów",
       "plName": "Księga Psalmów",
       "enName": "Psalms",
       "chunkFile": "chunks/19-sl.json",
-      "verseCount": 2393
+      "verseCount": 2461
     },
     {
       "index": 19,
       "id": "pv",
+      "nativeName": "Księga Przysłów",
       "plName": "Księga Przysłów",
       "enName": "Proverbs",
       "chunkFile": "chunks/20-pv.json",
-      "verseCount": 882
+      "verseCount": 915
     },
     {
       "index": 20,
       "id": "ec",
+      "nativeName": "Księga Kaznodziei",
       "plName": "Księga Kaznodziei",
       "enName": "Ecclesiastes",
       "chunkFile": "chunks/21-ec.json",
-      "verseCount": 214
+      "verseCount": 222
     },
     {
       "index": 21,
       "id": "ct",
+      "nativeName": "Pieśń nad Pieśniami",
       "plName": "Pieśń nad Pieśniami",
       "enName": "Song of Solomon",
       "chunkFile": "chunks/22-ct.json",
-      "verseCount": 110
+      "verseCount": 117
     },
     {
       "index": 22,
       "id": "is",
+      "nativeName": "Księga Izajasza",
       "plName": "Księga Izajasza",
       "enName": "Isaiah",
       "chunkFile": "chunks/23-is.json",
-      "verseCount": 1273
+      "verseCount": 1292
     },
     {
       "index": 23,
       "id": "jr",
+      "nativeName": "Księga Jeremiasza",
       "plName": "Księga Jeremiasza",
       "enName": "Jeremiah",
       "chunkFile": "chunks/24-jr.json",
-      "verseCount": 1349
+      "verseCount": 1364
     },
     {
       "index": 24,
       "id": "lm",
+      "nativeName": "Lamentacje",
       "plName": "Lamentacje",
       "enName": "Lamentations",
       "chunkFile": "chunks/25-lm.json",
-      "verseCount": 152
+      "verseCount": 154
     },
     {
       "index": 25,
       "id": "ez",
+      "nativeName": "Księga Ezechiela",
       "plName": "Księga Ezechiela",
       "enName": "Ezekiel",
       "chunkFile": "chunks/26-ez.json",
-      "verseCount": 1246
+      "verseCount": 1273
     },
     {
       "index": 26,
       "id": "dn",
+      "nativeName": "Księga Daniela",
       "plName": "Księga Daniela",
       "enName": "Daniel",
       "chunkFile": "chunks/27-dn.json",
-      "verseCount": 355
+      "verseCount": 357
     },
     {
       "index": 27,
       "id": "os",
+      "nativeName": "Księga Ozeasza",
       "plName": "Księga Ozeasza",
       "enName": "Hosea",
       "chunkFile": "chunks/28-os.json",
@@ -235,22 +270,25 @@
     {
       "index": 28,
       "id": "jl",
+      "nativeName": "Księga Joela",
       "plName": "Księga Joela",
       "enName": "Joel",
       "chunkFile": "chunks/29-jl.json",
-      "verseCount": 72
+      "verseCount": 73
     },
     {
       "index": 29,
       "id": "am",
+      "nativeName": "Księga Amosa",
       "plName": "Księga Amosa",
       "enName": "Amos",
       "chunkFile": "chunks/30-am.json",
-      "verseCount": 145
+      "verseCount": 146
     },
     {
       "index": 30,
       "id": "ob",
+      "nativeName": "Księga Abdiasza",
       "plName": "Księga Abdiasza",
       "enName": "Obadiah",
       "chunkFile": "chunks/31-ob.json",
@@ -259,6 +297,7 @@
     {
       "index": 31,
       "id": "jn",
+      "nativeName": "Księga Jonasza",
       "plName": "Księga Jonasza",
       "enName": "Jonah",
       "chunkFile": "chunks/32-jn.json",
@@ -267,6 +306,7 @@
     {
       "index": 32,
       "id": "mq",
+      "nativeName": "Księga Micheasza",
       "plName": "Księga Micheasza",
       "enName": "Micah",
       "chunkFile": "chunks/33-mq.json",
@@ -275,230 +315,259 @@
     {
       "index": 33,
       "id": "na",
+      "nativeName": "Księga Nahuma",
       "plName": "Księga Nahuma",
       "enName": "Nahum",
       "chunkFile": "chunks/34-na.json",
-      "verseCount": 45
+      "verseCount": 47
     },
     {
       "index": 34,
       "id": "hc",
+      "nativeName": "Księga Habakuka",
       "plName": "Księga Habakuka",
       "enName": "Habakkuk",
       "chunkFile": "chunks/35-hc.json",
-      "verseCount": 54
+      "verseCount": 56
     },
     {
       "index": 35,
       "id": "sf",
+      "nativeName": "Księga Sofoniasza",
       "plName": "Księga Sofoniasza",
       "enName": "Zephaniah",
       "chunkFile": "chunks/36-sf.json",
-      "verseCount": 51
+      "verseCount": 53
     },
     {
       "index": 36,
       "id": "ag",
+      "nativeName": "Księga Aggeusza",
       "plName": "Księga Aggeusza",
       "enName": "Haggai",
       "chunkFile": "chunks/37-ag.json",
-      "verseCount": 37
+      "verseCount": 38
     },
     {
       "index": 37,
       "id": "zc",
+      "nativeName": "Księga Zachariasza",
       "plName": "Księga Zachariasza",
       "enName": "Zechariah",
       "chunkFile": "chunks/38-zc.json",
-      "verseCount": 208
+      "verseCount": 211
     },
     {
       "index": 38,
       "id": "ml",
+      "nativeName": "Księga Malachiasza",
       "plName": "Księga Malachiasza",
       "enName": "Malachi",
       "chunkFile": "chunks/39-ml.json",
-      "verseCount": 54
+      "verseCount": 55
     },
     {
       "index": 39,
       "id": "mt",
+      "nativeName": "Ewangelia Mateusza",
       "plName": "Ewangelia Mateusza",
       "enName": "Matthew",
       "chunkFile": "chunks/40-mt.json",
-      "verseCount": 1063
+      "verseCount": 1071
     },
     {
       "index": 40,
       "id": "mc",
+      "nativeName": "Ewangelia Marka",
       "plName": "Ewangelia Marka",
       "enName": "Mark",
       "chunkFile": "chunks/41-mc.json",
-      "verseCount": 674
+      "verseCount": 678
     },
     {
       "index": 41,
       "id": "lc",
+      "nativeName": "Ewangelia Łukasza",
       "plName": "Ewangelia Łukasza",
       "enName": "Luke",
       "chunkFile": "chunks/42-lc.json",
-      "verseCount": 1125
+      "verseCount": 1151
     },
     {
       "index": 42,
       "id": "jo",
+      "nativeName": "Ewangelia Jana",
       "plName": "Ewangelia Jana",
       "enName": "John",
       "chunkFile": "chunks/43-jo.json",
-      "verseCount": 878
+      "verseCount": 879
     },
     {
       "index": 43,
       "id": "atos",
+      "nativeName": "Dzieje Apostolskie",
       "plName": "Dzieje Apostolskie",
       "enName": "Acts",
       "chunkFile": "chunks/44-atos.json",
-      "verseCount": 1005
+      "verseCount": 1007
     },
     {
       "index": 44,
       "id": "rm",
+      "nativeName": "List do Rzymian",
       "plName": "List do Rzymian",
       "enName": "Romans",
       "chunkFile": "chunks/45-rm.json",
-      "verseCount": 419
+      "verseCount": 433
     },
     {
       "index": 45,
       "id": "1co",
+      "nativeName": "1 List do Koryntian",
       "plName": "1 List do Koryntian",
       "enName": "1 Corinthians",
       "chunkFile": "chunks/46-1co.json",
-      "verseCount": 427
+      "verseCount": 437
     },
     {
       "index": 46,
       "id": "2co",
+      "nativeName": "2 List do Koryntian",
       "plName": "2 List do Koryntian",
       "enName": "2 Corinthians",
       "chunkFile": "chunks/47-2co.json",
-      "verseCount": 244
+      "verseCount": 257
     },
     {
       "index": 47,
       "id": "gl",
+      "nativeName": "List do Galacjan",
       "plName": "List do Galacjan",
       "enName": "Galatians",
       "chunkFile": "chunks/48-gl.json",
-      "verseCount": 146
+      "verseCount": 149
     },
     {
       "index": 48,
       "id": "ef",
+      "nativeName": "List do Efezjan",
       "plName": "List do Efezjan",
       "enName": "Ephesians",
       "chunkFile": "chunks/49-ef.json",
-      "verseCount": 134
+      "verseCount": 155
     },
     {
       "index": 49,
       "id": "fp",
+      "nativeName": "List do Filipian",
       "plName": "List do Filipian",
       "enName": "Philippians",
       "chunkFile": "chunks/50-fp.json",
-      "verseCount": 97
+      "verseCount": 104
     },
     {
       "index": 50,
       "id": "cl",
+      "nativeName": "List do Kolosan",
       "plName": "List do Kolosan",
       "enName": "Colossians",
       "chunkFile": "chunks/51-cl.json",
-      "verseCount": 91
+      "verseCount": 95
     },
     {
       "index": 51,
       "id": "1ts",
+      "nativeName": "1 List do Tesaloniczan",
       "plName": "1 List do Tesaloniczan",
       "enName": "1 Thessalonians",
       "chunkFile": "chunks/52-1ts.json",
-      "verseCount": 85
+      "verseCount": 88
     },
     {
       "index": 52,
       "id": "2ts",
+      "nativeName": "2 List do Tesaloniczan",
       "plName": "2 List do Tesaloniczan",
       "enName": "2 Thessalonians",
       "chunkFile": "chunks/53-2ts.json",
-      "verseCount": 45
+      "verseCount": 47
     },
     {
       "index": 53,
       "id": "1tm",
+      "nativeName": "1 List do Tymoteusza",
       "plName": "1 List do Tymoteusza",
       "enName": "1 Timothy",
       "chunkFile": "chunks/54-1tm.json",
-      "verseCount": 105
+      "verseCount": 113
     },
     {
       "index": 54,
       "id": "2tm",
+      "nativeName": "2 List do Tymoteusza",
       "plName": "2 List do Tymoteusza",
       "enName": "2 Timothy",
       "chunkFile": "chunks/55-2tm.json",
-      "verseCount": 79
+      "verseCount": 83
     },
     {
       "index": 55,
       "id": "tt",
+      "nativeName": "List do Tytusa",
       "plName": "List do Tytusa",
       "enName": "Titus",
       "chunkFile": "chunks/56-tt.json",
-      "verseCount": 43
+      "verseCount": 46
     },
     {
       "index": 56,
       "id": "fm",
+      "nativeName": "List do Filemona",
       "plName": "List do Filemona",
       "enName": "Philemon",
       "chunkFile": "chunks/57-fm.json",
-      "verseCount": 21
+      "verseCount": 25
     },
     {
       "index": 57,
       "id": "hb",
+      "nativeName": "List do Hebrajczyków",
       "plName": "List do Hebrajczyków",
       "enName": "Hebrews",
       "chunkFile": "chunks/58-hb.json",
-      "verseCount": 294
+      "verseCount": 303
     },
     {
       "index": 58,
       "id": "tg",
+      "nativeName": "List Jakuba",
       "plName": "List Jakuba",
       "enName": "James",
       "chunkFile": "chunks/59-tg.json",
-      "verseCount": 107
+      "verseCount": 108
     },
     {
       "index": 59,
       "id": "1pe",
+      "nativeName": "1 List Piotra",
       "plName": "1 List Piotra",
       "enName": "1 Peter",
       "chunkFile": "chunks/60-1pe.json",
-      "verseCount": 93
+      "verseCount": 105
     },
     {
       "index": 60,
       "id": "2pe",
+      "nativeName": "2 List Piotra",
       "plName": "2 List Piotra",
       "enName": "2 Peter",
       "chunkFile": "chunks/61-2pe.json",
-      "verseCount": 58
+      "verseCount": 61
     },
     {
       "index": 61,
       "id": "1jo",
+      "nativeName": "1 List Jana",
       "plName": "1 List Jana",
       "enName": "1 John",
       "chunkFile": "chunks/62-1jo.json",
@@ -507,6 +576,7 @@
     {
       "index": 62,
       "id": "2jo",
+      "nativeName": "2 List Jana",
       "plName": "2 List Jana",
       "enName": "2 John",
       "chunkFile": "chunks/63-2jo.json",
@@ -515,6 +585,7 @@
     {
       "index": 63,
       "id": "3jo",
+      "nativeName": "3 List Jana",
       "plName": "3 List Jana",
       "enName": "3 John",
       "chunkFile": "chunks/64-3jo.json",
@@ -523,18 +594,20 @@
     {
       "index": 64,
       "id": "jd",
+      "nativeName": "List Judy",
       "plName": "List Judy",
       "enName": "Jude",
       "chunkFile": "chunks/65-jd.json",
-      "verseCount": 22
+      "verseCount": 25
     },
     {
       "index": 65,
       "id": "ap",
+      "nativeName": "Objawienie Jana",
       "plName": "Objawienie Jana",
       "enName": "Revelation",
       "chunkFile": "chunks/66-ap.json",
-      "verseCount": 393
+      "verseCount": 403
     }
   ]
 }

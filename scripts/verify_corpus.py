@@ -47,7 +47,9 @@ def main() -> None:
             if not entry.get("t", "").strip():
                 empty_translations += 1
             prev_end = -1
-            for start, end, lemma in entry["m"]:
+            for span in entry["m"]:
+                start, end, lemma = span[0], span[1], span[2]
+                kind = span[3] if len(span) > 3 else "v"
                 if not (0 <= start < end <= len(text)):
                     print(f"OUT OF BOUNDS: {book['id']} {entry['c']}:{entry['v']}")
                     errors += 1
@@ -56,11 +58,11 @@ def main() -> None:
                     errors += 1
                 prev_end = end
                 surface = text[start:end]
-                if not is_valid_lemma(lang, lemma):
-                    print(f"BAD LEMMA: {surface} -> {lemma}")
+                if kind in ("v", "p") and not is_valid_lemma(lang, lemma):
+                    print(f"BAD LEMMA: {surface} -> {lemma} ({kind})")
                     errors += 1
                 if surface.lower() == lemma.lower():
-                    print(f"TRIVIAL INFINITIVE: {surface} -> {lemma}")
+                    print(f"TRIVIAL FORM: {surface} -> {lemma} ({kind})")
                     errors += 1
 
             if book["id"] == "gn" and entry["c"] == 3 and entry["v"] == 13:
@@ -68,15 +70,16 @@ def main() -> None:
                 print("Reference:", f"{native_name} ({book['enName']}) {entry['c']}:{entry['v']}")
                 masked = []
                 cur = 0
-                for s, e, _ in entry["m"]:
+                for span in entry["m"]:
+                    s, e = span[0], span[1]
                     masked.append(text[cur:s])
                     masked.append("______")
                     cur = e
                 masked.append(text[cur:])
                 print("Original:", "".join(masked))
                 print("Translation:", entry["t"])
-                print("Verbs:", ", ".join(lem for _, _, lem in entry["m"]))
-                print("Answers:", ", ".join(text[s:e] for s, e, _ in entry["m"]))
+                print("Forms:", ", ".join(f"{sp[2]}({sp[3] if len(sp) > 3 else 'v'})" for sp in entry["m"]))
+                print("Answers:", ", ".join(text[sp[0]:sp[1]] for sp in entry["m"]))
 
         if entries:
             all_samples.append((native_name, book, entries))
@@ -88,7 +91,7 @@ def main() -> None:
     print("\n=== Random Spot Check (8 verses) ===")
     for native_name, book, entries in random.sample(all_samples, 8):
         e = random.choice(entries)
-        pairs = [(e["o"][s:en], lem) for s, en, lem in e["m"]]
+        pairs = [(e["o"][sp[0]:sp[1]], sp[2], sp[3] if len(sp) > 3 else "v") for sp in e["m"]]
         print(f"  {native_name} ({book['enName']}) {e['c']}:{e['v']}: {pairs}")
 
 

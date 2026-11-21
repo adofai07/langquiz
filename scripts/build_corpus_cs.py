@@ -1,13 +1,16 @@
 """
-Build the Czech Bible (Bible kralická / BKR) verb-form quiz corpus.
+Build the Czech Bible (Bible kralická / BKR) inflected word-form quiz corpus.
 
-Uses Charles University's UDPipe Czech PDT tagger/lemmatizer (`spacy-udpipe`,
-`czech-pdt-ud-2.5-191206.udpipe`) for contextual Czech POS/morphological tagging
-and lemmatization, rescuing any archaic 1613 Bible kralická forms not recognized
-by modern PDT via a local OpenAI-compatible LLM endpoint (default localhost:8000).
+Extracts all 5 inflecting Czech word categories via Charles University's UDPipe
+Czech PDT tagger/lemmatizer (`spacy-udpipe`):
+  - 'v': finite verbs & Czech past l-participles (VB, Vp, Vi, Vc)
+  - 'p': passive & adverbial verbal participles (Vs, Ve, Vm)
+  - 'n': inflected nouns (NOUN/PROPN where surface != lemma)
+  - 'a': inflected adjectives (ADJ where surface != lemma)
+  - 'r': inflected pronouns & determiners (PRON/DET where surface != lemma)
 
-Usage:
-    python scripts/build_corpus_cs.py
+Reuses cached archaic verb rescue lemmas (`raw_data/cs_verb_lemmas_rescue.json`)
+and cached direct English translations (`raw_data/en_llm_translations_cs.json`).
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ import spacy_udpipe
 
 ROOT = Path(__file__).resolve().parent.parent
 CS_PATH = ROOT / "cs_bkr.json"
+EN_LLM_CACHE = ROOT / "raw_data" / "en_llm_translations_cs.json"
 BSB_PATH = ROOT / "raw_data" / "en_bsb.json"
 RESCUE_CACHE_PATH = ROOT / "raw_data" / "cs_verb_lemmas_rescue.json"
 OUT_DIR = ROOT / "public" / "data" / "cs-bible-bkr"
@@ -41,6 +45,7 @@ def resolve_model() -> str:
     with urllib.request.urlopen(models_url, timeout=10) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     return str(data["data"][0]["id"])
+
 
 BOOKS_META: List[Tuple[str, str, str]] = [
     ("gn", "1. Mojžíšova", "Genesis"),
@@ -112,8 +117,8 @@ BOOKS_META: List[Tuple[str, str, str]] = [
 ]
 
 CS_WORD_RE = re.compile(r"^[A-Za-zÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž]+$")
-# PDT verb sub-POS prefixes we want: VB (present/future), Vp (past l-participle), Vi (imperative), Vc (conditional), Vs (passive part.)
-VALID_PDT_PREFIXES = ("VB", "Vp", "Vi", "Vc", "Vs")
+VERB_PDT_PREFIXES = ("VB", "Vp", "Vi", "Vc")
+PART_PDT_PREFIXES = ("Vs", "Ve", "Vm")
 
 RESCUE_PROMPT = (
     "You are an expert Czech historical and modern linguist (Bible kralická). "
@@ -125,10 +130,9 @@ RESCUE_PROMPT = (
 )
 
 
-def clean_pdt_lemma(raw: str) -> str:
-    """Strip Czech PDT lemma suffixes like 'být-1' or 'říci_:W'."""
-    base = re.split(r"[-_`^]", raw, maxsplit=1)[0].strip().lower()
-    return base
+def clean_pdt_lemma(raw: str, keep_case: bool = False) -> str:
+    base = re.split(r"[-_`^]", raw, maxsplit=1)[0].strip()
+    return base if keep_case else base.lower()
 
 
 def is_valid_cs_infinitive(lemma: str) -> bool:
@@ -148,7 +152,7 @@ def rescue_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
             {"role": "user", "content": json.dumps(batch, ensure_ascii=False)},
         ],
         "temperature": 0.0,
-        "max_tokens": min(4096, max(512, len(batch) * 45)),
+        "max_tokens": min(4096, max(1024, len(batch) * 90)),
         "reasoning_effort": "low",
         "response_format": {"type": "json_object"},
     }
@@ -160,7 +164,10 @@ def rescue_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
     )
     with urllib.request.urlopen(req, timeout=90) as resp:
         body = json.loads(resp.read().decode("utf-8"))
-    parsed = json.loads(body["choices"][0]["message"]["content"])
+    content = body["choices"][0]["message"].get("content")
+    if not content:
+        return {}
+    parsed = json.loads(content)
     if not isinstance(parsed, dict):
         return {}
     out: Dict[str, str] = {}
@@ -175,74 +182,35 @@ def rescue_batch(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
     return out
 
 
-def rescue_batch_with_retry(batch: Dict[str, str], model_name: str) -> Dict[str, str]:
-    results: Dict[str, str] = {}
-    remaining = dict(batch)
-    for attempt in range(2):
-        if not remaining:
-            break
-        try:
-            results.update(rescue_batch(remaining, model_name))
-            remaining = {k: v for k, v in remaining.items() if k not in results}
-        except Exception:
-            if attempt == 0 and len(remaining) > 1:
-                items = list(remaining.items())
-                mid = len(items) // 2
-                for sub in (dict(items[:mid]), dict(items[mid:])):
-                    try:
-                        results.update(rescue_batch(sub, model_name))
-                    except Exception:
-                        pass
-                remaining = {k: v for k, v in remaining.items() if k not in results}
-    return results
+_WORKER_NLP = None
 
 
-def main() -> None:
-    t0 = time.time()
-    print("Loading Czech Bible kralická dataset...", flush=True)
-    cs_books = json.loads(CS_PATH.read_text(encoding="utf-8-sig"))
-    assert len(cs_books) == 66, "Expected 66 books in cs_bkr.json"
+def _init_cs_worker() -> None:
+    global _WORKER_NLP
+    _WORKER_NLP = spacy_udpipe.load("cs")
 
-    bsb_books = json.loads(BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if BSB_PATH.exists() else None
 
-    print("Loading Charles University Czech UDPipe PDT model...", flush=True)
-    nlp = spacy_udpipe.load("cs")
+def _tag_cs_chunk(
+    items: List[Tuple[int, int, int, str, str]],
+) -> Tuple[List[List[Tuple[int, int, str, str, str]]], Dict[str, str]]:
+    nlp = _WORKER_NLP
+    out_spans: List[List[Tuple[int, int, str, str, str]]] = []
+    local_rescue: Dict[str, str] = {}
 
-    flat_items: List[Tuple[int, int, int, str, str]] = []
-    for bi in range(66):
-        en_map = {}
-        if bsb_books:
-            en_map = {
-                c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
-                for c in bsb_books[bi]["chapters"]
-            }
-        for ci, verses in enumerate(cs_books[bi]["chapters"], 1):
-            for vi, cs_text in enumerate(verses, 1):
-                en_seed = en_map.get(ci, {}).get(vi, "")
-                flat_items.append((bi, ci, vi, cs_text.strip(), en_seed))
-
-    print(f"Tagging {len(flat_items)} Czech verses with UDPipe PDT...", flush=True)
-    # Each raw span: (start, end, surface_lower, pdt_lemma_or_empty)
-    raw_spans: List[List[Tuple[int, int, str, str]]] = []
-    needs_rescue: Dict[str, str] = {}
-
-    for idx_v, (_, _, _, cs_text, _) in enumerate(flat_items):
+    for _, _, _, cs_text, _ in items:
         doc = nlp(cs_text)
-        spans: List[Tuple[int, int, str, str]] = []
+        spans: List[Tuple[int, int, str, str, str]] = []
         tlen = len(cs_text)
         cursor = 0
         for tok in doc:
             tok_text = tok.text
-            pos = cs_text.find(tok_text, cursor)
-            if pos == -1:
+            pos_idx = cs_text.find(tok_text, cursor)
+            if pos_idx == -1:
                 continue
-            start = pos
-            end = pos + len(tok_text)
+            start = pos_idx
+            end = pos_idx + len(tok_text)
             cursor = end
 
-            if tok.pos_ not in ("VERB", "AUX"):
-                continue
-            # Guard against UDPipe multi-word splits like 'aby' -> 'a' + 'by'
             if start > 0 and cs_text[start - 1].isalpha():
                 continue
             if end < tlen and cs_text[end].isalpha():
@@ -255,39 +223,88 @@ def main() -> None:
             tag = tok.tag_ or ""
             is_foreign = "Foreign=Yes" in str(tok.morph)
 
-            # Skip genuine bare infinitives (Vf) unless flagged Foreign=Yes (e.g. archaic imperative 'posvěť')
-            if tag.startswith("Vf") and not is_foreign:
-                continue
-            if not tag.startswith(VALID_PDT_PREFIXES) and not is_foreign:
-                continue
+            if tok.pos_ in ("VERB", "AUX"):
+                if tag.startswith("Vf") and not is_foreign:
+                    continue
+                if tag.startswith(PART_PDT_PREFIXES):
+                    lem = clean_pdt_lemma(tok.lemma_)
+                    if not is_foreign and is_valid_cs_infinitive(lem) and lem != s_low:
+                        spans.append((start, end, s_low, "p", lem))
+                    continue
+                if not tag.startswith(VERB_PDT_PREFIXES) and not is_foreign:
+                    continue
+                lem = clean_pdt_lemma(tok.lemma_)
+                if not is_foreign and is_valid_cs_infinitive(lem) and lem != s_low:
+                    spans.append((start, end, s_low, "v", lem))
+                else:
+                    spans.append((start, end, s_low, "v", ""))
+                    if s_low not in local_rescue:
+                        local_rescue[s_low] = cs_text[:180]
+            elif tok.pos_ in ("PRON", "DET"):
+                lem = clean_pdt_lemma(tok.lemma_)
+                if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
+                    spans.append((start, end, s_low, "r", lem))
+            elif tok.pos_ in ("NOUN", "PROPN"):
+                lem_case = clean_pdt_lemma(tok.lemma_, keep_case=(tok.pos_ == "PROPN"))
+                if len(lem_case) >= 2 and CS_WORD_RE.match(lem_case) and lem_case.lower() != s_low:
+                    spans.append((start, end, s_low, "n", lem_case))
+            elif tok.pos_ == "ADJ":
+                lem = clean_pdt_lemma(tok.lemma_)
+                if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
+                    kind = "p" if ("VerbForm=Part" in str(tok.morph) and is_valid_cs_infinitive(lem)) else "a"
+                    spans.append((start, end, s_low, kind, lem))
 
-            lemma = clean_pdt_lemma(tok.lemma_)
-            if not is_foreign and is_valid_cs_infinitive(lemma) and lemma != s_low:
-                spans.append((start, end, s_low, lemma))
-            else:
-                spans.append((start, end, s_low, ""))
-                if s_low not in needs_rescue:
-                    needs_rescue[s_low] = cs_text[:180]
-        raw_spans.append(spans)
-        if (idx_v + 1) % 5000 == 0:
-            print(f"  Tagged {idx_v + 1}/{len(flat_items)} verses ({time.time() - t0:.1f}s)", flush=True)
+        out_spans.append(spans)
+    return out_spans, local_rescue
 
-    print(
-        f"UDPipe tagging done in {time.time() - t0:.1f}s | Archaic/unknown forms to rescue: {len(needs_rescue)}",
-        flush=True,
+
+def main() -> None:
+    t0 = time.time()
+    print("Loading Czech Bible kralická dataset + cached translations...", flush=True)
+    cs_books = json.loads(CS_PATH.read_text(encoding="utf-8-sig"))
+    en_llm = json.loads(EN_LLM_CACHE.read_text(encoding="utf-8")) if EN_LLM_CACHE.exists() else {}
+    bsb_books = json.loads(BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if BSB_PATH.exists() else None
+    rescue_map: Dict[str, str] = (
+        json.loads(RESCUE_CACHE_PATH.read_text(encoding="utf-8")) if RESCUE_CACHE_PATH.exists() else {}
     )
 
-    rescue_map: Dict[str, str] = {}
-    if RESCUE_CACHE_PATH.exists():
-        rescue_map.update(json.loads(RESCUE_CACHE_PATH.read_text(encoding="utf-8")))
+    flat_items: List[Tuple[int, int, int, str, str]] = []
+    for bi in range(66):
+        book_id = BOOKS_META[bi][0]
+        bsb_map = {}
+        if bsb_books:
+            bsb_map = {
+                c["chapter"]: {v["verse"]: v["text"].strip() for v in c["verses"]}
+                for c in bsb_books[bi]["chapters"]
+            }
+        for ci, verses in enumerate(cs_books[bi]["chapters"], 1):
+            for vi, cs_text in enumerate(verses, 1):
+                key = f"{book_id}:{ci}:{vi}"
+                en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
+                flat_items.append((bi, ci, vi, cs_text.strip(), en_text))
 
-    todo = [(w, ctx) for w, ctx in needs_rescue.items() if w not in rescue_map]
-    if todo:
+    workers = min(8, os.cpu_count() or 4)
+    print(f"Tagging {len(flat_items)} Czech verses (v, p, n, a, r) across {workers} workers...", flush=True)
+    chunk_size = 1000
+    slices = [flat_items[i : i + chunk_size] for i in range(0, len(flat_items), chunk_size)]
+
+    raw_spans: List[List[Tuple[int, int, str, str, str]]] = []
+    needs_rescue: Dict[str, str] = {}
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=workers, initializer=_init_cs_worker) as pool:
+        for spans_part, rescue_part in pool.map(_tag_cs_chunk, slices):
+            raw_spans.extend(spans_part)
+            for k, ctx in rescue_part.items():
+                if k not in rescue_map and k not in needs_rescue:
+                    needs_rescue[k] = ctx
+            print(f"  Tagged {len(raw_spans)}/{len(flat_items)} verses ({time.time() - t0:.1f}s)", flush=True)
+
+    if needs_rescue:
         model_name = resolve_model()
-        print(f"Rescuing {len(todo)} Czech archaic verb lemmas...", flush=True)
-        batches = [dict(todo[i : i + 35]) for i in range(0, len(todo), 35)]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=32) as pool:
-            futs = [pool.submit(rescue_batch_with_retry, b, model_name) for b in batches]
+        items = list(needs_rescue.items())
+        batches = [dict(items[i : i + 35]) for i in range(0, len(items), 35)]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=24) as pool:
+            futs = [pool.submit(rescue_batch, b, model_name) for b in batches]
             for fut in concurrent.futures.as_completed(futs):
                 rescue_map.update(fut.result())
         RESCUE_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -295,27 +312,30 @@ def main() -> None:
 
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
     book_entries: List[List[dict]] = [[] for _ in range(66)]
+    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
     quiz_verses = 0
-    total_verbs = 0
 
-    for (bi, ci, vi, cs_text, en_seed), spans in zip(flat_items, raw_spans):
-        verbs = []
-        for start, end, s_low, pdt_lemma in spans:
-            lemma = pdt_lemma or rescue_map.get(s_low, "")
-            if not lemma or not is_valid_cs_infinitive(lemma) or lemma == s_low:
+    for (bi, ci, vi, cs_text, en_text), spans in zip(flat_items, raw_spans):
+        forms = []
+        for start, end, s_low, kind, lem in spans:
+            resolved = lem or (rescue_map.get(s_low, "") if kind == "v" else "")
+            if not resolved or resolved.lower() == s_low:
                 continue
-            verbs.append([start, end, lemma])
-        if not verbs:
+            if kind in ("v", "p") and not is_valid_cs_infinitive(resolved):
+                continue
+            forms.append([start, end, resolved, kind])
+        if not forms:
             continue
         book_entries[bi].append({
             "c": ci,
             "v": vi,
             "o": cs_text,
-            "t": en_seed,
-            "m": verbs,
+            "t": en_text,
+            "m": forms,
         })
         quiz_verses += 1
-        total_verbs += len(verbs)
+        for _, _, _, k in forms:
+            counts[k] += 1
 
     manifest_books = []
     for bi, (book_id, native_name, en_name) in enumerate(BOOKS_META):
@@ -342,21 +362,13 @@ def main() -> None:
         "translationSource": "BKR → EN",
         "totalVerses": len(flat_items),
         "quizVerses": quiz_verses,
-        "totalVerbs": total_verbs,
+        "totalVerbs": counts["v"],
+        "formCounts": counts,
         "books": manifest_books,
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(
-        f"Done in {time.time() - t0:.1f}s! Quiz verses: {quiz_verses}/{len(flat_items)}, total verb blanks: {total_verbs}",
-        flush=True,
-    )
-
-    gen313 = next((e for e in book_entries[0] if e["c"] == 3 and e["v"] == 13), None)
-    if gen313:
-        print("\n--- Czech Genesis 3:13 Verification ---")
-        print("Original:", gen313["o"])
-        print("Blanks:", [(gen313["o"][s:e], lem) for s, e, lem in gen313["m"]])
+    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
 
 
 if __name__ == "__main__":

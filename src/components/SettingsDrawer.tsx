@@ -4,8 +4,10 @@ import {
   buildFontVariationSettings,
   clampAxisWeight,
   DEFAULT_FONT_AXES,
+  formatTracking,
   OPSZ_PRESETS,
   ROND_PRESETS,
+  TRACKING_PRESETS,
 } from '../config/alloAxes';
 import { CORPORA, getLanguageOption, LANGUAGES } from '../config/catalog';
 import {
@@ -13,12 +15,14 @@ import {
   VERB_RANGE_MIN,
   VERSE_RANGE_MAX,
   VERSE_RANGE_MIN,
+  WORD_FORM_META,
   type AlloFontAxes,
   type AppSettings,
   type CorpusManifest,
   type DiacriticMode,
   type LanguageCode,
   type ThemeMode,
+  type WordFormKind,
 } from '../types/quiz';
 import { DualRangeSlider } from './DualRangeSlider';
 
@@ -67,7 +71,27 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
     fontWeight: clampAxisWeight(fontAxes.wght),
     fontVariationSettings: buildFontVariationSettings(fontAxes),
     fontOpticalSizing: fontAxes.opszAuto ? 'auto' : 'none',
+    letterSpacing: `${fontAxes.tracking.toFixed(3)}em`,
   };
+
+  const toggleWordForm = (kind: WordFormKind) => {
+    const current = settings.wordForms;
+    const nextVal = !current[kind];
+    // Prevent disabling the last remaining checked category
+    if (!nextVal && Object.values(current).filter(Boolean).length <= 1) {
+      return;
+    }
+    onChange({
+      ...settings,
+      wordForms: {
+        ...current,
+        [kind]: nextVal,
+      },
+    });
+  };
+
+  const verbsOnly =
+    settings.wordForms.v && Object.values(settings.wordForms).filter(Boolean).length === 1;
 
   return (
     <div
@@ -183,7 +207,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             </p>
             <p className="specimen-coords tabular">
               wght {fontAxes.wght} · ROND {fontAxes.rond} · opsz{' '}
-              {fontAxes.opszAuto ? 'auto' : fontAxes.opsz}
+              {fontAxes.opszAuto ? 'auto' : fontAxes.opsz} · {formatTracking(fontAxes.tracking)}
             </p>
           </div>
 
@@ -294,6 +318,43 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
               ))}
             </div>
           </div>
+
+          {/* Kerning / letter-spacing */}
+          <div className="axis-control">
+            <div className="axis-row">
+              <label htmlFor="axis-tracking" className="axis-name">
+                <span>{ALLO_AXIS_LIMITS.tracking.label}</span>
+                <span className="axis-tag">{ALLO_AXIS_LIMITS.tracking.tag}</span>
+              </label>
+              <span className="axis-value tabular">{formatTracking(fontAxes.tracking)}</span>
+            </div>
+            <input
+              id="axis-tracking"
+              type="range"
+              className="swiss-slider"
+              min={ALLO_AXIS_LIMITS.tracking.min}
+              max={ALLO_AXIS_LIMITS.tracking.max}
+              step={ALLO_AXIS_LIMITS.tracking.step}
+              value={fontAxes.tracking}
+              onInput={(e) =>
+                updateAxes({ tracking: Number((e.target as HTMLInputElement).value) })
+              }
+              onChange={(e) => updateAxes({ tracking: Number(e.target.value) })}
+            />
+            <div className="preset-row" role="group" aria-label="Kerning presets">
+              {TRACKING_PRESETS.map((p) => (
+                <button
+                  key={p.label}
+                  type="button"
+                  className="preset-btn tabular"
+                  aria-pressed={Math.abs(fontAxes.tracking - p.value) < 0.0005}
+                  onClick={() => updateAxes({ tracking: p.value })}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* 04 / APPEARANCE & PRACTICE */}
@@ -346,9 +407,40 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             </div>
           </div>
 
+          <div className="segment-group">
+            <span className="segment-title">Word forms</span>
+            <div className="form-checks" role="group" aria-label="Word forms to quiz">
+              {WORD_FORM_META.map(({ kind, label, shortTag }) => {
+                const checked = settings.wordForms[kind];
+                const isLastChecked =
+                  checked && Object.values(settings.wordForms).filter(Boolean).length <= 1;
+                return (
+                  <label
+                    key={kind}
+                    className={`form-check${checked ? ' form-check--checked' : ''}${
+                      isLastChecked ? ' form-check--locked' : ''
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      disabled={isLastChecked}
+                      onChange={() => toggleWordForm(kind)}
+                    />
+                    <span className="form-check-box" aria-hidden="true">
+                      {checked ? '✓' : ''}
+                    </span>
+                    <span className="form-check-label">{label}</span>
+                    <span className="form-check-tag tabular">{shortTag}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
           <DualRangeSlider
             idPrefix="verbs"
-            label="Verbs"
+            label={verbsOnly ? 'Verbs' : 'Blanks'}
             minLimit={VERB_RANGE_MIN}
             maxLimit={VERB_RANGE_MAX}
             valueMin={settings.verbRange.min}
