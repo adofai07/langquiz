@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { GRAMMAR_GUIDES } from '../data/grammarGuides';
+import {
+  GRAMMAR_CATEGORIES,
+  GRAMMAR_GUIDES,
+  type GrammarCategory,
+} from '../data/grammarGuides';
 import type { LanguageOption } from '../types/quiz';
 
 interface StudyViewProps {
@@ -26,17 +30,29 @@ function renderMarkedCell(text: string): React.ReactNode {
 
 export const StudyView: React.FC<StudyViewProps> = ({ language, onBackToQuiz }) => {
   const guide = GRAMMAR_GUIDES[language.code];
+  const [selectedCategory, setSelectedCategory] = useState<'all' | GrammarCategory>('all');
   const [selectedSection, setSelectedSection] = useState<string>('all');
 
-  // Reset section filter when switching languages
+  // Reset filters when switching languages
   useEffect(() => {
+    setSelectedCategory('all');
     setSelectedSection('all');
   }, [language.code]);
 
+  const categorySections =
+    selectedCategory === 'all'
+      ? guide.sections
+      : guide.sections.filter((s) => s.category === selectedCategory);
+
   const visibleSections =
     selectedSection === 'all'
-      ? guide.sections
-      : guide.sections.filter((s) => s.id === selectedSection);
+      ? categorySections
+      : categorySections.filter((s) => s.id === selectedSection);
+
+  const handleSelectCategory = (cat: 'all' | GrammarCategory) => {
+    setSelectedCategory(cat);
+    setSelectedSection('all');
+  };
 
   return (
     <section className="study-view" aria-label={`${language.name} grammar study guide`}>
@@ -58,7 +74,22 @@ export const StudyView: React.FC<StudyViewProps> = ({ language, onBackToQuiz }) 
           </div>
         </div>
 
-        {/* Section Filter Bar */}
+        {/* Category Filter Tabs (Verbs / Nouns & Cases / Adjectives & Pronouns / Rules) */}
+        <div className="study-cat-bar" role="group" aria-label="Grammar categories">
+          {GRAMMAR_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className="study-cat-btn"
+              aria-pressed={selectedCategory === cat.id}
+              onClick={() => handleSelectCategory(cat.id)}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Section Filter Pills */}
         <nav className="study-nav" aria-label="Grammar topics">
           <button
             type="button"
@@ -66,9 +97,9 @@ export const StudyView: React.FC<StudyViewProps> = ({ language, onBackToQuiz }) 
             aria-pressed={selectedSection === 'all'}
             onClick={() => setSelectedSection('all')}
           >
-            All
+            All ({categorySections.length})
           </button>
-          {guide.sections.map((sec) => (
+          {categorySections.map((sec) => (
             <button
               key={sec.id}
               type="button"
@@ -111,7 +142,7 @@ export const StudyView: React.FC<StudyViewProps> = ({ language, onBackToQuiz }) 
                         <tr>
                           {tbl.headers.map((h, hIdx) => (
                             <th key={hIdx} scope="col">
-                              {h}
+                              {renderMarkedCell(h)}
                             </th>
                           ))}
                         </tr>

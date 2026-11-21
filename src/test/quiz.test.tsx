@@ -979,9 +979,14 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     fireEvent.click(studyTab);
     expect(onChangeMode).toHaveBeenCalledWith('study');
 
-    // StudyView renders grammar tables and filters sections cleanly across all 4 languages
+    // StudyView renders full verb + non-verb grammar tables across all 4 languages
     for (const lang of LANGUAGES) {
-      expect(GRAMMAR_GUIDES[lang.code].sections.length).toBeGreaterThanOrEqual(6);
+      const secs = GRAMMAR_GUIDES[lang.code].sections;
+      expect(secs.length).toBeGreaterThanOrEqual(11);
+      expect(secs.some((s) => s.category === 'verbs')).toBe(true);
+      expect(secs.some((s) => s.category === 'nouns')).toBe(true);
+      expect(secs.some((s) => s.category === 'adj-pron')).toBe(true);
+      expect(secs.some((s) => s.category === 'rules')).toBe(true);
     }
 
     const onBack = vi.fn();
@@ -989,7 +994,14 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     expect(screen.getByText('Polish Inflection Reference')).toBeInTheDocument();
     expect(screen.getByText('Past Endings (Example: chcieć — to want)')).toBeInTheDocument();
 
-    // Filtering to Past Tense hides unrelated Present section
+    // Category filter isolates Nouns & Cases cleanly
+    fireEvent.click(screen.getByRole('button', { name: 'Nouns & Cases' }));
+    expect(screen.queryByText('Past Endings (Example: chcieć — to want)')).not.toBeInTheDocument();
+    expect(screen.getByText('Identifying Noun Gender')).toBeInTheDocument();
+    expect(screen.getByText('Prepositions by Governed Case')).toBeInTheDocument();
+
+    // Switching back to All and filtering to Past Tense hides unrelated Present section
+    fireEvent.click(screen.getByRole('button', { name: 'All' }));
     fireEvent.click(screen.getByRole('button', { name: /02\s*Past Tense/i }));
     expect(screen.queryByText('Four Present Conjugation Classes')).not.toBeInTheDocument();
     expect(screen.getByText('Past Endings (Example: chcieć — to want)')).toBeInTheDocument();
