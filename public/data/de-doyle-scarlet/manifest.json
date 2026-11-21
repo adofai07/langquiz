@@ -1,0 +1,125 @@
+{
+  "id": "de-doyle-scarlet",
+  "language": "de",
+  "title": "Späte Rache",
+  "subtitle": "Arthur Conan Doyle · Direct English",
+  "translationSource": "DOYLE → EN",
+  "unit": "sentence",
+  "totalVerses": 2165,
+  "quizVerses": 2158,
+  "totalVerbs": 4515,
+  "categories": [
+    "v",
+    "p",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 4515,
+    "p": 811,
+    "d": 2331,
+    "n": 1628,
+    "a": 1773,
+    "r": 2241
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Späte Rache · Erstes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 141
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Späte Rache · Zweites Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 169
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Späte Rache · Drittes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 203
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Späte Rache · Viertes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 147
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Späte Rache · Fünftes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 134
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Späte Rache · Sechstes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 175
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Späte Rache · Siebentes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 162
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Späte Rache · Achtes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 191
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Späte Rache · Neuntes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 115
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Späte Rache · Zehntes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 97
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Späte Rache · Elftes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 176
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Späte Rache · Zwölftes Kapitel",
+      "enName": "A Study in Scarlet",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 448
+    }
+  ]
+}

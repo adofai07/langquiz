@@ -1,0 +1,149 @@
+{
+  "id": "cs-doyle-baskerville",
+  "language": "cs",
+  "title": "Pes baskervillský",
+  "subtitle": "Arthur Conan Doyle · Direct English",
+  "translationSource": "DOYLE → EN",
+  "unit": "sentence",
+  "totalVerses": 3633,
+  "quizVerses": 3628,
+  "totalVerbs": 9984,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 9984,
+    "p": 632,
+    "t": 156,
+    "n": 7035,
+    "a": 3065,
+    "r": 5089
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Pes baskervillský · I. Mr. Sherlock Holmes",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 147
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Pes baskervillský · II. Kletba Baskervillů",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 163
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Pes baskervillský · III. Problém",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 224
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Pes baskervillský · IV. Sir Jindřich Baskerville",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 271
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Pes baskervillský · V. Tři Přetržené Nitky",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 250
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Pes baskervillský · VI. na Baskervillském Zámku",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 194
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Pes baskervillský · VII. Stapletonovi z Merripitského Dvorce",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 333
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Pes baskervillský · VIII. První Zpráva Doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 137
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Pes baskervillský · IX. Druhá Zpráva Doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 378
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Pes baskervillský · X. Výňatek z Denníku Doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 242
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Pes baskervillský · XI. Muž s Útesu Skalního",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 288
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Pes baskervillský · XII. Smrt na Močále",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 344
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Pes baskervillský · XIII. Sítě se Zatahují",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 229
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Pes baskervillský · XIV. Pes Baskervillský",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 259
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Pes baskervillský · XV. Pohled Nazpět",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 169
+    }
+  ]
+}

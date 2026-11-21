@@ -1,0 +1,205 @@
+{
+  "id": "cs-capek-kapsa",
+  "language": "cs",
+  "title": "Povídky z jedné kapsy",
+  "subtitle": "Karel Čapek · Direct English",
+  "translationSource": "ČAPEK → EN",
+  "unit": "sentence",
+  "totalVerses": 2827,
+  "quizVerses": 2824,
+  "totalVerbs": 8646,
+  "categories": [
+    "v",
+    "p",
+    "t",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 8646,
+    "p": 175,
+    "t": 114,
+    "n": 4890,
+    "a": 1645,
+    "r": 4466
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Povídky z jedné kapsy · Případ dr. Mejzlíka",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 102
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Povídky z jedné kapsy · Modrá Chryzantéma",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 108
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Povídky z jedné kapsy · Věštkyně",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 102
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Povídky z jedné kapsy · Jasnovidec",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 129
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Povídky z jedné kapsy · Tajemství Písma",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 115
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Povídky z jedné kapsy · Naprostý Důkaz",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 81
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Povídky z jedné kapsy · Experiment Profesora Rousse",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 153
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Povídky z jedné kapsy · Ztracený Dopis",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 106
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Povídky z jedné kapsy · Ukradený Spis 139/vii, Odd. C",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 166
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Povídky z jedné kapsy · Muž, Který se Nelíbil",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 122
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Povídky z jedné kapsy · Básník",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 127
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Povídky z jedné kapsy · Případy Pana Janíka",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 144
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Povídky z jedné kapsy · Pád Rodu Votických",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 165
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Povídky z jedné kapsy · Rekord",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 121
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Povídky z jedné kapsy · Případ Selvinův",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 258
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Povídky z jedné kapsy · KUPÓN",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 134
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Povídky z jedné kapsy · Oplatkův Konec",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 109
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Povídky z jedné kapsy · Poslední Soud",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 115
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Povídky z jedné kapsy · Zločin V Chalupě",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 105
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Povídky z jedné kapsy · Zmizení Herce Bendy",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 188
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Povídky z jedné kapsy · Vražedný Útok",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 87
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Povídky z jedné kapsy · Propuštěný",
+      "enName": "Tales from One Pocket",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 87
+    }
+  ]
+}

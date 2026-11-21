@@ -134,17 +134,18 @@ export const App: React.FC = () => {
     }
   }, [corpus.manifestUrl]);
 
-  const loadGenesisExample = useCallback(async () => {
+  const loadCorpusExample = useCallback(async () => {
     setLoading(true);
     setError(null);
+    const ref = corpus.exampleRef ?? { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' };
     try {
       const m = await loadCorpusManifest(corpus.manifestUrl);
       setManifest(m);
       const q = await loadSpecificQuestion(
         corpus.manifestUrl,
-        'gn',
-        3,
-        13,
+        ref.bookId,
+        ref.chapter,
+        ref.verse,
         wordFormsRef.current,
         includeBaseRef.current
       );
@@ -154,11 +155,11 @@ export const App: React.FC = () => {
         await fetchNextQuestion();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to load example verse.');
+      setError(err instanceof Error ? err.message : 'Unable to load example passage.');
     } finally {
       setLoading(false);
     }
-  }, [corpus.manifestUrl, fetchNextQuestion]);
+  }, [corpus.manifestUrl, corpus.exampleRef, fetchNextQuestion]);
 
   // Lazily load the active corpus's lemma glossary once per corpus
   useEffect(() => {
@@ -384,7 +385,7 @@ export const App: React.FC = () => {
         settings={settings}
         manifest={manifest}
         onChange={setSettings}
-        onLoadExample={loadGenesisExample}
+        onLoadExample={loadCorpusExample}
         onClose={() => setSettingsOpen(false)}
       />
     </div>

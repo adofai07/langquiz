@@ -1,0 +1,251 @@
+{
+  "id": "pl-korczak-macius",
+  "language": "pl",
+  "title": "Król Maciuś Pierwszy",
+  "subtitle": "Janusz Korczak · Direct English",
+  "translationSource": "KORCZAK → EN",
+  "unit": "sentence",
+  "totalVerses": 6042,
+  "quizVerses": 6029,
+  "totalVerbs": 11800,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 11800,
+    "p": 615,
+    "n": 11164,
+    "a": 3165,
+    "r": 4308
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Król Maciuś Pierwszy · Part 1",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 193
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Król Maciuś Pierwszy · Part 2",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 217
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Król Maciuś Pierwszy · Part 3",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 187
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Król Maciuś Pierwszy · Part 4",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 183
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Król Maciuś Pierwszy · Part 5",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 224
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Król Maciuś Pierwszy · Part 6",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 186
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Król Maciuś Pierwszy · Part 7",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 222
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Król Maciuś Pierwszy · Part 8",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 188
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Król Maciuś Pierwszy · Part 9",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 204
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Król Maciuś Pierwszy · Part 10",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 218
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Król Maciuś Pierwszy · Part 11",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 214
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Król Maciuś Pierwszy · Part 12",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 244
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Król Maciuś Pierwszy · Part 13",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 250
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Król Maciuś Pierwszy · Part 14",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 248
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Król Maciuś Pierwszy · Part 15",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 209
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Król Maciuś Pierwszy · Part 16",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 246
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Król Maciuś Pierwszy · Part 17",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 212
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Król Maciuś Pierwszy · Part 18",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 272
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Król Maciuś Pierwszy · Part 19",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 233
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Król Maciuś Pierwszy · Part 20",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 179
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Król Maciuś Pierwszy · Part 21",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 236
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Król Maciuś Pierwszy · Part 22",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 241
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Król Maciuś Pierwszy · Part 23",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 239
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Król Maciuś Pierwszy · Part 24",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 221
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Król Maciuś Pierwszy · Part 25",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 215
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Król Maciuś Pierwszy · Part 26",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 206
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Król Maciuś Pierwszy · Part 27",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 188
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Król Maciuś Pierwszy · Part 28",
+      "enName": "King Matt the First",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 154
+    }
+  ]
+}

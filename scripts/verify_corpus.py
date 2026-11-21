@@ -89,8 +89,9 @@ def main() -> None:
     assert errors == 0, f"Found {errors} integrity errors!"
 
     random.seed(42)
-    print("\n=== Random Spot Check (8 verses) ===")
-    for native_name, book, entries in random.sample(all_samples, 8):
+    sample_n = min(8, len(all_samples))
+    print(f"\n=== Random Spot Check ({sample_n} chapters) ===")
+    for native_name, book, entries in random.sample(all_samples, sample_n):
         e = random.choice(entries)
         pairs = [(e["o"][sp[0]:sp[1]], sp[2], sp[3] if len(sp) > 3 else "v") for sp in e["m"]]
         print(f"  {native_name} ({book['enName']}) {e['c']}:{e['v']}: {pairs}")

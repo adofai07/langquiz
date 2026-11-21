@@ -115,7 +115,7 @@ PRONOUN_LEMMAS = {
 }
 TRAILING_CLITIC_TAGS = {"aglt", "part"}
 EXCLUDED_VERB_SPACY_TAGS = {"ADJ", "QUB", "PART", "CONJ", "SCONJ", "CCONJ", "ADP", "ADV", "NUM", "PRON", "DET", "INTJ"}
-WORD_RE = re.compile(r"^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+$")
+WORD_RE = re.compile(r"^[A-PR-UWYZĄĆĘŁŃÓŚŹŻa-pr-uwyząćęłńóśźż]+$")
 
 
 def clean_lemma(raw_lemma: str, keep_case: bool = False) -> str:

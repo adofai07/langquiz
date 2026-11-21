@@ -636,5 +636,8 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     expect(cleanStrayQuotes('He said: "Peace be with you."')).toBe(
       'He said: "Peace be with you."'
     );
+    expect(
+      cleanStrayQuotes('"Listen," he said, "I am coming to you for advice.')
+    ).toBe('"Listen," he said, "I am coming to you for advice."');
   });
 });

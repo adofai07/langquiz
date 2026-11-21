@@ -1,0 +1,53 @@
+{
+  "id": "de-kafka-verwandlung",
+  "language": "de",
+  "title": "Die Verwandlung",
+  "subtitle": "Franz Kafka · Direct English",
+  "translationSource": "KAFKA → EN",
+  "unit": "sentence",
+  "totalVerses": 549,
+  "quizVerses": 549,
+  "totalVerbs": 1603,
+  "categories": [
+    "v",
+    "p",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 1603,
+    "p": 266,
+    "d": 911,
+    "n": 474,
+    "a": 525,
+    "r": 680
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Die Verwandlung · I",
+      "enName": "The Metamorphosis",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 224
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Die Verwandlung · II",
+      "enName": "The Metamorphosis",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 137
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Die Verwandlung · III",
+      "enName": "The Metamorphosis",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 188
+    }
+  ]
+}

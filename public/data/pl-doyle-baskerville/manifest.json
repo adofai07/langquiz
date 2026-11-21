@@ -1,0 +1,155 @@
+{
+  "id": "pl-doyle-baskerville",
+  "language": "pl",
+  "title": "Pies Baskerville'ów",
+  "subtitle": "Arthur Conan Doyle · Direct English",
+  "translationSource": "DOYLE → EN",
+  "unit": "sentence",
+  "totalVerses": 3281,
+  "quizVerses": 3272,
+  "totalVerbs": 5741,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 5741,
+    "p": 642,
+    "n": 5811,
+    "a": 1746,
+    "r": 3077
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Pies Baskerville'ów · I. Pan Sherlock Holmes",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 120
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Pies Baskerville'ów · II. Przekleństwo rodu Baskerville'ów",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 169
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Pies Baskerville'ów · III. Zagadka",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 205
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Pies Baskerville'ów · IV. Sir Henryk Baskerville",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 230
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Pies Baskerville'ów · V. Trzy urwane nici",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 232
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Pies Baskerville'ów · VI. Baskerville Hall",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 164
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Pies Baskerville'ów · VII. Stapleton z Merripit House",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 299
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Pies Baskerville'ów · VIII. Pierwsze sprawozdanie doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 120
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Pies Baskerville'ów · IX. Drugie sprawozdanie doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 56
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Pies Baskerville'ów · A więc to była schadzka umówiona…",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 316
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Pies Baskerville'ów · X. Wyjątek z dziennika doktora Watsona",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 203
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Pies Baskerville'ów · XI. Nieznajomy ukrywający się w jaskini",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 247
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Pies Baskerville'ów · XII. Śmierć na bagnie",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 308
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Pies Baskerville'ów · XIII. Zastawianie sieci",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 236
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Pies Baskerville'ów · XIV. Pies Baskerville'ów",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 229
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Pies Baskerville'ów · XV. Rzut oka wstecz",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 138
+    }
+  ]
+}

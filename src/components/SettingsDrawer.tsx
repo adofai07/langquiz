@@ -9,7 +9,7 @@ import {
   ROND_PRESETS,
   TRACKING_PRESETS,
 } from '../config/alloAxes';
-import { CORPORA, getLanguageOption, LANGUAGES } from '../config/catalog';
+import { CORPORA, getCorpusOption, getLanguageOption, LANGUAGES } from '../config/catalog';
 import {
   VERB_RANGE_MAX,
   VERB_RANGE_MIN,
@@ -67,6 +67,9 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
   const { fontAxes } = settings;
   const activeLanguage = getLanguageOption(settings.language);
+  const activeCorpus = getCorpusOption(settings.corpusId);
+  const isSentenceCorpus = (manifest?.unit ?? activeCorpus.unit) === 'sentence';
+  const exampleLabel = activeCorpus.exampleRef?.label ?? 'Gen 3:13';
   const activeWordForms = settings.wordFormsByLang[settings.language];
   const langCategories = WORD_FORM_META.filter((m) =>
     activeLanguage.wordFormCategories.includes(m.kind)
@@ -173,7 +176,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                 onClose();
               }}
             >
-              Gen 3:13
+              {exampleLabel}
             </button>
           </div>
           <select
@@ -191,7 +194,10 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
           {manifest && (
             <p className="corpus-caption tabular">
               <span>{manifest.subtitle}</span>
-              <span>{manifest.quizVerses.toLocaleString()} verses</span>
+              <span>
+                {manifest.quizVerses.toLocaleString()}{' '}
+                {isSentenceCorpus ? 'sentences' : 'verses'}
+              </span>
             </p>
           )}
         </section>
@@ -505,7 +511,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
           <DualRangeSlider
             idPrefix="verses"
-            label="Verses"
+            label={isSentenceCorpus ? 'Sentences' : 'Verses'}
             minLimit={VERSE_RANGE_MIN}
             maxLimit={VERSE_RANGE_MAX}
             valueMin={settings.verseRange.min}

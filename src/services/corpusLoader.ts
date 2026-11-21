@@ -60,7 +60,9 @@ export function cleanStrayQuotes(text: string): string {
   // Balance straight ASCII double quotes (")
   const asciiCount = (out.match(/"/g) ?? []).length;
   if (asciiCount % 2 === 1) {
-    if (out.endsWith('"')) {
+    if (asciiCount >= 3 && out.startsWith('"') && !out.endsWith('"')) {
+      out = `${out}"`;
+    } else if (out.endsWith('"')) {
       out = out.slice(0, -1).trimEnd();
     } else if (out.startsWith('"')) {
       out = out.slice(1).trimStart();

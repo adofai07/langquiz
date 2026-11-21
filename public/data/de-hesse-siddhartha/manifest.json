@@ -1,0 +1,117 @@
+{
+  "id": "de-hesse-siddhartha",
+  "language": "de",
+  "title": "Siddhartha",
+  "subtitle": "Hermann Hesse · Direct English",
+  "translationSource": "HESSE → EN",
+  "unit": "sentence",
+  "totalVerses": 1789,
+  "quizVerses": 1787,
+  "totalVerbs": 4323,
+  "categories": [
+    "v",
+    "p",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 4323,
+    "p": 784,
+    "d": 1631,
+    "n": 1571,
+    "a": 925,
+    "r": 2227
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Siddhartha · Der Sohn des Brahmanen",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 132
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Siddhartha · Bei den Samanas",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 140
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Siddhartha · Gotama",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 148
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Siddhartha · Erwachen",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 57
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Siddhartha · Kamala",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 250
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Siddhartha · Bei den Kindermenschen",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 147
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Siddhartha · Sansara",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 102
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Siddhartha · Am Flusse",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 200
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Siddhartha · Der Fährmann",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 211
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Siddhartha · Der Sohn",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 241
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Siddhartha · Govinda",
+      "enName": "Siddhartha",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 159
+    }
+  ]
+}

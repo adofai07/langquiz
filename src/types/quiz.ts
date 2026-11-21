@@ -11,6 +11,13 @@ export interface LanguageOption {
   available: boolean;
 }
 
+export interface CorpusExampleRef {
+  bookId: string;
+  chapter: number;
+  verse: number;
+  label: string;
+}
+
 export interface CorpusOption {
   id: string;
   language: LanguageCode;
@@ -18,6 +25,8 @@ export interface CorpusOption {
   shortLabel: string;
   description: string;
   manifestUrl: string;
+  unit?: 'verse' | 'sentence';
+  exampleRef?: CorpusExampleRef;
   available: boolean;
 }
 
@@ -37,6 +46,7 @@ export interface CorpusManifest {
   title: string;
   subtitle: string;
   translationSource: string;
+  unit?: 'verse' | 'sentence';
   totalVerses: number;
   quizVerses: number;
   totalVerbs: number;
