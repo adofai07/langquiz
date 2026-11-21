@@ -9,11 +9,15 @@ export const GERMAN_ALPHABET =
 export const CZECH_ALPHABET =
   'aábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzžAÁBCČDĎEÉĚFGHIÍJKLMNŇOÓPQRŘSŠTŤUÚŮVWXYÝZŽ';
 
+export const SPANISH_ALPHABET =
+  'aábcdeéfghiíjklmnñoópqrstuúüvwxyzAÁBCDEÉFGHIÍJKLMNÑOÓPQRSTUÚÜVWXYZ';
+
 /**
  * Keyboard shortcut keys assigned in order to each language's diacritics:
- * - Polish (9):  1–9
- * - German (4):  1–4
- * - Czech  (15): 1–9, 0, -, =, [, ], ;
+ * - Polish  (9):  1–9
+ * - German  (4):  1–4
+ * - Czech   (15): 1–9, 0, -, =, [, ], ;
+ * - Spanish (7):  1–7
  */
 export const DIACRITIC_SHORTCUT_KEYS = [
   '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '[', ']', ';',
@@ -48,6 +52,16 @@ export const LANGUAGES: LanguageOption[] = [
     diacritics: ['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž'],
     specimen: 'I řekl Hospodin Bůh — 3:13',
     wordFormCategories: ['v', 'p', 't', 'n', 'a', 'r'],
+    available: true,
+  },
+  {
+    code: 'es',
+    name: 'Spanish',
+    nativeName: 'Español',
+    alphabet: SPANISH_ALPHABET,
+    diacritics: ['á', 'é', 'í', 'ñ', 'ó', 'ú', 'ü'],
+    specimen: 'Entonces Jehová Dios dijo — 3:13',
+    wordFormCategories: ['v', 'p', 'g', 'd', 'n', 'a', 'r'],
     available: true,
   },
 ];
@@ -370,6 +384,117 @@ export const CORPORA: CorpusOption[] = [
     shortLabel: 'ČAPEK',
     description: 'Karel Čapek · War with the Newts',
     manifestUrl: '/data/cs-capek-newts/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  // Spanish (10)
+  {
+    id: 'es-bible-rv1909',
+    language: 'es',
+    name: 'Bible (Reina-Valera 1909)',
+    shortLabel: 'BIBLE',
+    description: 'Reina-Valera 1909 · Direct English',
+    manifestUrl: '/data/es-bible-rv1909/manifest.json',
+    unit: 'verse',
+    exampleRef: { bookId: 'gn', chapter: 3, verse: 13, label: 'Gen 3:13' },
+    available: true,
+  },
+  {
+    id: 'es-verne-20k',
+    language: 'es',
+    name: 'Veinte mil leguas de viaje submarino (Verne)',
+    shortLabel: 'VERNE',
+    description: 'Jules Verne · Twenty Thousand Leagues Under the Seas',
+    manifestUrl: '/data/es-verne-20k/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-verne-80days',
+    language: 'es',
+    name: 'La vuelta al mundo en ochenta días (Verne)',
+    shortLabel: 'VERNE',
+    description: 'Jules Verne · Around the World in 80 Days',
+    manifestUrl: '/data/es-verne-80days/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-doyle-baskerville',
+    language: 'es',
+    name: 'El sabueso de los Baskerville (Doyle)',
+    shortLabel: 'HOLMES',
+    description: 'Arthur Conan Doyle · The Hound of the Baskervilles',
+    manifestUrl: '/data/es-doyle-baskerville/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-stevenson-treasure',
+    language: 'es',
+    name: 'La isla del tesoro (Stevenson)',
+    shortLabel: 'STEVENSON',
+    description: 'Robert Louis Stevenson · Treasure Island',
+    manifestUrl: '/data/es-stevenson-treasure/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-twain-tomsawyer',
+    language: 'es',
+    name: 'Las aventuras de Tom Sawyer (Twain)',
+    shortLabel: 'TWAIN',
+    description: 'Mark Twain · The Adventures of Tom Sawyer',
+    manifestUrl: '/data/es-twain-tomsawyer/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-cervantes-quijote',
+    language: 'es',
+    name: 'Don Quijote de la Mancha (Cervantes)',
+    shortLabel: 'CERVANTES',
+    description: 'Miguel de Cervantes · Don Quixote',
+    manifestUrl: '/data/es-cervantes-quijote/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-quiroga-cuentos',
+    language: 'es',
+    name: 'Cuentos de amor, de locura y de muerte (Quiroga)',
+    shortLabel: 'QUIROGA',
+    description: 'Horacio Quiroga · Tales of Love, Madness and Death',
+    manifestUrl: '/data/es-quiroga-cuentos/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-lazarillo',
+    language: 'es',
+    name: 'Lazarillo de Tormes (Anonymous)',
+    shortLabel: 'LAZARILLO',
+    description: 'Spanish Golden Age · Picaresque classic',
+    manifestUrl: '/data/es-lazarillo/manifest.json',
+    unit: 'sentence',
+    exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
+    available: true,
+  },
+  {
+    id: 'es-unamuno-niebla',
+    language: 'es',
+    name: 'Niebla (Unamuno)',
+    shortLabel: 'UNAMUNO',
+    description: 'Miguel de Unamuno · Mist',
+    manifestUrl: '/data/es-unamuno-niebla/manifest.json',
     unit: 'sentence',
     exampleRef: { bookId: 'ch1', chapter: 1, verse: 1, label: 'Ch 1:1' },
     available: true,

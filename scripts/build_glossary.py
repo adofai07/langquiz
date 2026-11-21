@@ -27,18 +27,20 @@ CORPORA = {
     "pl": ("pl-bible-ubg", "Polish (Uwspółcześniona Biblia Gdańska)"),
     "de": ("de-bible-sch1951", "German (Schlachter 1951 Bible)"),
     "cs": ("cs-bible-bkr", "Early Modern Czech (1613 Bible kralická)"),
+    "es": ("es-bible-rv1909", "Spanish (Reina-Valera 1909 Bible)"),
 }
 
 KIND_LABELS = {
     "v": "verb",
     "p": "participle/verb",
+    "g": "gerund/verb",
     "t": "transgressive/verb",
     "d": "article",
     "n": "noun",
     "a": "adjective",
     "r": "pronoun/determiner",
 }
-KIND_PRIORITY = {"v": 0, "p": 1, "t": 2, "d": 3, "n": 4, "a": 5, "r": 6}
+KIND_PRIORITY = {"v": 0, "p": 1, "g": 2, "t": 3, "d": 4, "n": 5, "a": 6, "r": 7}
 
 
 def resolve_model() -> str:
@@ -58,7 +60,7 @@ def make_system_prompt(lang_desc: str) -> str:
         "(1 to 4 words max, no parenthetical notes, no grammar labels, no trailing period). "
         "CRITICAL RULES: "
         "1. Define ONLY the dictionary lemma key itself (highlighted in [[brackets]] in the short snippet). NEVER define a neighboring word from the snippet! "
-        "2. For verbs and participles (pos='verb' or 'participle/verb'), ALWAYS start with 'to ' (e.g. Czech 'pravit' -> 'to say, speak', 'hynout' -> 'to perish', German 'ziehen' -> 'to draw, pull, go', Polish 'zwieść' -> 'to deceive'). "
+        "2. For verbs, participles, and gerunds (pos='verb', 'participle/verb', 'gerund/verb', or 'transgressive/verb'), ALWAYS start with 'to ' (e.g. Czech 'pravit' -> 'to say, speak', 'hynout' -> 'to perish', German 'ziehen' -> 'to draw, pull, go', Polish 'zwieść' -> 'to deceive', Spanish 'engañar' -> 'to deceive'). "
         "3. For nouns, give the concise English noun (e.g. 'woman', 'fleece', 'garment, clothing'; for proper names, give the standard English biblical name e.g. 'Hospodin' -> 'the LORD', 'Mojžíš' -> 'Moses', 'Jericho'). "
         "4. For adjectives and pronouns, give the concise English equivalent (e.g. 'needy', 'righteous', 'who', 'my', 'you', 'this, that')."
     )
@@ -216,7 +218,7 @@ def build_for_lang(lang: str, model_name: str, workers: int, batch_size: int, fo
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build English lemma glossaries for VERBA corpora.")
-    parser.add_argument("--lang", nargs="+", choices=["pl", "de", "cs"], default=["cs", "pl", "de"])
+    parser.add_argument("--lang", nargs="+", choices=["pl", "de", "cs", "es"], default=["cs", "pl", "de", "es"])
     parser.add_argument("--workers", type=int, default=32)
     parser.add_argument("--batch-size", type=int, default=40)
     parser.add_argument("--force", action="store_true", help="Ignore existing cache and regenerate all glosses.")

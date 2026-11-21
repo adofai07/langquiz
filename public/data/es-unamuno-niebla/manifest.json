@@ -1,0 +1,79 @@
+{
+  "id": "es-unamuno-niebla",
+  "language": "es",
+  "title": "Niebla",
+  "subtitle": "Miguel de Unamuno · Direct English",
+  "translationSource": "UNAMUNO → EN",
+  "unit": "sentence",
+  "totalVerses": 4053,
+  "quizVerses": 3958,
+  "totalVerbs": 7530,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 7530,
+    "p": 586,
+    "g": 259,
+    "d": 2374,
+    "n": 1455,
+    "a": 1088,
+    "r": 3398
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Niebla · Prólogo",
+      "enName": "Mist",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 78
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Niebla · Víctor Goti. — Post-prólogo",
+      "enName": "Mist",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 15
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Niebla · M. De U. — Niebla",
+      "enName": "Mist",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 118
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Niebla · Capítulo II Al abrirle el criado la puerta",
+      "enName": "Mist",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 1859
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Niebla · Capítulo XVIII —¡Hola, Rosarito!—exclamó A…",
+      "enName": "Mist",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 1794
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Niebla · Oración Fúnebre — Por Modo De Epílogo",
+      "enName": "Mist",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 94
+    }
+  ]
+}

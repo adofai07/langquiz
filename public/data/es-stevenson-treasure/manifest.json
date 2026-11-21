@@ -1,0 +1,311 @@
+{
+  "id": "es-stevenson-treasure",
+  "language": "es",
+  "title": "La isla del tesoro",
+  "subtitle": "Robert Louis Stevenson · Direct English",
+  "translationSource": "TREASURE → EN",
+  "unit": "sentence",
+  "totalVerses": 3676,
+  "quizVerses": 3653,
+  "totalVerbs": 9191,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 9191,
+    "p": 1023,
+    "g": 616,
+    "d": 4196,
+    "n": 2659,
+    "a": 2004,
+    "r": 4104
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "La isla del tesoro · Capítulo I",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 90
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "La isla del tesoro · Capítulo II",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 118
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "La isla del tesoro · Capítulo III — El Disco Negro",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 113
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "La isla del tesoro · Capítulo IV — El Cofre Del Muerto",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 79
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "La isla del tesoro · Capítulo V — Del Fin Que Tuvo El Mendigo C…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 98
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "La isla del tesoro · Capítulo VI — Los Papeles Del Capitán",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 107
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "La isla del tesoro · Capítulo VII — Salgo Para Brístol",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 45
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "La isla del tesoro · Juan Trelawney",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 41
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "La isla del tesoro · Capítulo VIII",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 116
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "La isla del tesoro · Capítulo IX — Pólvora Y Armas",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 114
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "La isla del tesoro · Capítulo X — El Viaje",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 101
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "La isla del tesoro · Capítulo XI — Lo Que Oí Desde El Barril",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 147
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "La isla del tesoro · Capítulo XII — Consejo De Guerra",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 109
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "La isla del tesoro · Capítulo XIII — Cómo Empezó La Aventura",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 83
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "La isla del tesoro · Capítulo XIV — El Primer Golpe",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 72
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "La isla del tesoro · Capítulo XV — El Hombre De La Isla",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 156
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "La isla del tesoro · Capítulo XVI",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 80
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "La isla del tesoro · Capítulo XVII",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 81
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "La isla del tesoro · Capítulo XVIII — En Que Cuenta El Doctor C…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 84
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "La isla del tesoro · Capítulo XIX",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 102
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "La isla del tesoro · Capítulo XX — La Embajada De Silver",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 125
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "La isla del tesoro · Capítulo XXI — El Ataque",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 119
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "La isla del tesoro · Capítulo XXII — De Cual Fué El Principio D…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 69
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "La isla del tesoro · Capítulo XXIII — El Reflujo Corre",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 68
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "La isla del tesoro · Capítulo XXIV",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 84
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "La isla del tesoro · Capítulo XXV",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 88
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "La isla del tesoro · Capítulo XXVI — Israel Hands",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 143
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "La isla del tesoro · Capítulo XXVII",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 97
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "La isla del tesoro · Capítulo XXVIII — El Campo Enemigo",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 201
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "La isla del tesoro · Capítulo XXIX — Otra Vez El Disco Negro",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 166
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "La isla del tesoro · Capítulo XXX — Bajo Palabra",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 143
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "La isla del tesoro · Capítulo XXXI — En Busca Del Tesoro--el Di…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 121
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "La isla del tesoro · Capítulo XXXII — La Voz Del Alma En Pena",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 110
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "La isla del tesoro · Capítulo XXXIII — La Caída De Un Caudillo",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 113
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "La isla del tesoro · Capítulo XXXIV — Se Cuenta El Fin De Esta…",
+      "enName": "Treasure Island",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 70
+    }
+  ]
+}

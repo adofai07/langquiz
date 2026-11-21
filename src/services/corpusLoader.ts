@@ -190,7 +190,7 @@ export function filterSpansByForms(
   });
 }
 
-const ALL_FORM_KINDS: WordFormKind[] = ['v', 'p', 't', 'd', 'n', 'a', 'r'];
+const ALL_FORM_KINDS: WordFormKind[] = ['v', 'p', 'g', 't', 'd', 'n', 'a', 'r'];
 
 export function toQuizQuestion(
   manifest: CorpusManifest,

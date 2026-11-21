@@ -1,0 +1,255 @@
+{
+  "id": "es-quiroga-cuentos",
+  "language": "es",
+  "title": "Cuentos de amor, de locura y de muerte",
+  "subtitle": "Horacio Quiroga · Direct English",
+  "translationSource": "QUIROGA → EN",
+  "unit": "sentence",
+  "totalVerses": 3324,
+  "quizVerses": 3281,
+  "totalVerbs": 5437,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 5437,
+    "p": 493,
+    "g": 325,
+    "d": 2747,
+    "n": 1825,
+    "a": 1603,
+    "r": 1814
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 2. Primavera",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 53
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 3. Verano",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 219
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 4. Otoño",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 78
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 5. Invierno",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 92
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 6. Los ojos sombrios",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 187
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 7. El solitario",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 136
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 8. La muerte de isolda",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 134
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 9. El infierno artificial",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 153
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 10. La gallina degollada",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 164
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 11. Los buques suicidantes",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 85
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 12. El almohadon de pluma",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 84
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 13. El perro rabioso",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 3
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 14. Marzo 9--",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 108
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 15. Marzo 10--",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 15
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 16. Marzo 15--",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 5
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 18. Marzo 19--",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 8
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 20. Marzo 20--(6 a.m.)",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 5
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 21. 7 a.m",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 10
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 22. 7.15 a.m",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 28
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 23. A la deriva",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 71
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 24. La insolacion",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 152
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 25. El alambre de pua",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 214
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 26. Los mensú",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 178
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 27. Yaguaí",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 155
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 28. Los pescadores de vigas",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 125
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 29. La miel silvestre",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 109
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 30. Nuestro primer cigarro",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 179
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Cuentos de amor, de locura y de muerte · Capítulo 31. La meningitis y su sombra",
+      "enName": "Tales of Love, Madness and Death",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 531
+    }
+  ]
+}

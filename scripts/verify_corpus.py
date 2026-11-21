@@ -17,6 +17,8 @@ def is_valid_lemma(lang: str, lemma: str) -> bool:
         return lemma.endswith("en") or lemma.endswith("ern") or lemma.endswith("eln") or lemma in ("tun", "sein")
     if lang == "cs":
         return lemma.endswith("t") or lemma.endswith("ti") or lemma.endswith("ci") or lemma.endswith("ct")
+    if lang == "es":
+        return lemma.endswith("ar") or lemma.endswith("er") or lemma.endswith("ir") or lemma.endswith("ír")
     return len(lemma) >= 2
 
 
@@ -59,7 +61,7 @@ def main() -> None:
                     errors += 1
                 prev_end = end
                 surface = text[start:end]
-                if kind in ("v", "p", "t") and not is_valid_lemma(lang, lemma):
+                if kind in ("v", "p", "g", "t") and not is_valid_lemma(lang, lemma):
                     print(f"BAD LEMMA: {surface} -> {lemma} ({kind})")
                     errors += 1
                 if not is_base and surface.lower() == lemma.lower():

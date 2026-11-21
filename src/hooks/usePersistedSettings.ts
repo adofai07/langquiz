@@ -30,6 +30,7 @@ export const DEFAULT_VERSE_RANGE: VerseRange = {
 export const DEFAULT_WORD_FORMS: EnabledWordForms = {
   v: true,
   p: false,
+  g: false,
   t: false,
   d: false,
   n: false,
@@ -41,6 +42,7 @@ export const DEFAULT_WORD_FORMS_BY_LANG: Record<LanguageCode, EnabledWordForms> 
   pl: { ...DEFAULT_WORD_FORMS },
   de: { ...DEFAULT_WORD_FORMS },
   cs: { ...DEFAULT_WORD_FORMS },
+  es: { ...DEFAULT_WORD_FORMS },
 };
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -53,6 +55,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     pl: { ...DEFAULT_WORD_FORMS },
     de: { ...DEFAULT_WORD_FORMS },
     cs: { ...DEFAULT_WORD_FORMS },
+    es: { ...DEFAULT_WORD_FORMS },
   },
   includeBaseForms: false,
   verbRange: { ...DEFAULT_VERB_RANGE },
@@ -94,6 +97,7 @@ function sanitizeWordFormsByLang(
     pl: sanitizeWordFormsForLang(byLang.pl ?? legacyFlat, 'pl'),
     de: sanitizeWordFormsForLang(byLang.de ?? legacyFlat, 'de'),
     cs: sanitizeWordFormsForLang(byLang.cs ?? legacyFlat, 'cs'),
+    es: sanitizeWordFormsForLang(byLang.es ?? legacyFlat, 'es'),
   };
 }
 

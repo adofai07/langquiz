@@ -1,0 +1,151 @@
+{
+  "id": "es-doyle-baskerville",
+  "language": "es",
+  "title": "El sabueso de los Baskerville",
+  "subtitle": "Arthur Conan Doyle · Direct English",
+  "translationSource": "HOLMES → EN",
+  "unit": "sentence",
+  "totalVerses": 3456,
+  "quizVerses": 3427,
+  "totalVerbs": 7329,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 7329,
+    "p": 1158,
+    "g": 285,
+    "d": 3155,
+    "n": 1880,
+    "a": 1482,
+    "r": 2837
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 1",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 136
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 2",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 146
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 3",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 210
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 4",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 247
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 5",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 241
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 6",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 182
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 7",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 304
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 8",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 117
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 9",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 373
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 10",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 236
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 11",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 272
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 12",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 338
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 13",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 223
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 14",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 235
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "El sabueso de los Baskerville · Capítulo 15",
+      "enName": "The Hound of the Baskervilles",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 167
+    }
+  ]
+}

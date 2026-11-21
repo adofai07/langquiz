@@ -1,4 +1,4 @@
-export type LanguageCode = 'pl' | 'de' | 'cs';
+export type LanguageCode = 'pl' | 'de' | 'cs' | 'es';
 
 export interface LanguageOption {
   code: LanguageCode;
@@ -53,7 +53,7 @@ export interface CorpusManifest {
   books: CorpusBookMeta[];
 }
 
-export type WordFormKind = 'v' | 'p' | 't' | 'd' | 'n' | 'a' | 'r';
+export type WordFormKind = 'v' | 'p' | 'g' | 't' | 'd' | 'n' | 'a' | 'r';
 
 export type EnabledWordForms = Record<WordFormKind, boolean>;
 
@@ -64,6 +64,7 @@ export const WORD_FORM_META: {
 }[] = [
   { kind: 'v', label: 'Verbs', shortTag: 'V' },
   { kind: 'p', label: 'Participles', shortTag: 'P' },
+  { kind: 'g', label: 'Gerunds', shortTag: 'GER' },
   { kind: 't', label: 'Transgressives', shortTag: 'T' },
   { kind: 'd', label: 'Articles', shortTag: 'ART' },
   { kind: 'n', label: 'Nouns', shortTag: 'N' },

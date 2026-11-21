@@ -43,18 +43,20 @@ LANG_META = {
     "pl": ("Polish", ["v", "p", "n", "a", "r"]),
     "de": ("German", ["v", "p", "d", "n", "a", "r"]),
     "cs": ("Czech", ["v", "p", "t", "n", "a", "r"]),
+    "es": ("Spanish", ["v", "p", "g", "d", "n", "a", "r"]),
 }
 
 # Common abbreviations that should NOT terminate a sentence
 ABBREV_RE = re.compile(
-    r"\b(?:Mr|Mrs|Ms|Dr|dr|Prof|prof|St|Sr|Jr|Rev|Hon|Gen|Col|Capt|Sgt|Lt|No|Vol|Ch|Fig|vs|etc|"
+    r"\b(?:Mr|Mrs|Ms|Dr|dr|Prof|prof|St|Sr|Sra|Srta|Jr|Rev|Hon|Gen|Col|Capt|Sgt|Lt|No|Vol|Ch|Fig|vs|etc|"
+    r"Ud|Uds|Vd|Vds|D|Dña|Cap|Pág|Núm|Art|"
     r"sv|tj|tzv|např|atd|apod|č|str|odd|pozn|tzn|np|itd|itp|hab|ul|al|pl|św|bł|r|w|ok|p|"
     r"Hr|Fr|Frl|bzw|usw|ca|evtl|ggf|inkl|Nr|Abs|Kap|Bd|Jg|S|z\.\s*B|u\.\s*a|d\.\s*h|v\.\s*Chr|n\.\s*Chr|"
     r"[A-Z])\.$"
 )
 
 ROMAN_HEADING_RE = re.compile(
-    r"^(?:(?:ROZDZIAŁ|Rozdział|CZĘŚĆ|Część|KAPITEL|Kapitel|CAPITEL|Capitel|TEIL|Teil|THEIL|Theil|KAPITOLA|Kapitola|CHAPTER|Chapter)\s+(?:[IVXLCDM0-9]+|pierwszy|drugi|trzeci|czwarty|piąty|szósty|siódmy|ósmy|dziewiąty|dziesiąty|jedenasty|dwunasty|trzynasty|czternasty|piętnasty|szesnasty).*|"
+    r"^(?:(?:ROZDZIAŁ|Rozdział|CZĘŚĆ|Część|KAPITEL|Kapitel|CAPITEL|Capitel|TEIL|Teil|THEIL|Theil|KAPITOLA|Kapitola|CAPÍTULO|Capítulo|CAPITULO|Capitulo|TRATADO|Tratado|PARTE|Parte|CHAPTER|Chapter)\s+(?:[IVXLCDM0-9]+|pierwszy|drugi|trzeci|czwarty|piąty|szósty|siódmy|ósmy|dziewiąty|dziesiąty|jedenasty|dwunasty|trzynasty|czternasty|piętnasty|szesnasty|primero|segundo|tercero|cuarto|quinto|sexto|séptimo|octavo|noveno|décimo).*|"
     r"(?:[A-ZÄÖÜ][a-zäöüß]+(?:tes|stes))\s+(?:und\s+letztes\s+)?(?:Kapitel|Capitel)\.?|"
     r"[IVXLCDM]{1,6}\.(?:\s+.{2,65})?)$"
 )
@@ -163,8 +165,11 @@ def strip_boilerplate_txt(text: str) -> str:
     )
     if ad_end:
         text = text[: len(text) // 2 + ad_end.start()]
-    # Strip Project Gutenberg illustration captions like [Illustration: ...]
-    text = re.sub(r"\[Illustration[^\]]*\]", "", text, flags=re.I)
+    # Strip Project Gutenberg illustration captions like [Illustration: ...] or [Ilustración: ...]
+    text = re.sub(r"\[Ilustraci[oó]n[^\]]*\]|\[Illustration[^\]]*\]", "", text, flags=re.I)
+    # Strip Spanish Gutenberg errata lines like "Adios=> Adiós {pg 302}" and Quiroga #heading# markers
+    text = re.sub(r"\n[^\n]*=>[^\n]*\{[^}]+\}[^\n]*", "", text)
+    text = re.sub(r"(?m)^#([^#\n]{2,70})#$", r"\1", text)
     # Clean Gutenberg / Wolne Lektury emphasis markers (_word_, =word=, *word*)
     text = re.sub(r"_([^_\n]{1,80})_", r"\1", text)
     text = re.sub(r"=([^=\n]{1,80})=", r"\1", text)
@@ -439,8 +444,8 @@ def split_paragraph_to_sentences(para: str) -> List[str]:
 
     parts: List[str] = []
     start = 0
-    # Split after sentence-ending punctuation (+ optional closing quote, including Czech “) followed by space + uppercase/quote/dash
-    for m in re.finditer(r'([.!?…]+(?:[»”"“\'\)])?)\s+(?=[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽÄÖÜĄĆĘŁŃÓŚŹŻ„«"—–-])', para):
+    # Split after sentence-ending punctuation (+ optional closing quote, including Czech “) followed by space + uppercase/quote/dash/inverted Spanish ¡¿
+    for m in re.finditer(r'([.!?…]+(?:[»”"“\'\)])?)\s+(?=[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽÄÖÜĄĆĘŁŃÓŚŹŻÑ„«"—–¡¿-])', para):
         end_idx = m.end(1)
         cand = para[start:end_idx].strip()
         if ABBREV_RE.search(cand):
@@ -741,6 +746,12 @@ def tag_sentences_de(sentences: List[Tuple[int, int, str, str]], model_name: str
     return all_spans
 
 
+def tag_sentences_es(sentences: List[Tuple[int, int, str, str]], model_name: str) -> List[List[list]]:
+    import build_corpus_es as es_mod
+
+    return es_mod.tag_spanish_sentences([s[2] for s in sentences], model_name)
+
+
 def build_book_glossary(lang: str, corpus_dir: Path, lang_desc: str, model_name: str) -> None:
     import build_glossary as gl_mod
 
@@ -772,7 +783,7 @@ def build_book_glossary(lang: str, corpus_dir: Path, lang_desc: str, model_name:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build a VERBA quiz corpus from any .txt or .epub book.")
-    parser.add_argument("--lang", required=True, choices=["pl", "de", "cs"])
+    parser.add_argument("--lang", required=True, choices=["pl", "de", "cs", "es"])
     parser.add_argument("--id", required=True, help="Corpus folder ID (e.g. cs-capek-kapsa)")
     parser.add_argument("--title", required=True, help="Native book title")
     parser.add_argument("--en-title", required=True, help="English book title")
@@ -799,11 +810,16 @@ def main() -> None:
         raw_chapters = raw_chapters[: args.max_chapters]
 
     # Segment into clean sentences per chapter
+    es_norm = None
+    if args.lang == "es":
+        import build_corpus_es as es_mod
+        es_norm = es_mod.normalize_spanish_orthography
     chapter_sents: List[Tuple[str, List[str]]] = []
     for ch_title, paras in raw_chapters:
         sents: List[str] = []
         for p in paras:
-            sents.extend(split_paragraph_to_sentences(p))
+            for s in split_paragraph_to_sentences(p):
+                sents.append(es_norm(s) if es_norm else s)
         if len(sents) >= 3:
             chapter_sents.append((ch_title, sents))
 
@@ -869,6 +885,8 @@ def main() -> None:
         all_spans = tag_sentences_cs(flat)
     elif args.lang == "pl":
         all_spans = tag_sentences_pl(flat)
+    elif args.lang == "es":
+        all_spans = tag_sentences_es(flat, model_name)
     else:
         all_spans = tag_sentences_de(flat, model_name)
 

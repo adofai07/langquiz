@@ -1,0 +1,615 @@
+{
+  "id": "es-cervantes-quijote",
+  "language": "es",
+  "title": "Don Quijote de la Mancha",
+  "subtitle": "Miguel de Cervantes · Direct English",
+  "translationSource": "CERVANTES → EN",
+  "unit": "sentence",
+  "totalVerses": 8736,
+  "quizVerses": 8682,
+  "totalVerbs": 31569,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 31569,
+    "p": 2400,
+    "g": 1550,
+    "d": 11144,
+    "n": 9567,
+    "a": 6040,
+    "r": 13623
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Don Quijote de la Mancha · Capítulo primero. Que trata de la condició…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 27
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Don Quijote de la Mancha · Capítulo II. Que trata de la primera salid…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 38
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Don Quijote de la Mancha · Capítulo III. Donde se cuenta la graciosa…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 36
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Don Quijote de la Mancha · Capítulo IV. De lo que le sucedió a nuestr…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 63
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Don Quijote de la Mancha · Capítulo V. Donde se prosigue la narración…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 132
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "Don Quijote de la Mancha · Capítulo VII. De la segunda salida de nues…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 214
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XI. De lo que le sucedió a don Qu…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 59
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XII. De lo que contó un cabrero a…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 61
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XIII. Donde se da fin al cuento d…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 76
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XIV. Donde se ponen los versos de…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 144
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XVI. De lo que le sucedió al inge…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 772
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXIV. Donde se prosigue la aventu…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 253
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXVI. Donde se prosiguen las fine…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 193
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXVIII. Que trata de la nueva y a…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 82
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXIX. Que trata de la discreción…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 292
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXII. Que trata de lo que sucedi…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 66
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXIII. Donde se cuenta la novela…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 106
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXIV. Donde se prosigue la novel…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 153
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXV. Donde se da fin a la novela…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 166
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXVII. Que prosigue la historia…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 87
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXVIII. Que trata del curioso di…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 25
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXIX. Donde el cautivo cuenta su…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 54
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XL. Donde se prosigue la historia…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 80
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLI. Donde todavía prosigue el ca…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 99
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLII. Que trata de lo que más suc…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 156
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLIV. Donde se prosiguen los inau…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 182
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLVII. Del estraño modo con que f…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 116
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLIX. Donde se trata del discreto…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 38
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "Don Quijote de la Mancha · Capítulo L. De las discretas altercaciones…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 41
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LI. Que trata de lo que contó el…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 93
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "Don Quijote de la Mancha · Hoc Scripserunt:",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 11
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "Don Quijote de la Mancha · Del Burlador, Académico Argamasillesco, A…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 16
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "Don Quijote de la Mancha · Fee De Erratas",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 3
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "Don Quijote de la Mancha · Aprobaciones — Aprobación",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 2
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "Don Quijote de la Mancha · Aprobación",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 3
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "Don Quijote de la Mancha · Aprobación",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 5
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "Don Quijote de la Mancha · Prólogo Al Lector",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 22
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "Don Quijote de la Mancha · Dedicatoria, Al Conde De Lemos",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 337
+    },
+    {
+      "index": 38,
+      "id": "ch39",
+      "nativeName": "Don Quijote de la Mancha · Capítulo VII. De lo que pasó don Quijote c…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/39-ch39.json",
+      "verseCount": 65
+    },
+    {
+      "index": 39,
+      "id": "ch40",
+      "nativeName": "Don Quijote de la Mancha · Capítulo VIII. Donde se cuenta lo que le s…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/40-ch40.json",
+      "verseCount": 48
+    },
+    {
+      "index": 40,
+      "id": "ch41",
+      "nativeName": "Don Quijote de la Mancha · Capítulo IX. Donde se cuenta lo que en él…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/41-ch41.json",
+      "verseCount": 326
+    },
+    {
+      "index": 41,
+      "id": "ch42",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XIV. Donde se prosigue la aventur…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/42-ch42.json",
+      "verseCount": 84
+    },
+    {
+      "index": 42,
+      "id": "ch43",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XV. Donde se cuenta y da noticia…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/43-ch43.json",
+      "verseCount": 13
+    },
+    {
+      "index": 43,
+      "id": "ch44",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XVI. De lo que sucedió a don Quij…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/44-ch44.json",
+      "verseCount": 242
+    },
+    {
+      "index": 44,
+      "id": "ch45",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XIX. Donde se cuenta la aventura…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/45-ch45.json",
+      "verseCount": 53
+    },
+    {
+      "index": 45,
+      "id": "ch46",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XX. Donde se cuentan las bodas de…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/46-ch46.json",
+      "verseCount": 89
+    },
+    {
+      "index": 46,
+      "id": "ch47",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXI. Donde se prosiguen las bodas…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/47-ch47.json",
+      "verseCount": 335
+    },
+    {
+      "index": 47,
+      "id": "ch48",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXVI. Donde se prosigue la gracio…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/48-ch48.json",
+      "verseCount": 110
+    },
+    {
+      "index": 48,
+      "id": "ch49",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXVIII. De cosas que dice Benenge…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/49-ch49.json",
+      "verseCount": 55
+    },
+    {
+      "index": 49,
+      "id": "ch50",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXIX. De la famosa aventura del b…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/50-ch50.json",
+      "verseCount": 63
+    },
+    {
+      "index": 50,
+      "id": "ch51",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXX. De lo que le avino a don Qui…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/51-ch51.json",
+      "verseCount": 46
+    },
+    {
+      "index": 51,
+      "id": "ch52",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXI. Que trata de muchas y grand…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/52-ch52.json",
+      "verseCount": 92
+    },
+    {
+      "index": 52,
+      "id": "ch53",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXII. De la respuesta que dio do…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/53-ch53.json",
+      "verseCount": 326
+    },
+    {
+      "index": 53,
+      "id": "ch54",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXVII. Donde se prosigue la famo…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/54-ch54.json",
+      "verseCount": 23
+    },
+    {
+      "index": 54,
+      "id": "ch55",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXVIII. Donde se cuenta la que d…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/55-ch55.json",
+      "verseCount": 48
+    },
+    {
+      "index": 55,
+      "id": "ch56",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XXXIX. Donde la Trifaldi prosigue…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/56-ch56.json",
+      "verseCount": 21
+    },
+    {
+      "index": 56,
+      "id": "ch57",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XL. De cosas que atañen y tocan a…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/57-ch57.json",
+      "verseCount": 48
+    },
+    {
+      "index": 57,
+      "id": "ch58",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLI. De la venida de Clavileño, c…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/58-ch58.json",
+      "verseCount": 142
+    },
+    {
+      "index": 58,
+      "id": "ch59",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLIII. De los consejos segundos q…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/59-ch59.json",
+      "verseCount": 124
+    },
+    {
+      "index": 59,
+      "id": "ch60",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLV. De cómo el gran Sancho Panza…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/60-ch60.json",
+      "verseCount": 116
+    },
+    {
+      "index": 60,
+      "id": "ch61",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLVII. Donde se prosigue cómo se…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/61-ch61.json",
+      "verseCount": 170
+    },
+    {
+      "index": 61,
+      "id": "ch62",
+      "nativeName": "Don Quijote de la Mancha · Capítulo XLIX. De lo que le sucedió a Sanc…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/62-ch62.json",
+      "verseCount": 197
+    },
+    {
+      "index": 62,
+      "id": "ch63",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LI. Del progreso del gobierno de…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/63-ch63.json",
+      "verseCount": 100
+    },
+    {
+      "index": 63,
+      "id": "ch64",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LIII. Del fatigado fin y remate q…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/64-ch64.json",
+      "verseCount": 57
+    },
+    {
+      "index": 64,
+      "id": "ch65",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LIV. Que trata de cosas tocantes…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/65-ch65.json",
+      "verseCount": 58
+    },
+    {
+      "index": 65,
+      "id": "ch66",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LV. De cosas sucedidas a Sancho e…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/66-ch66.json",
+      "verseCount": 334
+    },
+    {
+      "index": 66,
+      "id": "ch67",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LX. De lo que sucedió a don Quijo…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/67-ch67.json",
+      "verseCount": 499
+    },
+    {
+      "index": 67,
+      "id": "ch68",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXVI. Que trata de lo que verá el…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/68-ch68.json",
+      "verseCount": 93
+    },
+    {
+      "index": 68,
+      "id": "ch69",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXVIII. De la cerdosa aventura qu…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/69-ch69.json",
+      "verseCount": 119
+    },
+    {
+      "index": 69,
+      "id": "ch70",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXX. Que sigue al de sesenta y nu…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/70-ch70.json",
+      "verseCount": 67
+    },
+    {
+      "index": 70,
+      "id": "ch71",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXXI. De lo que a don Quijote le…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/71-ch71.json",
+      "verseCount": 58
+    },
+    {
+      "index": 71,
+      "id": "ch72",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXXII. De cómo don Quijote y Sanc…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/72-ch72.json",
+      "verseCount": 102
+    },
+    {
+      "index": 72,
+      "id": "ch73",
+      "nativeName": "Don Quijote de la Mancha · Capítulo LXXIV. De cómo don Quijote cayó m…",
+      "enName": "Don Quixote",
+      "chunkFile": "chunks/73-ch73.json",
+      "verseCount": 56
+    }
+  ]
+}

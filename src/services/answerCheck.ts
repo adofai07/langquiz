@@ -30,6 +30,16 @@ const CZECH_DIACRITIC_MAP: Record<string, string> = {
   ž: 'z',
 };
 
+const SPANISH_DIACRITIC_MAP: Record<string, string> = {
+  á: 'a',
+  é: 'e',
+  í: 'i',
+  ñ: 'n',
+  ó: 'o',
+  ú: 'u',
+  ü: 'u',
+};
+
 export function normalizeWord(value: string, language: LanguageCode = 'pl'): string {
   // Handle German capital ẞ cleanly alongside locale lowercase
   const trimmed = value.trim().replace(/ẞ/g, 'ß');
@@ -91,6 +101,13 @@ export function stripCzechDiacritics(value: string): string {
   );
 }
 
+export function stripSpanishDiacritics(value: string): string {
+  return normalizeWord(value, 'es').replace(
+    /[áéíñóúü]/g,
+    (ch) => SPANISH_DIACRITIC_MAP[ch] ?? ch
+  );
+}
+
 function matchesLenient(givenRaw: string, expectedRaw: string, language: LanguageCode): boolean {
   if (language === 'de') {
     const givenForms = foldGermanVariants(givenRaw);
@@ -99,6 +116,9 @@ function matchesLenient(givenRaw: string, expectedRaw: string, language: Languag
   }
   if (language === 'cs') {
     return stripCzechDiacritics(givenRaw) === stripCzechDiacritics(expectedRaw);
+  }
+  if (language === 'es') {
+    return stripSpanishDiacritics(givenRaw) === stripSpanishDiacritics(expectedRaw);
   }
   return stripPolishDiacritics(givenRaw) === stripPolishDiacritics(expectedRaw);
 }

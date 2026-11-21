@@ -1,0 +1,335 @@
+{
+  "id": "es-verne-80days",
+  "language": "es",
+  "title": "La vuelta al mundo en ochenta días",
+  "subtitle": "Jules Verne · Direct English",
+  "translationSource": "VERNE → EN",
+  "unit": "sentence",
+  "totalVerses": 3735,
+  "quizVerses": 3682,
+  "totalVerbs": 6544,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 6544,
+    "p": 850,
+    "g": 420,
+    "d": 3677,
+    "n": 2921,
+    "a": 1611,
+    "r": 1864
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 1. PRIMERA PARTE",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 66
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 2",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 58
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 3",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 118
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 4",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 79
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 5",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 51
+    },
+    {
+      "index": 5,
+      "id": "ch6",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 6",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/06-ch6.json",
+      "verseCount": 76
+    },
+    {
+      "index": 6,
+      "id": "ch7",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 7",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/07-ch7.json",
+      "verseCount": 52
+    },
+    {
+      "index": 7,
+      "id": "ch8",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 8",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/08-ch8.json",
+      "verseCount": 84
+    },
+    {
+      "index": 8,
+      "id": "ch9",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 9",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/09-ch9.json",
+      "verseCount": 99
+    },
+    {
+      "index": 9,
+      "id": "ch10",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 10",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/10-ch10.json",
+      "verseCount": 65
+    },
+    {
+      "index": 10,
+      "id": "ch11",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 11",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/11-ch11.json",
+      "verseCount": 155
+    },
+    {
+      "index": 11,
+      "id": "ch12",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 12",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/12-ch12.json",
+      "verseCount": 128
+    },
+    {
+      "index": 12,
+      "id": "ch13",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 13",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/13-ch13.json",
+      "verseCount": 139
+    },
+    {
+      "index": 13,
+      "id": "ch14",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 14",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/14-ch14.json",
+      "verseCount": 97
+    },
+    {
+      "index": 14,
+      "id": "ch15",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 15",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/15-ch15.json",
+      "verseCount": 130
+    },
+    {
+      "index": 15,
+      "id": "ch16",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 16",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/16-ch16.json",
+      "verseCount": 102
+    },
+    {
+      "index": 16,
+      "id": "ch17",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 17",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/17-ch17.json",
+      "verseCount": 111
+    },
+    {
+      "index": 17,
+      "id": "ch18",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 18",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/18-ch18.json",
+      "verseCount": 87
+    },
+    {
+      "index": 18,
+      "id": "ch19",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 19",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/19-ch19.json",
+      "verseCount": 150
+    },
+    {
+      "index": 19,
+      "id": "ch20",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 20",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/20-ch20.json",
+      "verseCount": 124
+    },
+    {
+      "index": 20,
+      "id": "ch21",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 21",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/21-ch21.json",
+      "verseCount": 159
+    },
+    {
+      "index": 21,
+      "id": "ch22",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 22",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/22-ch22.json",
+      "verseCount": 93
+    },
+    {
+      "index": 22,
+      "id": "ch23",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 23",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/23-ch23.json",
+      "verseCount": 28
+    },
+    {
+      "index": 23,
+      "id": "ch24",
+      "nativeName": "La vuelta al mundo en ochenta días · Narigudos Narigudos",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/24-ch24.json",
+      "verseCount": 67
+    },
+    {
+      "index": 24,
+      "id": "ch25",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 24",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/25-ch25.json",
+      "verseCount": 87
+    },
+    {
+      "index": 25,
+      "id": "ch26",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 25",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/26-ch26.json",
+      "verseCount": 111
+    },
+    {
+      "index": 26,
+      "id": "ch27",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 26",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/27-ch27.json",
+      "verseCount": 72
+    },
+    {
+      "index": 27,
+      "id": "ch28",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 27",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/28-ch28.json",
+      "verseCount": 66
+    },
+    {
+      "index": 28,
+      "id": "ch29",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 28",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/29-ch29.json",
+      "verseCount": 154
+    },
+    {
+      "index": 29,
+      "id": "ch30",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 29",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/30-ch30.json",
+      "verseCount": 123
+    },
+    {
+      "index": 30,
+      "id": "ch31",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 30",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/31-ch31.json",
+      "verseCount": 157
+    },
+    {
+      "index": 31,
+      "id": "ch32",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 31",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/32-ch32.json",
+      "verseCount": 97
+    },
+    {
+      "index": 32,
+      "id": "ch33",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 32",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/33-ch33.json",
+      "verseCount": 65
+    },
+    {
+      "index": 33,
+      "id": "ch34",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 33",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/34-ch34.json",
+      "verseCount": 147
+    },
+    {
+      "index": 34,
+      "id": "ch35",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 34",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/35-ch35.json",
+      "verseCount": 61
+    },
+    {
+      "index": 35,
+      "id": "ch36",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 35",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/36-ch36.json",
+      "verseCount": 99
+    },
+    {
+      "index": 36,
+      "id": "ch37",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 36",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/37-ch37.json",
+      "verseCount": 69
+    },
+    {
+      "index": 37,
+      "id": "ch38",
+      "nativeName": "La vuelta al mundo en ochenta días · Capítulo 37",
+      "enName": "Around the World in 80 Days",
+      "chunkFile": "chunks/38-ch38.json",
+      "verseCount": 56
+    }
+  ]
+}

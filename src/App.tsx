@@ -248,6 +248,7 @@ export const App: React.FC = () => {
       prev.includeBase !== settings.includeBaseForms ||
       prev.forms.v !== activeWordForms.v ||
       prev.forms.p !== activeWordForms.p ||
+      prev.forms.g !== activeWordForms.g ||
       prev.forms.t !== activeWordForms.t ||
       prev.forms.d !== activeWordForms.d ||
       prev.forms.n !== activeWordForms.n ||

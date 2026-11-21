@@ -1,0 +1,71 @@
+{
+  "id": "es-lazarillo",
+  "language": "es",
+  "title": "Lazarillo de Tormes",
+  "subtitle": "Anonymous · Direct English",
+  "translationSource": "LAZARILLO → EN",
+  "unit": "sentence",
+  "totalVerses": 701,
+  "quizVerses": 700,
+  "totalVerbs": 2193,
+  "categories": [
+    "v",
+    "p",
+    "g",
+    "d",
+    "n",
+    "a",
+    "r"
+  ],
+  "formCounts": {
+    "v": 2193,
+    "p": 161,
+    "g": 159,
+    "d": 692,
+    "n": 540,
+    "a": 322,
+    "r": 1046
+  },
+  "books": [
+    {
+      "index": 0,
+      "id": "ch1",
+      "nativeName": "Lazarillo de Tormes · Chapter 1",
+      "enName": "Lazarillo de Tormes",
+      "chunkFile": "chunks/01-ch1.json",
+      "verseCount": 162
+    },
+    {
+      "index": 1,
+      "id": "ch2",
+      "nativeName": "Lazarillo de Tormes · Tratado Segundo",
+      "enName": "Lazarillo de Tormes",
+      "chunkFile": "chunks/02-ch2.json",
+      "verseCount": 140
+    },
+    {
+      "index": 2,
+      "id": "ch3",
+      "nativeName": "Lazarillo de Tormes · Tratado Tercero",
+      "enName": "Lazarillo de Tormes",
+      "chunkFile": "chunks/03-ch3.json",
+      "verseCount": 268
+    },
+    {
+      "index": 3,
+      "id": "ch4",
+      "nativeName": "Lazarillo de Tormes · Tratado Cuarto",
+      "enName": "Lazarillo de Tormes",
+      "chunkFile": "chunks/04-ch4.json",
+      "verseCount": 97
+    },
+    {
+      "index": 4,
+      "id": "ch5",
+      "nativeName": "Lazarillo de Tormes · Tratado Sexto",
+      "enName": "Lazarillo de Tormes",
+      "chunkFile": "chunks/05-ch5.json",
+      "verseCount": 33
+    }
+  ]
+}

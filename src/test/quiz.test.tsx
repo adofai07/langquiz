@@ -5,6 +5,7 @@ import {
   evaluateBlank,
   matchOriginalCase,
   stripPolishDiacritics,
+  stripSpanishDiacritics,
 } from '../services/answerCheck';
 import {
   cleanStrayQuotes,
@@ -20,6 +21,7 @@ import {
   filterAlphabetInput,
   GERMAN_ALPHABET,
   POLISH_ALPHABET,
+  SPANISH_ALPHABET,
 } from '../config/catalog';
 import { DualRangeSlider } from '../components/DualRangeSlider';
 import { QuizCard } from '../components/QuizCard';
@@ -128,6 +130,14 @@ describe('answerCheck', () => {
     expect(evaluateBlank(blank, 'řekl', 'strict', 'cs').status).toBe('exact');
     expect(evaluateBlank(blank, 'rekl', 'strict', 'cs').status).toBe('wrong');
     expect(evaluateBlank(blank, 'rekl', 'lenient', 'cs').status).toBe('diacritic-close');
+  });
+
+  it('evaluates Spanish diacritics (á é í ñ ó ú ü) in strict vs lenient mode', () => {
+    expect(stripSpanishDiacritics('Engañó pingüino comí')).toBe('engano pinguino comi');
+    const blank = { index: 0, start: 0, end: 6, answer: 'engañó', lemma: 'engañar', kind: 'v' as const };
+    expect(evaluateBlank(blank, 'engañó', 'strict', 'es').status).toBe('exact');
+    expect(evaluateBlank(blank, 'engano', 'strict', 'es').status).toBe('wrong');
+    expect(evaluateBlank(blank, 'engano', 'lenient', 'es').status).toBe('diacritic-close');
   });
 
   it('evaluates all 5 Genesis 3:13 blanks correctly', () => {
@@ -335,6 +345,60 @@ describe('QuizCard', () => {
     fireEvent.keyDown(inputs[1], { key: '2' }); // č
     expect(inputs[1].value).toBe('uč');
     fireEvent.change(inputs[1], { target: { value: 'učinila' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Check/i }));
+    expect(onComplete).toHaveBeenCalledWith(true);
+    expect(screen.getByText('Correct — 2 / 2')).toBeInTheDocument();
+  });
+
+  it('supports Spanish diacritics via shortcut keys 1-7 (á é í ñ ó ú ü) and rejects 8-9', () => {
+    const esQuestion: QuizQuestion = {
+      id: 'es-bible-rv1909:gn:3:13',
+      bookIndex: 0,
+      bookId: 'gn',
+      bookNativeName: 'Génesis',
+      bookEnName: 'Genesis',
+      chapter: 3,
+      verse: 13,
+      verseEnd: 13,
+      verseCount: 1,
+      reference: 'Génesis (Genesis) 3:13',
+      original: 'La serpiente me engañó, y comí.',
+      translation: 'The serpent deceived me, and I ate.',
+      translationSource: 'RV1909 → EN',
+      blanks: [
+        { index: 0, start: 16, end: 22, answer: 'engañó', lemma: 'engañar', kind: 'v' },
+        { index: 1, start: 26, end: 30, answer: 'comí', lemma: 'comer', kind: 'v' },
+      ],
+    };
+
+    const onComplete = vi.fn();
+    render(
+      <QuizCard
+        question={esQuestion}
+        languageCode="es"
+        alphabet={SPANISH_ALPHABET}
+        diacritics={['á', 'é', 'í', 'ñ', 'ó', 'ú', 'ü']}
+        diacriticMode="strict"
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={onComplete}
+        onNext={vi.fn()}
+      />
+    );
+
+    const inputs = screen.getAllByRole('textbox') as HTMLInputElement[];
+    fireEvent.focus(inputs[0]);
+    fireEvent.change(inputs[0], { target: { value: 'enga' } });
+    fireEvent.keyDown(inputs[0], { key: '4' }); // ñ
+    expect(inputs[0].value).toBe('engañ');
+    fireEvent.keyDown(inputs[0], { key: '5' }); // ó
+    expect(inputs[0].value).toBe('engañó');
+    expect(fireEvent.keyDown(inputs[0], { key: '8' })).toBe(false);
+
+    fireEvent.focus(inputs[1]);
+    fireEvent.change(inputs[1], { target: { value: 'com' } });
+    fireEvent.keyDown(inputs[1], { key: '3' }); // í
+    expect(inputs[1].value).toBe('comí');
 
     fireEvent.click(screen.getByRole('button', { name: /Check/i }));
     expect(onComplete).toHaveBeenCalledWith(true);
@@ -549,6 +613,20 @@ describe('SettingsDrawer', () => {
     expect(screen.getByRole('checkbox', { name: /^Transgressives/i })).toBeInTheDocument();
     expect(screen.queryByRole('checkbox', { name: /^Articles/i })).not.toBeInTheDocument();
 
+    rerender(
+      <SettingsDrawer
+        open={true}
+        settings={{ ...DEFAULT_SETTINGS, language: 'es', corpusId: 'es-bible-rv1909' }}
+        manifest={null}
+        onChange={vi.fn()}
+        onLoadExample={vi.fn()}
+        onClose={vi.fn()}
+      />
+    );
+    expect(screen.getByRole('checkbox', { name: /^Gerunds/i })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: /^Articles/i })).toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: /^Transgressives/i })).not.toBeInTheDocument();
+
     // Base forms toggle filters spans flagged isBase=true cleanly
     const spans: [number, number, string, 'v' | 'n', boolean][] = [
       [0, 5, 'mówić', 'v', true],
@@ -642,13 +720,13 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     ).toBe('"Listen," he said, "I am coming to you for advice."');
   });
 
-  it('registers all 28 corpora with unique IDs and valid manifest URLs', () => {
-    expect(CORPORA).toHaveLength(28);
+  it('registers all 38 corpora with unique IDs and valid manifest URLs', () => {
+    expect(CORPORA).toHaveLength(38);
     const ids = new Set(CORPORA.map((c) => c.id));
     expect(ids.size).toBe(CORPORA.length);
     for (const c of CORPORA) {
       expect(c.manifestUrl).toBe(`/data/${c.id}/manifest.json`);
-      expect(['pl', 'de', 'cs']).toContain(c.language);
+      expect(['pl', 'de', 'cs', 'es']).toContain(c.language);
     }
   });
 });
