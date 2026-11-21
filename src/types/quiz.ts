@@ -7,6 +7,7 @@ export interface LanguageOption {
   alphabet: string;
   diacritics: string[];
   specimen: string;
+  wordFormCategories: WordFormKind[];
   available: boolean;
 }
 
@@ -42,7 +43,7 @@ export interface CorpusManifest {
   books: CorpusBookMeta[];
 }
 
-export type WordFormKind = 'v' | 'p' | 'n' | 'a' | 'r';
+export type WordFormKind = 'v' | 'p' | 't' | 'd' | 'n' | 'a' | 'r';
 
 export type EnabledWordForms = Record<WordFormKind, boolean>;
 
@@ -53,10 +54,14 @@ export const WORD_FORM_META: {
 }[] = [
   { kind: 'v', label: 'Verbs', shortTag: 'V' },
   { kind: 'p', label: 'Participles', shortTag: 'P' },
+  { kind: 't', label: 'Transgressives', shortTag: 'T' },
+  { kind: 'd', label: 'Articles', shortTag: 'ART' },
   { kind: 'n', label: 'Nouns', shortTag: 'N' },
   { kind: 'a', label: 'Adjectives', shortTag: 'A' },
   { kind: 'r', label: 'Pronouns', shortTag: 'R' },
 ];
+
+export type RawCorpusSpan = [number, number, string, WordFormKind?, (0 | 1)?];
 
 export interface RawCorpusEntry {
   /** Chapter (1-based) */
@@ -67,8 +72,8 @@ export interface RawCorpusEntry {
   o: string;
   /** English translation */
   t: string;
-  /** Inflected spans: [startChar, endChar, lemma, kind?] (kind defaults to 'v') */
-  m: [number, number, string, WordFormKind?][];
+  /** Word spans: [startChar, endChar, lemma, kind?, isBase?] */
+  m: RawCorpusSpan[];
 }
 
 export interface VerbBlank {
@@ -78,6 +83,7 @@ export interface VerbBlank {
   answer: string;
   lemma: string;
   kind: WordFormKind;
+  isBase?: boolean;
 }
 
 export interface QuizQuestion {
@@ -132,7 +138,8 @@ export interface AppSettings {
   fontAxes: AlloFontAxes;
   diacriticMode: DiacriticMode;
   glossMode: GlossMode;
-  wordForms: EnabledWordForms;
+  wordFormsByLang: Record<LanguageCode, EnabledWordForms>;
+  includeBaseForms: boolean;
   verbRange: VerbRange;
   verseRange: VerseRange;
   theme: ThemeMode;

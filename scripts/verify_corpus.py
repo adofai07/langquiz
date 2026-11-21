@@ -50,6 +50,7 @@ def main() -> None:
             for span in entry["m"]:
                 start, end, lemma = span[0], span[1], span[2]
                 kind = span[3] if len(span) > 3 else "v"
+                is_base = len(span) > 4 and bool(span[4])
                 if not (0 <= start < end <= len(text)):
                     print(f"OUT OF BOUNDS: {book['id']} {entry['c']}:{entry['v']}")
                     errors += 1
@@ -58,11 +59,11 @@ def main() -> None:
                     errors += 1
                 prev_end = end
                 surface = text[start:end]
-                if kind in ("v", "p") and not is_valid_lemma(lang, lemma):
+                if kind in ("v", "p", "t") and not is_valid_lemma(lang, lemma):
                     print(f"BAD LEMMA: {surface} -> {lemma} ({kind})")
                     errors += 1
-                if surface.lower() == lemma.lower():
-                    print(f"TRIVIAL FORM: {surface} -> {lemma} ({kind})")
+                if not is_base and surface.lower() == lemma.lower():
+                    print(f"TRIVIAL FORM (not flagged base): {surface} -> {lemma} ({kind})")
                     errors += 1
 
             if book["id"] == "gn" and entry["c"] == 3 and entry["v"] == 13:

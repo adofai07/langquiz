@@ -114,7 +114,8 @@ BOOKS_META: List[Tuple[str, str, str]] = [
 CS_WORD_RE = re.compile(r"^[A-Za-zÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž]+$")
 
 VERB_PREFIXES = ("VB", "Vp", "Vi", "Vc", "Vt", "Vq")
-PART_PREFIXES = ("Vs", "Ve", "Vm")
+PASSIVE_PART_PREFIXES = ("Vs",)
+TRANSGRESSIVE_PREFIXES = ("Ve", "Vm")
 VERBAL_ADJ_PREFIXES = ("AG", "AM")
 ADJ_PREFIXES = ("AA", "AU", "AC")
 
@@ -139,8 +140,7 @@ ARCHAIC_VERB_OVERRIDES: Dict[str, str] = {
     "svítězil": "zvítězit",
 }
 
-CS_PAN_RE = re.compile(r"\b(?:Pán|Pána|Pánu|Pane|Pánem|Panovník|pán|pána|pánu|pane|pánem)\b")
-EN_LORD_RE = re.compile(r"\bLord\b")
+EN_ALLCAPS_LORD_RE = re.compile(r"\bLORD\b")
 MORFFLEX_DERIV_RE = re.compile(r"_\^\(\*(\d+)([^)]*)\)")
 
 
@@ -218,7 +218,8 @@ def classify_token(
     is_mid_sentence: bool,
     morpho,
     probe: TaggedLemmas,
-) -> Tuple[str, str] | None:
+) -> Tuple[str, str, bool] | None:
+    """Return (lemma, kind, is_base) or None."""
     if not CS_WORD_RE.match(surf):
         return None
     s_low = surf.lower()
@@ -228,19 +229,24 @@ def classify_token(
 
     # 1. Exact biblical homograph & archaic spelling overrides
     if s_low in ARCHAIC_VERB_OVERRIDES:
-        return (ARCHAIC_VERB_OVERRIDES[s_low], "v")
+        return (ARCHAIC_VERB_OVERRIDES[s_low], "v", False)
 
     if t2 in ("NN", "TT", "Db", "II") and short_lemma.lower() == s_low and s_low in IMPERATIVE_OVERRIDES:
-        return (IMPERATIVE_OVERRIDES[s_low], "v")
+        return (IMPERATIVE_OVERRIDES[s_low], "v", False)
 
     if t2 in ("Vt", "Vq") and s_low in VT_NONVERB_OVERRIDES:
-        return VT_NONVERB_OVERRIDES[s_low]
+        ov = VT_NONVERB_OVERRIDES[s_low]
+        return (ov[0], ov[1], False) if ov else None
 
     if t2 == "VB" and len(tag) > 10 and tag[10] == "N" and s_low in NEG_VERB_HOMOGRAPH_OVERRIDES:
-        return NEG_VERB_HOMOGRAPH_OVERRIDES[s_low]
+        ov = NEG_VERB_HOMOGRAPH_OVERRIDES[s_low]
+        return (ov[0], ov[1], False)
 
-    # 2. Infinitives (including archaic -ti infinitives like záviděti, býti) -> skip
+    # 2. Infinitives (modern -t and archaic -ti like jísti, býti, záviděti) -> 'v', is_base=True
     if t2 == "Vf":
+        lem = short_lemma.lower()
+        if is_valid_cs_infinitive(lem) and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "v", True)
         return None
 
     # 3. Finite verbs, past l-participles, imperatives, conditionals, archaic -ť verbs
@@ -248,30 +254,39 @@ def classify_token(
         if is_mid_sentence and surf in PROPER_NAME_VERB_COLLISIONS:
             return None
         lem = short_lemma.lower()
-        if is_valid_cs_infinitive(lem) and lem != s_low and is_known_in_morfflex(morpho, s_low, probe):
-            return (lem, "v")
+        if is_valid_cs_infinitive(lem) and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "v", lem == s_low)
         return None
 
-    # 4. Passive participles & transgressives (Vs, Ve, Vm)
-    if t2 in PART_PREFIXES:
+    # 4a. Passive participles (Vs) -> 'p'
+    if t2 in PASSIVE_PART_PREFIXES:
         if is_mid_sentence and surf in PROPER_NAME_VERB_COLLISIONS:
             return None
         lem = short_lemma.lower()
-        if is_valid_cs_infinitive(lem) and lem != s_low and is_known_in_morfflex(morpho, s_low, probe):
-            return (lem, "p")
+        if is_valid_cs_infinitive(lem) and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "p", lem == s_low)
+        return None
+
+    # 4b. Transgressives / přechodníky (Ve, Vm: řka, nemaje, přišedše, pojav) -> 't'
+    if t2 in TRANSGRESSIVE_PREFIXES:
+        if is_mid_sentence and surf in PROPER_NAME_VERB_COLLISIONS:
+            return None
+        lem = short_lemma.lower()
+        if is_valid_cs_infinitive(lem) and is_known_in_morfflex(morpho, s_low, probe):
+            return (lem, "t", lem == s_low)
         return None
 
     # 5. Active verbal participles (AG, AM, e.g. poskvrňující -> poskvrňovat, sedícího -> sedět)
     if t2 in VERBAL_ADJ_PREFIXES:
         verb_base = derive_verbal_infinitive(short_lemma, raw_lemma, morpho, probe)
         if verb_base and verb_base != s_low:
-            return (verb_base, "p")
+            return (verb_base, "p", False)
         lem = restore_negated_nonverb_lemma(s_low, short_lemma.lower(), tag)
-        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
-            return (lem, "a")
+        if len(lem) >= 2 and CS_WORD_RE.match(lem):
+            return (lem, "a", lem == s_low)
         return None
 
-    # 6. Inflected nouns (NN)
+    # 6. Nouns (NN — inflected and nominative base forms)
     if t2 == "NN":
         is_proper = any(m in raw_lemma for m in ("_;Y", "_;S", "_;G", "_;E", "_;K", "_;m", "_;R"))
         lem_base = short_lemma if is_proper else short_lemma.lower()
@@ -280,26 +295,26 @@ def classify_token(
         elif lem_base == "bůh" and surf[0].isupper():
             lem_base = "Bůh"
         lem = restore_negated_nonverb_lemma(s_low, lem_base, tag)
-        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem.lower() != s_low:
-            return (lem, "n")
+        if len(lem) >= 2 and CS_WORD_RE.match(lem):
+            return (lem, "n", lem.lower() == s_low)
         return None
 
-    # 7. Inflected adjectives (AA, AU, AC)
+    # 7. Adjectives (AA, AU, AC — inflected and dictionary base forms)
     if t2 in ADJ_PREFIXES:
         is_proper = any(m in raw_lemma for m in ("_;Y", "_;S", "_;G", "_;E"))
         lem_base = short_lemma if is_proper else short_lemma.lower()
         if lem_base == "hospodinův" and surf[0].isupper():
             lem_base = "Hospodinův"
         lem = restore_negated_nonverb_lemma(s_low, lem_base, tag)
-        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem.lower() != s_low:
-            return (lem, "a")
+        if len(lem) >= 2 and CS_WORD_RE.match(lem):
+            return (lem, "a", lem.lower() == s_low)
         return None
 
-    # 8. Inflected pronouns & determiners (P*, AO)
-    if tag.startswith("P") or t2 == "AO":
+    # 8. Pronouns & determiners (P*, AO — excluding invariant reflexive clitic P7 se/si)
+    if (tag.startswith("P") and t2 != "P7") or t2 == "AO":
         lem = short_lemma.lower()
-        if len(lem) >= 2 and CS_WORD_RE.match(lem) and lem != s_low:
-            return (lem, "r")
+        if len(lem) >= 2 and CS_WORD_RE.match(lem):
+            return (lem, "r", lem == s_low)
         return None
 
     return None
@@ -319,7 +334,7 @@ def main() -> None:
     bsb_books = json.loads(BSB_PATH.read_text(encoding="utf-8-sig"))["books"] if BSB_PATH.exists() else None
 
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
-    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
+    counts = {"v": 0, "p": 0, "t": 0, "n": 0, "a": 0, "r": 0}
     total_verses = 0
     quiz_verses = 0
     manifest_books = []
@@ -345,9 +360,9 @@ def main() -> None:
                 tlen = len(cs_text)
                 key = f"{book_id}:{ci}:{vi}"
                 en_text = en_llm.get(key) or bsb_map.get(ci, {}).get(vi, "")
-                # Normalize 'Lord' -> 'LORD' when Czech text uses YHWH name 'Hospodin' without 'Pán'
-                if "Hospodin" in cs_text and not CS_PAN_RE.search(cs_text):
-                    en_text = EN_LORD_RE.sub("LORD", en_text)
+                # Match Bible kralická's Title-Case 'Hospodin' with Title-Case 'Lord' (except where original has all-caps 'HOSPODIN')
+                if "HOSPODIN" not in cs_text:
+                    en_text = EN_ALLCAPS_LORD_RE.sub("Lord", en_text)
 
                 spans: List[List] = []
                 tokenizer.setText(cs_text)
@@ -372,8 +387,8 @@ def main() -> None:
                             surf, raw_lem, short_lem, tag, is_mid_sentence, morpho, probe_vec
                         )
                         if classified is not None:
-                            lem, kind = classified
-                            spans.append([start, end, lem, kind])
+                            lem, kind, is_base = classified
+                            spans.append([start, end, lem, kind, 1] if is_base else [start, end, lem, kind])
 
                 if not spans:
                     continue
@@ -386,8 +401,9 @@ def main() -> None:
                     "m": spans,
                 })
                 quiz_verses += 1
-                for _, _, _, k in spans:
-                    counts[k] += 1
+                for sp in spans:
+                    if len(sp) < 5:
+                        counts[sp[3]] += 1
 
         chunk_rel = f"chunks/{bi + 1:02d}-{book_id}.json"
         (OUT_DIR / chunk_rel).write_text(
@@ -412,13 +428,14 @@ def main() -> None:
         "totalVerses": total_verses,
         "quizVerses": quiz_verses,
         "totalVerbs": counts["v"],
+        "categories": ["v", "p", "t", "n", "a", "r"],
         "formCounts": counts,
         "books": manifest_books,
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(
-        f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses}/{total_verses} | Counts: {counts}",
+        f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses}/{total_verses} | Inflected Counts: {counts}",
         flush=True,
     )
 

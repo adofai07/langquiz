@@ -32,11 +32,13 @@ CORPORA = {
 KIND_LABELS = {
     "v": "verb",
     "p": "participle/verb",
+    "t": "transgressive/verb",
+    "d": "article",
     "n": "noun",
     "a": "adjective",
     "r": "pronoun/determiner",
 }
-KIND_PRIORITY = {"v": 0, "p": 1, "n": 2, "a": 3, "r": 4}
+KIND_PRIORITY = {"v": 0, "p": 1, "t": 2, "d": 3, "n": 4, "a": 5, "r": 6}
 
 
 def resolve_model() -> str:
@@ -150,7 +152,8 @@ def collect_lemmas(corpus_dir: Path) -> Dict[str, Tuple[str, str]]:
         entries = json.loads(chunk_path.read_text(encoding="utf-8"))
         for e in entries:
             orig = e["o"]
-            for s, en, lem, k in e["m"]:
+            for sp in e["m"]:
+                s, en, lem, k = sp[0], sp[1], sp[2], sp[3]
                 prev = lemmas.get(lem)
                 if prev is None or KIND_PRIORITY[k] < KIND_PRIORITY[prev[0]]:
                     lemmas[lem] = (k, make_snippet(orig, s, en))

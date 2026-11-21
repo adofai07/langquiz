@@ -118,8 +118,11 @@ BOOKS_META: List[Tuple[str, str, str]] = [
 ]
 
 FINITE_VERB_TAGS = {"VVFIN", "VAFIN", "VMFIN", "VVIMP", "VAIMP"}
+INF_VERB_TAGS = {"VVINF", "VAINF", "VMINF", "VVIZU"}
 PARTICIPLE_TAGS = {"VVPP", "VAPP", "VMPP"}
-PRONOUN_DET_TAGS = {"ART", "PPER", "PPOSAT", "PPOSS", "PDS", "PDAT", "PRELS", "PRELAT", "PIS", "PIAT", "PWS", "PWAT"}
+ARTICLE_TAGS = {"ART"}
+PRONOUN_TAGS = {"PPER", "PPOSAT", "PPOSS", "PDS", "PDAT", "PRELS", "PRELAT", "PIS", "PIAT", "PWS", "PWAT"}
+AUX_TAGS = {"VAFIN", "VAINF", "VAPP"}
 DE_WORD_RE = re.compile(r"^[A-Za-zÄÖÜäöüßẞ]+$")
 
 # Deterministic German pronoun/determiner base forms
@@ -149,7 +152,8 @@ PRONOUN_LEMMAS: Dict[str, str] = {
     "alle": "all", "allen": "all", "aller": "all", "alles": "all", "allem": "all",
     "mancher": "mancher", "manche": "mancher", "manches": "mancher", "manchen": "mancher", "manchem": "mancher",
     "solcher": "solcher", "solche": "solcher", "solches": "solcher", "solchen": "solcher", "solchem": "solcher",
-    "wen": "wer", "wem": "wer", "wessen": "wer",
+    "wer": "wer", "wen": "wer", "wem": "wer", "wessen": "wer",
+    "was": "was", "all": "all",
 }
 
 ARCHAIC_NOUN_DATIVE_PROMPT = (
@@ -271,8 +275,19 @@ def main() -> None:
 
     texts = (item[3] for item in flat_items)
     for (_, _, _, de_text, _), doc in zip(flat_items, nlp.pipe(texts, batch_size=512)):
-        toks: List[Tuple[int, int, str, str, str]] = []
+        toks: List[Tuple[int, int, str, str, str, bool]] = []
+        # Identify clauses separated by punctuation to disambiguate VVPP vs 3sg finite verb (e.g. verunreinigt)
+        clause_ids: List[int] = []
+        clause_has_aux: Dict[int, bool] = {}
+        cid = 0
         for tok in doc:
+            if tok.text in (",", ";", ":", ".", "!", "?"):
+                cid += 1
+            clause_ids.append(cid)
+            if tok.tag_ in AUX_TAGS:
+                clause_has_aux[cid] = True
+
+        for idx_t, tok in enumerate(doc):
             surf = tok.text
             if not DE_WORD_RE.match(surf):
                 continue
@@ -282,17 +297,42 @@ def main() -> None:
             s_low = surf.lower()
 
             if tag in FINITE_VERB_TAGS and tok.pos_ in ("VERB", "AUX"):
-                toks.append((start, end, surf, "v", verb_lemmas.get(s_low, "")))
+                lem = verb_lemmas.get(s_low, "")
+                if not lem and is_valid_german_infinitive(s_low):
+                    lem = s_low
+                toks.append((start, end, surf, "v", lem, lem == s_low))
+            elif tag in INF_VERB_TAGS and tok.pos_ in ("VERB", "AUX"):
+                lem = verb_lemmas.get(s_low, "") or (s_low if is_valid_german_infinitive(s_low) else tok.lemma_.lower())
+                if is_valid_german_infinitive(lem):
+                    toks.append((start, end, surf, "v", lem, True))
             elif tag in PARTICIPLE_TAGS and tok.pos_ in ("VERB", "AUX"):
-                toks.append((start, end, surf, "p", verb_lemmas.get(s_low, "")))
-            elif tag in PRONOUN_DET_TAGS and tok.pos_ in ("PRON", "DET"):
+                # Inseparable prefix verbs like 'verunreinigt' with no aux in clause are 3sg present ('v')
+                kind = (
+                    "v"
+                    if tag == "VVPP"
+                    and s_low.endswith("t")
+                    and not s_low.startswith("ge")
+                    and not clause_has_aux.get(clause_ids[idx_t], False)
+                    else "p"
+                )
+                lem = verb_lemmas.get(s_low, "")
+                toks.append((start, end, surf, kind, lem, False))
+            elif tag in ARTICLE_TAGS and tok.pos_ in ("DET", "PRON"):
                 lem = PRONOUN_LEMMAS.get(s_low)
-                if lem and lem != s_low:
-                    toks.append((start, end, surf, "r", lem))
+                if lem:
+                    toks.append((start, end, surf, "d", lem, lem == s_low))
+            elif tag in PRONOUN_TAGS and tok.pos_ in ("PRON", "DET"):
+                lem = PRONOUN_LEMMAS.get(s_low)
+                if lem:
+                    toks.append((start, end, surf, "r", lem, lem == s_low))
             elif tag == "ADJA" and tok.pos_ == "ADJ":
                 lem = tok.lemma_.lower()
-                if DE_WORD_RE.match(lem) and lem != s_low:
-                    toks.append((start, end, surf, "a", lem))
+                if DE_WORD_RE.match(lem):
+                    toks.append((start, end, surf, "a", lem, lem == s_low))
+            elif tag == "ADJD" and "Degree=Pos" in str(tok.morph):
+                lem = tok.lemma_.lower()
+                if DE_WORD_RE.match(lem) and lem == s_low and len(lem) >= 3:
+                    toks.append((start, end, surf, "a", lem, True))
             elif tag == "NN" and tok.pos_ == "NOUN":
                 sp_lem = tok.lemma_
                 if not DE_WORD_RE.match(sp_lem):
@@ -301,9 +341,9 @@ def main() -> None:
                 if sp_lem.lower() == s_low and "Case=Dat" in str(tok.morph) and s_low.endswith("e") and len(s_low) >= 4:
                     if surf not in noun_adj_cache and surf not in archaic_nouns_to_check:
                         archaic_nouns_to_check[surf] = de_text[:140]
-                    toks.append((start, end, surf, "n", ""))
-                elif sp_lem.lower() != s_low:
-                    toks.append((start, end, surf, "n", sp_lem))
+                    toks.append((start, end, surf, "n", "", False))
+                else:
+                    toks.append((start, end, surf, "n", sp_lem, sp_lem.lower() == s_low))
         raw_tokens_per_verse.append(toks)
 
     print(
@@ -327,26 +367,29 @@ def main() -> None:
 
     CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
     book_entries: List[List[dict]] = [[] for _ in range(66)]
-    counts = {"v": 0, "p": 0, "n": 0, "a": 0, "r": 0}
+    counts = {"v": 0, "p": 0, "d": 0, "n": 0, "a": 0, "r": 0}
     quiz_verses = 0
 
     for (bi, ci, vi, de_text, en_text), toks in zip(flat_items, raw_tokens_per_verse):
         forms = []
-        for start, end, surf, kind, lem in toks:
+        for start, end, surf, kind, lem, is_base_hint in toks:
             s_low = surf.lower()
             if kind in ("v", "p"):
-                if not lem or not is_valid_german_infinitive(lem) or lem == s_low:
+                if not lem or not is_valid_german_infinitive(lem):
                     continue
-                forms.append([start, end, lem, kind])
+                is_base = is_base_hint or (lem == s_low)
+                forms.append([start, end, lem, kind, 1] if is_base else [start, end, lem, kind])
             elif kind == "n":
                 resolved = lem or noun_adj_cache.get(surf, "")
-                if not resolved or resolved.lower() == s_low or not DE_WORD_RE.match(resolved):
+                if not resolved or not DE_WORD_RE.match(resolved):
                     continue
-                forms.append([start, end, resolved, "n"])
+                is_base = is_base_hint or (resolved.lower() == s_low)
+                forms.append([start, end, resolved, "n", 1] if is_base else [start, end, resolved, "n"])
             else:
-                if not lem or lem.lower() == s_low:
+                if not lem:
                     continue
-                forms.append([start, end, lem, kind])
+                is_base = is_base_hint or (lem.lower() == s_low)
+                forms.append([start, end, lem, kind, 1] if is_base else [start, end, lem, kind])
         if not forms:
             continue
         book_entries[bi].append({
@@ -357,8 +400,9 @@ def main() -> None:
             "m": forms,
         })
         quiz_verses += 1
-        for _, _, _, k in forms:
-            counts[k] += 1
+        for sp in forms:
+            if len(sp) < 5:
+                counts[sp[3]] += 1
 
     manifest_books = []
     for bi, (book_id, native_name, en_name) in enumerate(BOOKS_META):
@@ -386,17 +430,18 @@ def main() -> None:
         "totalVerses": len(flat_items),
         "quizVerses": quiz_verses,
         "totalVerbs": counts["v"],
+        "categories": ["v", "p", "d", "n", "a", "r"],
         "formCounts": counts,
         "books": manifest_books,
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
+    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Inflected Counts: {counts}", flush=True)
     for label, bi, c, v in [("Gen 3:13", 0, 3, 13), ("Num 7:43", 3, 7, 43)]:
         e = next((x for x in book_entries[bi] if x["c"] == c and x["v"] == v), None)
         if e:
             print(f"\n--- DE {label} ---")
-            print([(e["o"][s:en], lem, k) for s, en, lem, k in e["m"]])
+            print([(e["o"][sp[0]:sp[1]], sp[2], sp[3], "base" if len(sp) > 4 else "infl") for sp in e["m"]])
 
 
 if __name__ == "__main__":

@@ -158,22 +158,26 @@ class PolishMorphAnalyzer:
 
     def analyze_word(self, surface: str) -> Dict[str, List[str]]:
         """
-        Return verified Morfeusz2 lemma lists bucketed by category ('v', 'p', 'n', 'a', 'r')
-        for a single orthographic Polish word.
+        Return verified Morfeusz2 inflected lemma lists bucketed by category ('v', 'p', 'n', 'a', 'r')
+        plus base/default forms ('v_base', 'n_base', 'a_base', 'r_base') for a single orthographic Polish word.
         """
         s_low = surface.lower()
-        cached = self._cache.get(s_low)
+        cache_key = f"{int(surface[0].isupper())}:{s_low}" if surface else ""
+        cached = self._cache.get(cache_key)
         if cached is not None:
             return cached
 
-        buckets: Dict[str, List[str]] = {"v": [], "p": [], "n": [], "a": [], "r": []}
+        buckets: Dict[str, List[str]] = {
+            "v": [], "p": [], "n": [], "a": [], "r": [],
+            "v_base": [], "n_base": [], "a_base": [], "r_base": [],
+        }
         if not WORD_RE.match(s_low):
-            self._cache[s_low] = buckets
+            self._cache[cache_key] = buckets
             return buckets
 
         analyses = self.morf.analyse(surface)
         if not analyses:
-            self._cache[s_low] = buckets
+            self._cache[cache_key] = buckets
             return buckets
 
         max_node = max(end for _, end, _ in analyses)
@@ -195,25 +199,38 @@ class PolishMorphAnalyzer:
             # Finite verbs (may have trailing -m, -ś, -śmy, -ście, -by)
             if pos in FINITE_VERB_TAGS and can_reach_end_via_clitics(end):
                 lem = clean_lemma(raw_lem)
-                if is_valid_infinitive(lem) and lem != s_low and lem not in seen["v"]:
-                    seen["v"].add(lem)
-                    buckets["v"].append(lem)
+                if is_valid_infinitive(lem):
+                    if lem != s_low and lem not in seen["v"]:
+                        seen["v"].add(lem)
+                        buckets["v"].append(lem)
+                    elif lem == s_low and lem not in seen["v_base"]:
+                        seen["v_base"].add(lem)
+                        buckets["v_base"].append(lem)
                 continue
 
             # All other categories must span the full orthographic token
             if end != max_node:
                 continue
 
-            if pos in PARTICIPLE_TAGS:
+            if pos == "inf":
+                lem = clean_lemma(raw_lem)
+                if is_valid_infinitive(lem) and lem not in seen["v_base"]:
+                    seen["v_base"].add(lem)
+                    buckets["v_base"].append(lem)
+            elif pos in PARTICIPLE_TAGS:
                 lem = clean_lemma(raw_lem)
                 if is_valid_infinitive(lem) and lem != s_low and lem not in seen["p"]:
                     seen["p"].add(lem)
                     buckets["p"].append(lem)
             elif pos in PRONOUN_TAGS:
                 lem = clean_lemma(raw_lem)
-                if lem and WORD_RE.match(lem) and lem != s_low and lem not in seen["r"]:
-                    seen["r"].add(lem)
-                    buckets["r"].append(lem)
+                if lem and WORD_RE.match(lem) and lem != "się":
+                    if lem != s_low and lem not in seen["r"]:
+                        seen["r"].add(lem)
+                        buckets["r"].append(lem)
+                    elif lem == s_low and lem not in seen["r_base"]:
+                        seen["r_base"].add(lem)
+                        buckets["r_base"].append(lem)
             elif pos == "subst":
                 lem_case = clean_lemma(raw_lem, keep_case=True)
                 lem_low = lem_case.lower()
@@ -221,27 +238,41 @@ class PolishMorphAnalyzer:
                     if lem_low != s_low and lem_low not in seen["r"]:
                         seen["r"].add(lem_low)
                         buckets["r"].append(lem_low)
-                elif len(lem_low) >= 2 and WORD_RE.match(lem_low) and lem_low != s_low:
-                    # Skip spurious proper-noun homographs (e.g. lowercase 'lud' -> toponym 'Luda')
-                    if lem_case[0].isupper() and surface[0].islower():
-                        continue
-                    # Keep capitalized lemma only for proper nouns (where Morfeusz2 itself capitalizes)
-                    out_lem = lem_case if lem_case[0].isupper() else lem_low
-                    if out_lem.lower() not in seen["n"]:
-                        seen["n"].add(out_lem.lower())
-                        buckets["n"].append(out_lem)
+                    elif lem_low == s_low and lem_low not in seen["r_base"]:
+                        seen["r_base"].add(lem_low)
+                        buckets["r_base"].append(lem_low)
+                elif len(lem_low) >= 2 and WORD_RE.match(lem_low):
+                    if lem_low != s_low:
+                        # Skip spurious proper-noun homographs (e.g. lowercase 'lud' -> toponym 'Luda')
+                        if lem_case[0].isupper() and surface[0].islower():
+                            continue
+                        out_lem = lem_case if lem_case[0].isupper() else lem_low
+                        if out_lem.lower() not in seen["n"]:
+                            seen["n"].add(out_lem.lower())
+                            buckets["n"].append(out_lem)
+                    else:
+                        out_lem = lem_case if (lem_case[0].isupper() and surface[0].isupper()) else lem_low
+                        if out_lem.lower() not in seen["n_base"]:
+                            seen["n_base"].add(out_lem.lower())
+                            buckets["n_base"].append(out_lem)
             elif pos == "adj":
                 lem = clean_lemma(raw_lem)
-                if len(lem) >= 2 and WORD_RE.match(lem) and lem != s_low:
+                if len(lem) >= 2 and WORD_RE.match(lem):
                     if lem in PRONOUN_LEMMAS:
-                        if lem not in seen["r"]:
+                        if lem != s_low and lem not in seen["r"]:
                             seen["r"].add(lem)
                             buckets["r"].append(lem)
-                    elif lem not in seen["a"]:
+                        elif lem == s_low and lem not in seen["r_base"]:
+                            seen["r_base"].add(lem)
+                            buckets["r_base"].append(lem)
+                    elif lem != s_low and lem not in seen["a"]:
                         seen["a"].add(lem)
                         buckets["a"].append(lem)
+                    elif lem == s_low and lem not in seen["a_base"]:
+                        seen["a_base"].add(lem)
+                        buckets["a_base"].append(lem)
 
-        self._cache[s_low] = buckets
+        self._cache[cache_key] = buckets
         return buckets
 
 
@@ -289,14 +320,23 @@ def extract_forms(
         if tok.pos_ in ("ADP", "CCONJ", "SCONJ", "PART", "ADV", "INTJ", "NUM", "SYM", "X"):
             continue
 
-        # 1. Finite verbs ('v')
+        # 1. Finite verbs ('v') & infinitives ('v', base=1)
         if tok.pos_ in ("VERB", "AUX") and tok.tag_ not in EXCLUDED_VERB_SPACY_TAGS:
             verb_forms = tok.morph.get("VerbForm")
-            if not (verb_forms and "Inf" in verb_forms and "Fin" not in verb_forms):
-                if tok.tag_ not in ("PPAS", "PACT", "PCON", "PANT", "GER") and buckets["v"]:
+            if verb_forms and "Inf" in verb_forms and "Fin" not in verb_forms:
+                if buckets["v_base"]:
+                    lem = pick_best(buckets["v_base"], tok.lemma_, next_lower)
+                    matches.append([start, end, lem, "v", 1])
+                    continue
+            elif tok.tag_ not in ("PPAS", "PACT", "PCON", "PANT", "GER"):
+                if buckets["v"]:
                     lem = pick_best(buckets["v"], tok.lemma_, next_lower)
                     lem = disambiguate(surf, lem, pl_text, en_text, start, end)
                     matches.append([start, end, lem, "v"])
+                    continue
+                if buckets["v_base"]:
+                    lem = pick_best(buckets["v_base"], tok.lemma_, next_lower)
+                    matches.append([start, end, lem, "v", 1])
                     continue
 
         # 2. Verbal participles ('p')
@@ -306,16 +346,26 @@ def extract_forms(
             continue
 
         # 3. Pronouns & Determiners ('r')
-        if tok.pos_ in ("PRON", "DET") and buckets["r"]:
-            lem = pick_best(buckets["r"], tok.lemma_)
-            matches.append([start, end, lem, "r"])
-            continue
+        if tok.pos_ in ("PRON", "DET"):
+            if buckets["r"]:
+                lem = pick_best(buckets["r"], tok.lemma_)
+                matches.append([start, end, lem, "r"])
+                continue
+            if buckets["r_base"]:
+                lem = pick_best(buckets["r_base"], tok.lemma_)
+                matches.append([start, end, lem, "r", 1])
+                continue
 
         # 4. Nouns ('n') — note spaCy sometimes mislabels declined nouns like 'oliwą' as ADJ with tag SUBST
-        if (tok.pos_ in ("NOUN", "PROPN") or (tok.tag_ == "SUBST" and not buckets["a"])) and buckets["n"]:
-            lem = pick_best(buckets["n"], tok.lemma_)
-            matches.append([start, end, lem, "n"])
-            continue
+        if tok.pos_ in ("NOUN", "PROPN") or (tok.tag_ == "SUBST" and not buckets["a"]):
+            if buckets["n"]:
+                lem = pick_best(buckets["n"], tok.lemma_)
+                matches.append([start, end, lem, "n"])
+                continue
+            if buckets["n_base"]:
+                lem = pick_best(buckets["n_base"], tok.lemma_)
+                matches.append([start, end, lem, "n", 1])
+                continue
 
         # 5. Adjectives ('a') — also catch participles if spaCy missed PPAS tag but Morfeusz knows only ppas
         if tok.pos_ == "ADJ" or tok.tag_ == "ADJ":
@@ -323,9 +373,17 @@ def extract_forms(
                 lem = pick_best(buckets["r"], tok.lemma_)
                 matches.append([start, end, lem, "r"])
                 continue
+            if buckets["r_base"]:
+                lem = pick_best(buckets["r_base"], tok.lemma_)
+                matches.append([start, end, lem, "r", 1])
+                continue
             if buckets["a"]:
                 lem = pick_best(buckets["a"], tok.lemma_)
                 matches.append([start, end, lem, "a"])
+                continue
+            if buckets["a_base"]:
+                lem = pick_best(buckets["a_base"], tok.lemma_)
+                matches.append([start, end, lem, "a", 1])
                 continue
             if buckets["p"]:
                 lem = pick_best(buckets["p"], tok.lemma_)
@@ -391,8 +449,9 @@ def main() -> None:
             "m": forms,
         })
         quiz_verses += 1
-        for _, _, _, k in forms:
-            counts[k] += 1
+        for sp in forms:
+            if len(sp) < 5:
+                counts[sp[3]] += 1
 
     manifest_books = []
     for bi, (book_id, pl_name, en_name) in enumerate(BOOKS_META):
@@ -421,18 +480,19 @@ def main() -> None:
         "totalVerses": len(flat_items),
         "quizVerses": quiz_verses,
         "totalVerbs": counts["v"],
+        "categories": ["v", "p", "n", "a", "r"],
         "formCounts": counts,
         "books": manifest_books,
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Counts: {counts}", flush=True)
+    print(f"Done in {time.time() - t0:.1f}s! Verses: {quiz_verses} | Inflected Counts: {counts}", flush=True)
 
     for label, bi, c, v in [("Gen 3:13", 0, 3, 13), ("Num 7:43", 3, 7, 43)]:
         e = next((x for x in book_entries[bi] if x["c"] == c and x["v"] == v), None)
         if e:
             print(f"\n--- PL {label} ---")
-            print([(e["o"][s:en], lem, k) for s, en, lem, k in e["m"]])
+            print([(e["o"][sp[0]:sp[1]], sp[2], sp[3], "base" if len(sp) > 4 else "infl") for sp in e["m"]])
 
 
 if __name__ == "__main__":

@@ -43,6 +43,7 @@ export const App: React.FC = () => {
 
   const language = getLanguageOption(settings.language);
   const corpus = getCorpusOption(settings.corpusId);
+  const activeWordForms = settings.wordFormsByLang[settings.language];
   const resolvedTheme = resolveTheme(settings.theme, systemDark);
 
   // Listen to OS dark mode changes when theme is set to 'system'
@@ -97,8 +98,10 @@ export const App: React.FC = () => {
     document.body.style.fontOpticalSizing = optical;
   }, [settings.fontAxes]);
 
-  const wordFormsRef = useRef(settings.wordForms);
-  wordFormsRef.current = settings.wordForms;
+  const wordFormsRef = useRef(activeWordForms);
+  wordFormsRef.current = activeWordForms;
+  const includeBaseRef = useRef(settings.includeBaseForms);
+  includeBaseRef.current = settings.includeBaseForms;
   const verbRangeRef = useRef(settings.verbRange);
   verbRangeRef.current = settings.verbRange;
   const verseRangeRef = useRef(settings.verseRange);
@@ -113,6 +116,7 @@ export const App: React.FC = () => {
       const q = await pickRandomQuestion(
         corpus.manifestUrl,
         wordFormsRef.current,
+        includeBaseRef.current,
         verbRangeRef.current,
         verseRangeRef.current,
         recentIdsRef.current
@@ -141,7 +145,8 @@ export const App: React.FC = () => {
         'gn',
         3,
         13,
-        wordFormsRef.current
+        wordFormsRef.current,
+        includeBaseRef.current
       );
       if (q) {
         setQuestion(q);
@@ -190,7 +195,8 @@ export const App: React.FC = () => {
             bookId.toLowerCase(),
             Number(chStr),
             Number(vStr),
-            wordFormsRef.current
+            wordFormsRef.current,
+            includeBaseRef.current
           );
           if (cancelled) return;
           appliedInitialRefForUrl.current = corpus.manifestUrl;
@@ -217,25 +223,35 @@ export const App: React.FC = () => {
     };
   }, [corpus.manifestUrl, fetchNextQuestion]);
 
-  // Re-apply active wordForms on the current verse immediately when toggled, or re-fetch if range no longer fits
+  // Re-apply active wordForms / includeBaseForms on the current verse immediately when toggled, or re-fetch if range no longer fits
   const prevFilterRef = useRef({
-    forms: settings.wordForms,
+    lang: settings.language,
+    forms: activeWordForms,
+    includeBase: settings.includeBaseForms,
     verb: settings.verbRange,
     verse: settings.verseRange,
   });
   useEffect(() => {
     const prev = prevFilterRef.current;
     prevFilterRef.current = {
-      forms: settings.wordForms,
+      lang: settings.language,
+      forms: activeWordForms,
+      includeBase: settings.includeBaseForms,
       verb: settings.verbRange,
       verse: settings.verseRange,
     };
+    // Corpus switch is already handled by the corpus.manifestUrl effect above
+    if (prev.lang !== settings.language) return;
+
     const formsChanged =
-      prev.forms.v !== settings.wordForms.v ||
-      prev.forms.p !== settings.wordForms.p ||
-      prev.forms.n !== settings.wordForms.n ||
-      prev.forms.a !== settings.wordForms.a ||
-      prev.forms.r !== settings.wordForms.r;
+      prev.includeBase !== settings.includeBaseForms ||
+      prev.forms.v !== activeWordForms.v ||
+      prev.forms.p !== activeWordForms.p ||
+      prev.forms.t !== activeWordForms.t ||
+      prev.forms.d !== activeWordForms.d ||
+      prev.forms.n !== activeWordForms.n ||
+      prev.forms.a !== activeWordForms.a ||
+      prev.forms.r !== activeWordForms.r;
     const rangesChanged =
       prev.verb.min !== settings.verbRange.min ||
       prev.verb.max !== settings.verbRange.max ||
@@ -252,7 +268,8 @@ export const App: React.FC = () => {
           question.bookId,
           question.chapter,
           question.verse,
-          settings.wordForms
+          activeWordForms,
+          settings.includeBaseForms
         );
         if (refreshed && matchesVerbRange(refreshed.blanks.length, settings.verbRange)) {
           setQuestion(refreshed);
@@ -270,7 +287,9 @@ export const App: React.FC = () => {
       void fetchNextQuestion();
     }
   }, [
-    settings.wordForms,
+    settings.language,
+    activeWordForms,
+    settings.includeBaseForms,
     settings.verbRange,
     settings.verseRange,
     corpus.manifestUrl,
@@ -353,7 +372,7 @@ export const App: React.FC = () => {
             diacriticMode={settings.diacriticMode}
             glossMode={settings.glossMode}
             glossary={glossary}
-            wordForms={settings.wordForms}
+            wordForms={activeWordForms}
             onComplete={handleComplete}
             onNext={fetchNextQuestion}
           />

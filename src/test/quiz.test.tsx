@@ -8,6 +8,7 @@ import {
 } from '../services/answerCheck';
 import {
   cleanStrayQuotes,
+  filterSpansByForms,
   matchesVerbRange,
   matchesVerseRange,
   mergeSplitVerses,
@@ -480,8 +481,19 @@ describe('SettingsDrawer', () => {
     fireEvent.click(nounsCheckbox);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        wordForms: expect.objectContaining({ v: true, n: true }),
+        wordFormsByLang: expect.objectContaining({
+          pl: expect.objectContaining({ v: true, n: true }),
+        }),
       })
+    );
+
+    // Default Polish settings should NOT show German-only Articles or Czech-only Transgressives
+    expect(screen.queryByRole('checkbox', { name: /^Articles/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: /^Transgressives/i })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Include base' }));
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ includeBaseForms: true })
     );
 
     const minVerbSlider = screen.getByRole('slider', { name: /Minimum verbs/i });
@@ -507,6 +519,44 @@ describe('SettingsDrawer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Gen 3:13' }));
     expect(onLoadExample).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows language-specific word form categories for German (Articles) and Czech (Transgressives)', () => {
+    const { rerender } = render(
+      <SettingsDrawer
+        open={true}
+        settings={{ ...DEFAULT_SETTINGS, language: 'de', corpusId: 'de-bible-sch1951' }}
+        manifest={null}
+        onChange={vi.fn()}
+        onLoadExample={vi.fn()}
+        onClose={vi.fn()}
+      />
+    );
+    expect(screen.getByRole('checkbox', { name: /^Articles/i })).toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: /^Transgressives/i })).not.toBeInTheDocument();
+
+    rerender(
+      <SettingsDrawer
+        open={true}
+        settings={{ ...DEFAULT_SETTINGS, language: 'cs', corpusId: 'cs-bible-bkr' }}
+        manifest={null}
+        onChange={vi.fn()}
+        onLoadExample={vi.fn()}
+        onClose={vi.fn()}
+      />
+    );
+    expect(screen.getByRole('checkbox', { name: /^Transgressives/i })).toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: /^Articles/i })).not.toBeInTheDocument();
+
+    // Base forms toggle filters spans flagged isBase=true cleanly
+    const spans: [number, number, string, 'v' | 'n', boolean][] = [
+      [0, 5, 'mówić', 'v', true],
+      [6, 11, 'mówić', 'v', false],
+      [12, 16, 'dom', 'n', true],
+    ];
+    const forms = { ...DEFAULT_WORD_FORMS, v: true, n: true };
+    expect(filterSpansByForms(spans, forms, false)).toHaveLength(1);
+    expect(filterSpansByForms(spans, forms, true)).toHaveLength(3);
   });
 });
 

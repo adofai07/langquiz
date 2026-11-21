@@ -67,6 +67,10 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
   const { fontAxes } = settings;
   const activeLanguage = getLanguageOption(settings.language);
+  const activeWordForms = settings.wordFormsByLang[settings.language];
+  const langCategories = WORD_FORM_META.filter((m) =>
+    activeLanguage.wordFormCategories.includes(m.kind)
+  );
   const availableCorpora = CORPORA.filter((c) => c.language === settings.language);
   const specimenStyle: React.CSSProperties = {
     fontWeight: clampAxisWeight(fontAxes.wght),
@@ -75,24 +79,29 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
     letterSpacing: `${fontAxes.tracking.toFixed(3)}em`,
   };
 
+  const checkedLangCount = activeLanguage.wordFormCategories.filter(
+    (k) => activeWordForms[k]
+  ).length;
+
   const toggleWordForm = (kind: WordFormKind) => {
-    const current = settings.wordForms;
-    const nextVal = !current[kind];
-    // Prevent disabling the last remaining checked category
-    if (!nextVal && Object.values(current).filter(Boolean).length <= 1) {
+    const nextVal = !activeWordForms[kind];
+    // Prevent disabling the last remaining checked category for this language
+    if (!nextVal && checkedLangCount <= 1) {
       return;
     }
     onChange({
       ...settings,
-      wordForms: {
-        ...current,
-        [kind]: nextVal,
+      wordFormsByLang: {
+        ...settings.wordFormsByLang,
+        [settings.language]: {
+          ...activeWordForms,
+          [kind]: nextVal,
+        },
       },
     });
   };
 
-  const verbsOnly =
-    settings.wordForms.v && Object.values(settings.wordForms).filter(Boolean).length === 1;
+  const verbsOnly = activeWordForms.v && checkedLangCount === 1;
 
   return (
     <div
@@ -432,12 +441,11 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
           </div>
 
           <div className="segment-group">
-            <span className="segment-title">Word forms</span>
+            <span className="segment-title">Word forms ({activeLanguage.name})</span>
             <div className="form-checks" role="group" aria-label="Word forms to quiz">
-              {WORD_FORM_META.map(({ kind, label, shortTag }) => {
-                const checked = settings.wordForms[kind];
-                const isLastChecked =
-                  checked && Object.values(settings.wordForms).filter(Boolean).length <= 1;
+              {langCategories.map(({ kind, label, shortTag }) => {
+                const checked = activeWordForms[kind];
+                const isLastChecked = checked && checkedLangCount <= 1;
                 return (
                   <label
                     key={kind}
@@ -459,6 +467,28 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                   </label>
                 );
               })}
+            </div>
+          </div>
+
+          <div className="segment-group">
+            <span className="segment-title">Default forms</span>
+            <div className="segmented" role="group" aria-label="Default base forms">
+              <button
+                type="button"
+                className="segmented-btn"
+                aria-pressed={!settings.includeBaseForms}
+                onClick={() => onChange({ ...settings, includeBaseForms: false })}
+              >
+                Inflected only
+              </button>
+              <button
+                type="button"
+                className="segmented-btn"
+                aria-pressed={settings.includeBaseForms}
+                onClick={() => onChange({ ...settings, includeBaseForms: true })}
+              >
+                Include base
+              </button>
             </div>
           </div>
 

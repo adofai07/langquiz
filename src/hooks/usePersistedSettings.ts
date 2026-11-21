@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_FONT_AXES } from '../config/alloAxes';
+import { getLanguageOption } from '../config/catalog';
 import {
   VERB_RANGE_MAX,
   VERB_RANGE_MIN,
@@ -9,6 +10,7 @@ import {
   type CountRange,
   type EnabledWordForms,
   type GlossMode,
+  type LanguageCode,
   type VerbRange,
   type VerseRange,
 } from '../types/quiz';
@@ -28,9 +30,17 @@ export const DEFAULT_VERSE_RANGE: VerseRange = {
 export const DEFAULT_WORD_FORMS: EnabledWordForms = {
   v: true,
   p: false,
+  t: false,
+  d: false,
   n: false,
   a: false,
   r: false,
+};
+
+export const DEFAULT_WORD_FORMS_BY_LANG: Record<LanguageCode, EnabledWordForms> = {
+  pl: { ...DEFAULT_WORD_FORMS },
+  de: { ...DEFAULT_WORD_FORMS },
+  cs: { ...DEFAULT_WORD_FORMS },
 };
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -39,7 +49,12 @@ export const DEFAULT_SETTINGS: AppSettings = {
   fontAxes: { ...DEFAULT_FONT_AXES },
   diacriticMode: 'strict',
   glossMode: 'always',
-  wordForms: { ...DEFAULT_WORD_FORMS },
+  wordFormsByLang: {
+    pl: { ...DEFAULT_WORD_FORMS },
+    de: { ...DEFAULT_WORD_FORMS },
+    cs: { ...DEFAULT_WORD_FORMS },
+  },
+  includeBaseForms: false,
   verbRange: { ...DEFAULT_VERB_RANGE },
   verseRange: { ...DEFAULT_VERSE_RANGE },
   theme: 'system',
@@ -50,20 +65,36 @@ function sanitizeGlossMode(raw: unknown): GlossMode {
   return DEFAULT_SETTINGS.glossMode;
 }
 
-function sanitizeWordForms(raw: unknown): EnabledWordForms {
-  if (!raw || typeof raw !== 'object') return { ...DEFAULT_WORD_FORMS };
-  const obj = raw as Partial<Record<keyof EnabledWordForms, unknown>>;
-  const next: EnabledWordForms = {
-    v: typeof obj.v === 'boolean' ? obj.v : DEFAULT_WORD_FORMS.v,
-    p: typeof obj.p === 'boolean' ? obj.p : DEFAULT_WORD_FORMS.p,
-    n: typeof obj.n === 'boolean' ? obj.n : DEFAULT_WORD_FORMS.n,
-    a: typeof obj.a === 'boolean' ? obj.a : DEFAULT_WORD_FORMS.a,
-    r: typeof obj.r === 'boolean' ? obj.r : DEFAULT_WORD_FORMS.r,
-  };
-  if (!Object.values(next).some(Boolean)) {
+function sanitizeWordFormsForLang(raw: unknown, lang: LanguageCode): EnabledWordForms {
+  const allowed = getLanguageOption(lang).wordFormCategories;
+  const next: EnabledWordForms = { ...DEFAULT_WORD_FORMS };
+  if (raw && typeof raw === 'object') {
+    const obj = raw as Partial<Record<keyof EnabledWordForms, unknown>>;
+    for (const k of allowed) {
+      if (typeof obj[k] === 'boolean') {
+        next[k] = obj[k] as boolean;
+      }
+    }
+  }
+  if (!allowed.some((k) => next[k])) {
     next.v = true;
   }
   return next;
+}
+
+function sanitizeWordFormsByLang(
+  rawByLang: unknown,
+  legacyFlat: unknown
+): Record<LanguageCode, EnabledWordForms> {
+  const byLang =
+    rawByLang && typeof rawByLang === 'object'
+      ? (rawByLang as Partial<Record<LanguageCode, unknown>>)
+      : {};
+  return {
+    pl: sanitizeWordFormsForLang(byLang.pl ?? legacyFlat, 'pl'),
+    de: sanitizeWordFormsForLang(byLang.de ?? legacyFlat, 'de'),
+    cs: sanitizeWordFormsForLang(byLang.cs ?? legacyFlat, 'cs'),
+  };
 }
 
 function sanitizeRange(
@@ -99,13 +130,20 @@ function readStoredSettings(): AppSettings {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_SETTINGS;
-    const parsed = JSON.parse(raw) as Partial<AppSettings> & { blankLimit?: unknown };
+    const parsed = JSON.parse(raw) as Partial<AppSettings> & {
+      blankLimit?: unknown;
+      wordForms?: unknown;
+    };
     return {
       language: parsed.language ?? DEFAULT_SETTINGS.language,
       corpusId: parsed.corpusId ?? DEFAULT_SETTINGS.corpusId,
       diacriticMode: parsed.diacriticMode ?? DEFAULT_SETTINGS.diacriticMode,
       glossMode: sanitizeGlossMode(parsed.glossMode),
-      wordForms: sanitizeWordForms(parsed.wordForms),
+      wordFormsByLang: sanitizeWordFormsByLang(parsed.wordFormsByLang, parsed.wordForms),
+      includeBaseForms:
+        typeof parsed.includeBaseForms === 'boolean'
+          ? parsed.includeBaseForms
+          : DEFAULT_SETTINGS.includeBaseForms,
       verbRange: sanitizeVerbRange(parsed.verbRange, parsed.blankLimit),
       verseRange: sanitizeRange(
         parsed.verseRange,

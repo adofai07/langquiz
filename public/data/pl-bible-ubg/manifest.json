@@ -5,14 +5,21 @@
   "subtitle": "Uwspółcześniona Biblia Gdańska · Direct English",
   "translationSource": "UBG → EN",
   "totalVerses": 31102,
-  "quizVerses": 30920,
+  "quizVerses": 31004,
   "totalVerbs": 97942,
+  "categories": [
+    "v",
+    "p",
+    "n",
+    "a",
+    "r"
+  ],
   "formCounts": {
     "v": 97942,
-    "p": 9110,
-    "n": 116139,
-    "a": 19325,
-    "r": 71950
+    "p": 8948,
+    "n": 115703,
+    "a": 19270,
+    "r": 71949
   },
   "books": [
     {
@@ -22,7 +29,7 @@
       "plName": "Księga Rodzaju",
       "enName": "Genesis",
       "chunkFile": "chunks/01-gn.json",
-      "verseCount": 1524
+      "verseCount": 1527
     },
     {
       "index": 1,
@@ -31,7 +38,7 @@
       "plName": "Księga Wyjścia",
       "enName": "Exodus",
       "chunkFile": "chunks/02-ex.json",
-      "verseCount": 1212
+      "verseCount": 1213
     },
     {
       "index": 2,
@@ -40,7 +47,7 @@
       "plName": "Księga Kapłańska",
       "enName": "Leviticus",
       "chunkFile": "chunks/03-lv.json",
-      "verseCount": 856
+      "verseCount": 859
     },
     {
       "index": 3,
@@ -49,7 +56,7 @@
       "plName": "Księga Liczb",
       "enName": "Numbers",
       "chunkFile": "chunks/04-nm.json",
-      "verseCount": 1283
+      "verseCount": 1285
     },
     {
       "index": 4,
@@ -58,7 +65,7 @@
       "plName": "Księga Powtórzonego Prawa",
       "enName": "Deuteronomy",
       "chunkFile": "chunks/05-dt.json",
-      "verseCount": 957
+      "verseCount": 959
     },
     {
       "index": 5,
@@ -67,7 +74,7 @@
       "plName": "Księga Jozuego",
       "enName": "Joshua",
       "chunkFile": "chunks/06-js.json",
-      "verseCount": 618
+      "verseCount": 637
     },
     {
       "index": 6,
@@ -103,7 +110,7 @@
       "plName": "2 Księga Samuela",
       "enName": "2 Samuel",
       "chunkFile": "chunks/10-2sm.json",
-      "verseCount": 685
+      "verseCount": 690
     },
     {
       "index": 10,
@@ -112,7 +119,7 @@
       "plName": "1 Księga Królewska",
       "enName": "1 Kings",
       "chunkFile": "chunks/11-1rs.json",
-      "verseCount": 814
+      "verseCount": 816
     },
     {
       "index": 11,
@@ -130,7 +137,7 @@
       "plName": "1 Księga Kronik",
       "enName": "1 Chronicles",
       "chunkFile": "chunks/13-1cr.json",
-      "verseCount": 881
+      "verseCount": 913
     },
     {
       "index": 13,
@@ -148,7 +155,7 @@
       "plName": "Księga Ezdrasza",
       "enName": "Ezra",
       "chunkFile": "chunks/15-ed.json",
-      "verseCount": 273
+      "verseCount": 275
     },
     {
       "index": 15,
@@ -157,7 +164,7 @@
       "plName": "Księga Nehemiasza",
       "enName": "Nehemiah",
       "chunkFile": "chunks/16-ne.json",
-      "verseCount": 370
+      "verseCount": 382
     },
     {
       "index": 16,
@@ -607,7 +614,7 @@
       "plName": "Objawienie Jana",
       "enName": "Revelation",
       "chunkFile": "chunks/66-ap.json",
-      "verseCount": 403
+      "verseCount": 404
     }
   ]
 }

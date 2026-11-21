@@ -27,6 +27,7 @@ export const LANGUAGES: LanguageOption[] = [
     alphabet: POLISH_ALPHABET,
     diacritics: ['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż'],
     specimen: 'PAN Bóg zapytał · ołtarzu',
+    wordFormCategories: ['v', 'p', 'n', 'a', 'r'],
     available: true,
   },
   {
@@ -36,6 +37,7 @@ export const LANGUAGES: LanguageOption[] = [
     alphabet: GERMAN_ALPHABET,
     diacritics: ['ä', 'ö', 'ü', 'ß'],
     specimen: 'Da sprach Gott der HERR — 3:13',
+    wordFormCategories: ['v', 'p', 'd', 'n', 'a', 'r'],
     available: true,
   },
   {
@@ -45,6 +47,7 @@ export const LANGUAGES: LanguageOption[] = [
     alphabet: CZECH_ALPHABET,
     diacritics: ['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž'],
     specimen: 'I řekl Hospodin Bůh — 3:13',
+    wordFormCategories: ['v', 'p', 't', 'n', 'a', 'r'],
     available: true,
   },
 ];
