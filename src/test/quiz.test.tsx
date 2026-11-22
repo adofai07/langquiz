@@ -870,6 +870,18 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
         'es'
       )?.label
     ).toBe('f.pl.');
+
+    // Polish compound future disambiguation (Deuteronomy 14:6: "będziecie jeść" -> pl. + inf. vs "będziecie jedli" -> m.pl.)
+    const dt146: QuizQuestion = {
+      ...verne185,
+      original: 'te będziecie jeść.',
+      blanks: [
+        { index: 0, start: 3, end: 12, answer: 'będziecie', lemma: 'być', kind: 'v', cue: '2p' },
+        { index: 1, start: 13, end: 17, answer: 'jeść', lemma: 'jeść', kind: 'v', isBase: true, cue: 'inf' },
+      ],
+    };
+    expect(resolveBlankCue(dt146.blanks[0], dt146, 'pl')?.label).toBe('pl.');
+    expect(resolveBlankCue(dt146.blanks[1], dt146, 'pl')?.label).toBe('inf.');
   });
 
   it('renders Skip in top utility rail above grid, shows grammar cues, and toggles chapter Context', () => {

@@ -63,6 +63,8 @@ export function formatCueCode(
       return { label: 'formal pl.', title: 'Formal plural (you)' };
     case 'pl':
       return { label: 'pl.', title: 'Plural' };
+    case 'inf':
+      return { label: 'inf.', title: 'Infinitive (compound future)' };
     default:
       return null;
   }

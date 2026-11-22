@@ -27,6 +27,7 @@ Compact cue codes (rendered into concise Swiss badges by `src/services/grammarCu
   fsf  -> formal f.    (formal singular feminine "you", e.g. Czech vykání "viděla jste")
   fp2  -> formal pl.   (formal plural "you": ustedes)
   pl   -> pl.          (generic plural, e.g. plural Czech transgressive)
+  inf  -> inf.         (infinitive in Polish compound future, e.g. "będziecie jeść" vs "jedli/jadły")
 """
 
 from __future__ import annotations
@@ -155,6 +156,14 @@ class PolishCueTagger:
         tokens_low = set(re.findall(r"[a-ząćęłńóśźż]+", text.lower()))
         has_pres_copula_12 = bool(tokens_low & PL_COPULA_PRESENT_12)
 
+        # Find compound-future 'być' auxiliaries (będę/będziesz/będzie/będziemy/będziecie/będą)
+        # for disambiguating Polish compound future: "będziecie jeść" (inf.) vs "będziecie jedli" (m.pl.) / "jadły" (non-m.pl.)
+        bedzie_aux: List[Tuple[int, str]] = []
+        for m_tok in re.finditer(r"\b(będę|będziesz|będzie|będziemy|będziecie|będą)\b", text, re.I):
+            w_aux = m_tok.group(1).lower()
+            a_num = "sg" if w_aux in ("będę", "będziesz", "będzie") else "pl"
+            bedzie_aux.append((m_tok.start(), a_num))
+
         # Detect overt nominative plural nouns in sentence to avoid redundant 3pl cues
         has_nom_pl_noun = False
         if has_they_en:
@@ -176,7 +185,32 @@ class PolishCueTagger:
             lem_low = lemma.lower()
             cue: Optional[str] = None
 
-            if kind == "v" and not is_base:
+            if kind == "v" and is_base:
+                # Infinitive in Polish compound future (e.g. "będziecie jeść" vs "będziecie jedli/jadły")
+                if bedzie_aux:
+                    clause_start = max(
+                        text.rfind(".", 0, s),
+                        text.rfind("!", 0, s),
+                        text.rfind("?", 0, s),
+                        text.rfind(";", 0, s),
+                        text.rfind(":", 0, s),
+                        text.rfind(",", 0, s),
+                        text.rfind("—", 0, s),
+                    )
+                    clause_end_candidates = [
+                        p for ch in (".", "!", "?", ";", ":", ",", "—") if (p := text.find(ch, e)) != -1
+                    ]
+                    clause_end = min(clause_end_candidates) if clause_end_candidates else len(text)
+                    # Only if a 'będę/będziesz/...' precedes in same clause (within 45 chars) or immediately follows (<= 15 chars)
+                    if any(
+                        clause_start < pos < clause_end and ((pos < s and s - pos <= 45) or (pos > e and pos - e <= 15))
+                        for pos, _ in bedzie_aux
+                    ):
+                        analyses = self.analyse_word(surf)
+                        if any(a[4].startswith("inf:") for a in analyses):
+                            cue = "inf"
+
+            elif kind == "v" and not is_base:
                 analyses = self.analyse_word(surf)
                 # Filter to analyses matching our lemma (or any praet/fin/impt if lemma spelling differs slightly)
                 matched = [a for a in analyses if a[3] == lem_low]
@@ -185,7 +219,7 @@ class PolishCueTagger:
 
                 praet_tags = [a[4] for a in matched if a[4].startswith("praet:")]
                 aglt_tags = [a[4] for a in analyses if a[4].startswith("aglt:")]
-                fin_tags = [a[4] for a in matched if a[4].startswith("fin:")]
+                fin_tags = [a[4] for a in matched if a[4].startswith("fin:") or a[4].startswith("bedzie:")]
                 impt_tags = [a[4] for a in matched if a[4].startswith("impt:")]
 
                 if praet_tags and aglt_tags:
@@ -229,6 +263,19 @@ class PolishCueTagger:
                                 cue = gen
                             elif pers == "sec":
                                 cue = {"m": "2sm", "f": "2sf", "n": "2sn", "mp": "2pm", "fp": "2pf"}.get(gen)
+                        elif not has_own_by and bedzie_aux:
+                            # Compound future l-participle ("będziecie jedli" vs "będziecie jeść" / "jadły")
+                            clause_end_candidates = [
+                                p for ch in (".", "!", "?", ";", ":", ",", "—") if (p := text.find(ch, e)) != -1
+                            ]
+                            clause_end = min(clause_end_candidates) if clause_end_candidates else len(text)
+                            if any(
+                                clause_start < pos < clause_end
+                                and a_num == num
+                                and ((pos < s and s - pos <= 45) or (pos > e and pos - e <= 15))
+                                for pos, a_num in bedzie_aux
+                            ):
+                                cue = gen
                         elif num == "pl" and has_they_en and not has_nom_pl_noun:
                             # 3pl past/cond ("poszli" vs "poszły") when English says "they"
                             cue = gen  # mp or fp
