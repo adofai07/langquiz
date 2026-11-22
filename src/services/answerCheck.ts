@@ -47,8 +47,9 @@ export function normalizeWord(value: string, language: LanguageCode = 'pl'): str
 }
 
 /**
- * Automatically capitalize any character position where the original answer
- * has an uppercase letter (e.g. sentence-initial verbs like "Napisz" or "Hat").
+ * Automatically match each character position's case to the original answer:
+ * - Uppercase where the original has an uppercase letter (e.g. sentence-initial "Chciałem", "Napisz", "PAN").
+ * - Lowercase where the original is lowercase (e.g. when Caps Lock is accidentally enabled).
  */
 export function matchOriginalCase(
   value: string,
@@ -58,15 +59,18 @@ export function matchOriginalCase(
   if (!value || !expected) return value;
   const valChars = Array.from(value);
   const expChars = Array.from(expected);
+  const isUpper = (c: string) =>
+    c !== c.toLocaleLowerCase(language) && c === c.toLocaleUpperCase(language);
+  const allExpUpper = expChars.every((c) => isUpper(c));
+
   return valChars
     .map((ch, idx) => {
       const exp = expChars[idx];
-      if (!exp) return ch;
-      const isExpUpper = exp !== exp.toLocaleLowerCase(language) && exp === exp.toLocaleUpperCase(language);
-      if (isExpUpper && ch !== 'ß') {
-        return ch.toLocaleUpperCase(language);
+      const shouldBeUpper = exp ? isUpper(exp) : allExpUpper;
+      if (shouldBeUpper) {
+        return ch === 'ß' ? ch : ch.toLocaleUpperCase(language);
       }
-      return ch;
+      return ch === 'ẞ' ? 'ß' : ch.toLocaleLowerCase(language);
     })
     .join('');
 }

@@ -34,11 +34,11 @@ export function formatCueCode(
     case '2s':
       return { label: 'sg.', title: 'Singular informal (you)' };
     case '2sm':
-      return { label: 'sg. m.', title: 'Singular masculine (you)' };
+      return { label: 'm.sg.', title: 'Masculine singular (you)' };
     case '2sf':
-      return { label: 'sg. f.', title: 'Singular feminine (you)' };
+      return { label: 'f.sg.', title: 'Feminine singular (you)' };
     case '2sn':
-      return { label: 'sg. n.', title: 'Singular neuter (you)' };
+      return { label: 'n.sg.', title: 'Neuter singular (you)' };
     case '2p':
       return {
         label: 'pl.',
@@ -46,13 +46,13 @@ export function formatCueCode(
       };
     case '2pm':
       return {
-        label: 'pl. m.',
-        title: isSlavic ? 'Plural masculine-personal (you)' : 'Plural masculine (you)',
+        label: 'm.pl.',
+        title: isSlavic ? 'Masculine-personal plural (you)' : 'Masculine plural (you)',
       };
     case '2pf':
       return isSlavic
-        ? { label: 'pl. non-m.', title: 'Plural non-masculine-personal (you)' }
-        : { label: 'pl. f.', title: 'Plural feminine (you)' };
+        ? { label: 'non-m.pl.', title: 'Non-masculine-personal plural (you)' }
+        : { label: 'f.pl.', title: 'Feminine plural (you)' };
     case 'fs':
       return { label: 'formal', title: 'Formal singular (you)' };
     case 'fsm':

@@ -118,6 +118,12 @@ describe('answerCheck', () => {
     expect(matchOriginalCase('ćwiczył', 'Ćwiczył', 'pl')).toBe('Ćwiczył');
     expect(matchOriginalCase('hat', 'Hat', 'de')).toBe('Hat');
     expect(matchOriginalCase('zapytał', 'zapytał', 'pl')).toBe('zapytał');
+    // Auto-lowercases Caps Lock input when the original is not capitalized
+    expect(matchOriginalCase('ZAPYTAŁ', 'zapytał', 'pl')).toBe('zapytał');
+    expect(matchOriginalCase('CHCIAŁEM', 'Chciałem', 'pl')).toBe('Chciałem');
+    expect(matchOriginalCase('ZAPYTAŁEM', 'zapytał', 'pl')).toBe('zapytałem');
+    expect(matchOriginalCase('Aẞ', 'aß', 'de')).toBe('aß');
+    expect(matchOriginalCase('pan', 'PAN', 'pl')).toBe('PAN');
   });
 
   it('evaluates German umlauts and eszett in strict vs lenient mode', () => {
@@ -827,13 +833,43 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     expect(resolveBlankCue(csVykani.blanks[0], csVykani, 'cs')?.label).toBe('formal m.');
     expect(resolveBlankCue(csVykani.blanks[1], csVykani, 'cs')?.label).toBe('formal');
 
-    // Spanish 2sg/2pl ("Hablas" / "Habláis")
+    // Spanish 2sg/2pl ("Hablas" / "Habláis") and consistent gender.number formatting
     const esYou: QuizQuestion = {
       ...verne185,
       original: 'Habláis muy bien.',
       blanks: [{ index: 0, start: 0, end: 7, answer: 'Habláis', lemma: 'hablar', kind: 'v', cue: '2p' }],
     };
     expect(resolveBlankCue(esYou.blanks[0], esYou, 'es')?.label).toBe('pl.');
+
+    // Consistent gender.number order: m.sg., f.sg., m.pl., non-m.pl. / f.pl.
+    expect(
+      resolveBlankCue(
+        { index: 0, start: 0, end: 8, answer: 'zrobiłaś', lemma: 'zrobić', kind: 'v', cue: '2sf' },
+        { ...verne185, original: 'Zrobiłaś to.', blanks: [] },
+        'pl'
+      )?.label
+    ).toBe('f.sg.');
+    expect(
+      resolveBlankCue(
+        { index: 0, start: 0, end: 11, answer: 'chcieliście', lemma: 'chcieć', kind: 'v', cue: '2pm' },
+        { ...verne185, original: 'Chcieliście to.', blanks: [] },
+        'pl'
+      )?.label
+    ).toBe('m.pl.');
+    expect(
+      resolveBlankCue(
+        { index: 0, start: 0, end: 11, answer: 'chciałyście', lemma: 'chcieć', kind: 'v', cue: '2pf' },
+        { ...verne185, original: 'Chciałyście to.', blanks: [] },
+        'pl'
+      )?.label
+    ).toBe('non-m.pl.');
+    expect(
+      resolveBlankCue(
+        { index: 0, start: 0, end: 8, answer: 'vosotras', lemma: 'vosotros', kind: 'r', cue: '2pf' },
+        { ...verne185, original: 'Vosotras vais.', blanks: [] },
+        'es'
+      )?.label
+    ).toBe('f.pl.');
   });
 
   it('renders Skip in top utility rail above grid, shows grammar cues, and toggles chapter Context', () => {
@@ -983,6 +1019,8 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
     for (const lang of LANGUAGES) {
       const secs = GRAMMAR_GUIDES[lang.code].sections;
       expect(secs.length).toBeGreaterThanOrEqual(11);
+      // Section 01 includes both conjugation table and infinitive recognition guide
+      expect(secs[0].tables.length).toBeGreaterThanOrEqual(2);
       expect(secs.some((s) => s.category === 'verbs')).toBe(true);
       expect(secs.some((s) => s.category === 'nouns')).toBe(true);
       expect(secs.some((s) => s.category === 'adj-pron')).toBe(true);

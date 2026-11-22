@@ -16,12 +16,12 @@ Compact cue codes (rendered into concise Swiss badges by `src/services/grammarCu
   fp   -> non-m.pl. / f.pl.  (non-masculine-personal plural in PL/CS; feminine plural in ES)
   np   -> n.pl.        (neuter plural)
   2s   -> sg.          (2nd-person singular "you")
-  2sm  -> sg. m.       (2nd-person singular masculine "you")
-  2sf  -> sg. f.       (2nd-person singular feminine "you")
-  2sn  -> sg. n.       (2nd-person singular neuter "you")
+  2sm  -> m.sg.        (2nd-person singular masculine "you")
+  2sf  -> f.sg.        (2nd-person singular feminine "you")
+  2sn  -> n.sg.        (2nd-person singular neuter "you")
   2p   -> pl.          (2nd-person plural "you")
-  2pm  -> pl. m.       (2nd-person plural masculine "you")
-  2pf  -> pl. non-m. / pl. f.
+  2pm  -> m.pl.        (2nd-person plural masculine "you")
+  2pf  -> non-m.pl. / f.pl.
   fs   -> formal       (formal singular "you": usted / vykání / Sie)
   fsm  -> formal m.    (formal singular masculine "you", e.g. Czech vykání "viděl jste")
   fsf  -> formal f.    (formal singular feminine "you", e.g. Czech vykání "viděla jste")
