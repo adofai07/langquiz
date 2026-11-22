@@ -384,7 +384,7 @@ export const App: React.FC = () => {
               archaicNote={corpus.archaicNote}
               glossary={glossary}
               wordForms={activeWordForms}
-              isActive={viewMode === 'quiz'}
+              isActive={viewMode === 'quiz' && !settingsOpen}
               onComplete={handleComplete}
               onNext={fetchNextQuestion}
             />

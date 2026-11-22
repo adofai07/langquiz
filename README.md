@@ -1,6 +1,8 @@
-# VERBA — Minimalist Swiss Verb Form Quiz
+# VERBA — Minimalist Swiss Inflection Quiz
 
-A cross-platform Progressive Web App for practicing verb conjugation in context, designed in Swiss International Typographic Style and set in **[Allo](https://allo.joshpuckett.me/)**.
+**English** | [Polski](README.pl.md) | [Deutsch](README.de.md) | [Čeština](README.cs.md) | [Español](README.es.md)
+
+A cross-platform Progressive Web App for practicing verb conjugation and word declension in context, designed in Swiss International Typographic Style and set in **[Allo](https://allo.joshpuckett.me/)**.
 
 ## Quick Start
 
@@ -10,8 +12,9 @@ git clone https://github.com/adofai07/langquiz.git && cd langquiz && npm install
 
 ## Features
 
-- **Focused inflection quiz**: Fill-in-the-blank conjugation and declension with language-specific word-form checkboxes (`Verbs`, `Participles`, `Gerunds` in Spanish, `Articles` in German & Spanish, `Transgressives` in Czech, `Nouns`, `Adjectives`, `Pronouns`), toggleable base/infinitive forms, inline lemma meanings, strict alphabet filtering, auto-capitalization matching sentence case, and single-key diacritic shortcuts.
-- **Swiss typographic UI**: Asymmetric grid, light & dark modes, and live **Allo** variable font controls (`wght`, `ROND`, `opsz`, `Kerning`).
+- **Focused inflection quiz**: Fill-in-the-blank conjugation and declension with language-specific word-form checkboxes (`Verbs`, `Participles`, `Gerunds` in Spanish, `Articles` in German & Spanish, `Transgressives` in Czech, `Nouns`, `Adjectives`, `Pronouns`), toggleable base/infinitive forms, inline lemma meanings, grammatical disambiguation cues (`m.`, `f.`, `m.pl.`, `formal`, etc.), expandable chapter context (`Show context`), strict alphabet filtering, automatic case matching (including Caps Lock correction), and single-key diacritic shortcuts.
+- **Built-in Study tab**: Toggle between **Quiz** and **Study** in the top bar without losing your current question—featuring full conjugation, passive voice, case declension, preposition, pronoun, and spelling-rule tables for all four languages.
+- **Swiss typographic UI**: Asymmetric grid, light & dark modes, compact `Archaic` / `Dated` corpus tags, and live **Allo** variable font controls (`wght`, `ROND`, `opsz`, `Kerning`).
 - **38 built-in public-domain corpora (Polish, German, Czech & Spanish)**:
   - **Polish (11)**: *Bible (UBG)*, *20 000 mil podmorskiej żeglugi* (Verne), *W osiemdziesiąt dni dookoła świata* (Verne), *Pies Baskerville'ów* (Doyle), *Studium w szkarłacie* (Doyle), *Wyspa skarbów* (Stevenson), *Trzej muszkieterowie* (Dumas), *Przygody Tomka Sawyera* (Twain), *Alicja w Krainie Czarów* (Carroll), *Robinson Crusoe* (Defoe), *Król Maciuś Pierwszy* (Korczak).
   - **German (10)**: *Bible (Schlachter 1951)*, *Zwanzigtausend Meilen unter'm Meer* (Verne), *Reise um die Erde in 80 Tagen* (Verne), *Späte Rache* (Doyle), *Die Schatzinsel* (Stevenson), *Die Abenteuer Tom Sawyers* (Twain), *Alice im Wunderland* (Carroll), *Robinson Crusoe* (Defoe), *Die Verwandlung* (Kafka), *Siddhartha* (Hesse).

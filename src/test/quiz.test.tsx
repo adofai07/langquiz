@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import {
   evaluateAllBlanks,
   evaluateBlank,
@@ -972,6 +972,101 @@ describe('mergeSplitVerses & DualRangeSlider', () => {
       />
     );
     expect(screen.queryByText('m.')).not.toBeInTheDocument();
+  });
+
+  it('autofocuses the active blank on new questions, on returning active, and when typing anywhere', async () => {
+    const q1: QuizQuestion = {
+      ...GENESIS_3_13,
+      id: 'q1',
+      blanks: [{ index: 0, start: 8, end: 15, answer: 'zapytał', lemma: 'zapytać', kind: 'v' }],
+    };
+    const q2: QuizQuestion = {
+      ...GENESIS_3_13,
+      id: 'q2',
+      original: 'Chciałem go wziąć z sobą.',
+      blanks: [{ index: 0, start: 0, end: 8, answer: 'Chciałem', lemma: 'chcieć', kind: 'v', cue: 'm' }],
+    };
+
+    const { rerender } = render(
+      <QuizCard
+        question={q1}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        isActive={true}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(screen.getAllByRole('textbox')[0]);
+    });
+
+    // Switching directly to a new question (like Skip ->) keeps blank 0 focused
+    (document.activeElement as HTMLElement)?.blur();
+    rerender(
+      <QuizCard
+        question={q2}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        isActive={true}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
+    await waitFor(() => {
+      expect(document.activeElement).toBe(input);
+    });
+
+    // Type-anywhere autofocus captures letters & diacritic shortcuts even after blur
+    input.blur();
+    expect(document.activeElement).not.toBe(input);
+    fireEvent.keyDown(document.body, { key: 'c' });
+    expect(document.activeElement).toBe(input);
+    input.blur();
+    fireEvent.keyDown(window, { key: 'h' });
+    input.blur();
+    fireEvent.keyDown(document.body, { key: '4' }); // ł
+    expect(input.value).toBe('Chł');
+
+    // Returning from Study/Settings (isActive false -> true) restores focus
+    input.blur();
+    rerender(
+      <QuizCard
+        question={q2}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        isActive={false}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    rerender(
+      <QuizCard
+        question={q2}
+        languageCode="pl"
+        alphabet={POLISH_ALPHABET}
+        diacritics={['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż']}
+        diacriticMode="strict"
+        isActive={true}
+        wordForms={DEFAULT_WORD_FORMS}
+        onComplete={vi.fn()}
+        onNext={vi.fn()}
+      />
+    );
+    await waitFor(() => {
+      expect(document.activeElement).toBe(input);
+    });
   });
 
   it('displays compact archaic corpus tag inside SettingsDrawer corpus selector', () => {

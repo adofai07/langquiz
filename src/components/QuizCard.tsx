@@ -69,7 +69,26 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const nextBtnRef = useRef<HTMLButtonElement | null>(null);
 
-  // Reset state whenever the question changes
+  const activeIndexRef = useRef<number>(0);
+  activeIndexRef.current = activeIndex;
+  const inputsRef = useRef<string[]>(inputs);
+  inputsRef.current = inputs;
+
+  const focusBlank = (idx: number) => {
+    const targetIdx = Math.max(0, Math.min(idx, question.blanks.length - 1));
+    const el = inputRefs.current[targetIdx];
+    if (el) {
+      el.focus();
+      const len = el.value.length;
+      try {
+        el.setSelectionRange(len, len);
+      } catch {
+        // Ignore selection errors on unsupported input types
+      }
+    }
+  };
+
+  // Reset state whenever the question changes and autofocus the first blank
   useEffect(() => {
     setInputs(question.blanks.map(() => ''));
     setActiveIndex(0);
@@ -77,12 +96,85 @@ export const QuizCard: React.FC<QuizCardProps> = ({
     setEvaluations(null);
     setContextOpen(false);
     scoredForQuestionRef.current = null;
-    inputRefs.current = [];
+    inputRefs.current.length = question.blanks.length;
+    if (!isActive) return;
     const timer = window.setTimeout(() => {
-      inputRefs.current[0]?.focus();
+      focusBlank(0);
     }, 0);
     return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id, question.blanks]);
+
+  // Restore focus to active blank whenever Quiz becomes active (e.g. closing Settings or returning from Study)
+  useEffect(() => {
+    if (!isActive || phase !== 'answering') return;
+    const timer = window.setTimeout(() => {
+      const activeEl = document.activeElement as HTMLElement | null;
+      if (activeEl && activeEl.classList.contains('blank-input')) return;
+      focusBlank(activeIndexRef.current);
+    }, 0);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive, phase]);
+
+  // Type-anywhere autofocus: if focus leaves the input during answering, typing any valid letter,
+  // diacritic shortcut, or Backspace immediately focuses the active blank without dropping the keystroke.
+  useEffect(() => {
+    if (!isActive || phase !== 'answering') return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.key === ',') return;
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable ||
+          target.closest('#settings-drawer'))
+      ) {
+        return;
+      }
+
+      const targetIdx = Math.max(0, Math.min(activeIndexRef.current, question.blanks.length - 1));
+      const el = inputRefs.current[targetIdx];
+      if (!el) return;
+
+      const shortcutIdx = (DIACRITIC_SHORTCUT_KEYS as readonly string[]).indexOf(e.key);
+      if (shortcutIdx !== -1 && shortcutIdx < diacritics.length) {
+        e.preventDefault();
+        const char = diacritics[shortcutIdx];
+        const current = inputsRef.current[targetIdx] ?? '';
+        handleInputChange(targetIdx, current + char);
+        focusBlank(targetIdx);
+        requestAnimationFrame(() => focusBlank(targetIdx));
+        return;
+      }
+
+      if (e.key.length === 1 && alphabet.includes(e.key)) {
+        e.preventDefault();
+        const current = inputsRef.current[targetIdx] ?? '';
+        handleInputChange(targetIdx, current + e.key);
+        focusBlank(targetIdx);
+        requestAnimationFrame(() => focusBlank(targetIdx));
+        return;
+      }
+
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        const current = inputsRef.current[targetIdx] ?? '';
+        if (current.length > 0) {
+          handleInputChange(targetIdx, current.slice(0, -1));
+        }
+        focusBlank(targetIdx);
+        requestAnimationFrame(() => focusBlank(targetIdx));
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive, phase, question.blanks, alphabet, diacritics, languageCode]);
 
   // Move focus to Next button once checked/revealed and allow Enter anywhere to advance
   useEffect(() => {
@@ -91,9 +183,9 @@ export const QuizCard: React.FC<QuizCardProps> = ({
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Enter') return;
-      const target = e.target as HTMLElement | null;
+      const target = e.target;
       if (
-        target &&
+        target instanceof HTMLElement &&
         (target.tagName === 'BUTTON' ||
           target.tagName === 'INPUT' ||
           target.tagName === 'SELECT' ||
@@ -112,6 +204,9 @@ export const QuizCard: React.FC<QuizCardProps> = ({
     const cleaned = skipFilter ? value : filterAlphabetInput(value, alphabet);
     const expected = question.blanks[idx]?.answer ?? '';
     const cased = skipFilter ? cleaned : matchOriginalCase(cleaned, expected, languageCode);
+    const syncNext = [...inputsRef.current];
+    syncNext[idx] = cased;
+    inputsRef.current = syncNext;
     setInputs((prev) => {
       const next = [...prev];
       next[idx] = cased;
@@ -253,6 +348,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
                 }}
                 type="text"
                 size={1}
+                autoFocus={isActive && idx === 0}
                 className="blank-input"
                 value={val}
                 aria-label={`Blank ${numLabel}: ${blank.lemma}`}
@@ -351,7 +447,12 @@ export const QuizCard: React.FC<QuizCardProps> = ({
             type="button"
             className={`top-bar-link${contextOpen ? ' top-bar-link--active' : ''}`}
             aria-expanded={contextOpen}
-            onClick={() => setContextOpen((v) => !v)}
+            onClick={() => {
+              setContextOpen((v) => !v);
+              if (phase === 'answering') {
+                window.setTimeout(() => focusBlank(activeIndexRef.current), 0);
+              }
+            }}
           >
             {contextOpen ? 'Hide context' : 'Show context'}
           </button>
